@@ -4,10 +4,11 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace S3Train.Domain
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : 
+        IdentityDbContext<ApplicationUser,ApplicationRole, string, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("DefaultConnection")
         {
         }
 
