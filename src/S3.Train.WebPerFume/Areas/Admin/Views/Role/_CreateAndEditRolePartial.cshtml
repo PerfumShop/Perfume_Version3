@@ -1,0 +1,71 @@
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models
+@model RoleViewModel
+
+@{ 
+    string action;
+    string css;
+    if(Model.Name != null)
+    {
+        action = "Edit";
+        css = "btn btn-gradient-info btn-fw";
+    }
+    else
+    {
+        action = "Create";
+        css = "btn btn-gradient-success btn-fw";
+    }
+}
+
+
+@using (Html.BeginForm(action, "Role", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <button type="button" class="@css" data-toggle="modal" data-target="#exampleModal@(Model.Id)">
+        @action
+    </button>
+
+    <div class="modal fade" id="exampleModal@(Model.Id)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title@(Model.Id)" id="exampleModalLabel">@action Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        @{
+                            if (action == "Edit")
+                            {
+                                @Html.HiddenFor(m => m.Id);
+                            }
+                        }
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-5" })
+                        <div class="col-md">
+                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows="10"  })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gradient-secondary btn-fw" data-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-gradient-success btn-fw">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

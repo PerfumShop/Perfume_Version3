@@ -1,0 +1,34 @@
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models
+@model RoleViewModel
+
+@using (Html.BeginForm("DeleteCofirmed", "Role", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id)
+    <button type="button" class="btn btn-gradient-danger btn-fw" data-toggle="modal" data-target="#exampleDelete@(Model.Id)">
+        Delete
+    </button>
+
+    <!-- Modal -->
+    <div class="card">
+        <div class="modal fade" id="exampleDelete@(Model.Id)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleDelete@(Model.Id)">Title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are You Sure Delete @Model.Name?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-gradient-secondary" data-dismiss="modal">No</button>
+                        <button type="submit" class="btn btn-gradient-success">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

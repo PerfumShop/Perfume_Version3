@@ -1,5 +1,7 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
 
+
+@Html.AntiForgeryToken()
 <!-- Modal -->
 <div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -17,12 +19,12 @@
             <div class="modal-body mx-4">
                 <!--Body-->
                 <div class="md-form mb-5">
-                    <input type="email" id="Form-email1" class="form-control validate">
+                    <input type="email" id="email" class="form-control validate">
                     <label data-error="wrong" data-success="right" for="Form-email1">Your email</label>
                 </div>
 
                 <div class="md-form pb-3">
-                    <input type="password" id="Form-pass1" class="form-control validate">
+                    <input type="password" id="pass" class="form-control validate">
                     <label data-error="wrong" data-success="right" for="Form-pass1">Your password</label>
                     <p class="font-small blue-text d-flex justify-content-end">
                         Forgot <a href="#" class="blue-text ml-1">
@@ -41,11 +43,11 @@
 
                 <div class="row my-3 d-flex justify-content-center">
                     <!--Facebook-->
-                    <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fab fa-facebook-f text-center"></i></button>
+                    <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fab ti-facebook"></i></button>
                     <!--Twitter-->
-                    <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fab fa-twitter"></i></button>
+                    <button type="button" class="btn btn-white btn-rounded mr-md-3 z-depth-1a"><i class="fab ti-twitter"></i></button>
                     <!--Google +-->
-                    <button type="button" class="btn btn-white btn-rounded z-depth-1a"><i class="fab fa-google-plus-g"></i></button>
+                    <button type="button" class="btn btn-white btn-rounded z-depth-1a"><i class="fab ti-google"></i></button>
                 </div>
             </div>
             <!--Footer-->
@@ -62,17 +64,18 @@
 </div>
 <!-- Modal -->
 
-<a href="" class="login-panel" data-toggle="modal" data-target="#elegantModalForm">
-    <i class="fa fa-user"></i> Login
-</a>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $("#test").click(function () {
-                //collect the user data
-                alert("s")
-            })
-        })
-    </script>
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+        <a href="javascript:document.getElementById('logoutForm').submit()" class="login-panel">Log off</a>
+        @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" , @class="login-panel"})
+    }
+}
+else
+{
+        <a href="" class="login-panel" data-toggle="modal" data-target="#elegantModalForm">
+            <i class="fa fa-user"></i> Login
+        </a>
 }

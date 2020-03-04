@@ -134,6 +134,11 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security.Claims, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Claims.4.3.0\lib\net46\System.Security.Claims.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
       <Private>True</Private>
@@ -226,7 +231,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\DependencyConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -238,6 +242,8 @@
     <Compile Include="Areas\Admin\Controllers\ProductAdvertisementController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProVarationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\VendorController.cs" />
     <Compile Include="Areas\Admin\Models\BannerViewModel.cs" />
     <Compile Include="Areas\Admin\Models\BrandViewModel.cs" />
@@ -246,6 +252,7 @@
     <Compile Include="Areas\Admin\Models\ProductAdvertisementViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProVarationViewModel.cs" />
     <Compile Include="Areas\Admin\Models\ProductViewModel.cs" />
+    <Compile Include="Areas\Admin\Models\RoleViewModel.cs" />
     <Compile Include="Areas\Admin\Models\VendorViewModel.cs" />
     <Compile Include="CommonFunction\ConvertDomainToModel.cs" />
     <Compile Include="CommonFunction\DropDownListDomain.cs" />
@@ -270,6 +277,22 @@
     <Compile Include="Migrations\202002280207338_ChangeFK_ProductVariationVsShoppingCartDetail.cs" />
     <Compile Include="Migrations\202002280207338_ChangeFK_ProductVariationVsShoppingCartDetail.designer.cs">
       <DependentUpon>202002280207338_ChangeFK_ProductVariationVsShoppingCartDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003040237045_addDiscriminatorOnRoleTable.cs" />
+    <Compile Include="Migrations\202003040237045_addDiscriminatorOnRoleTable.designer.cs">
+      <DependentUpon>202003040237045_addDiscriminatorOnRoleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003040703187_addDescriptionOnRoleTable.cs" />
+    <Compile Include="Migrations\202003040703187_addDescriptionOnRoleTable.designer.cs">
+      <DependentUpon>202003040703187_addDescriptionOnRoleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003040855076_DeleteDescriptionOnRoleTable.cs" />
+    <Compile Include="Migrations\202003040855076_DeleteDescriptionOnRoleTable.designer.cs">
+      <DependentUpon>202003040855076_DeleteDescriptionOnRoleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003040858215_AddcolumnInUserAndRole.cs" />
+    <Compile Include="Migrations\202003040858215_AddcolumnInUserAndRole.designer.cs">
+      <DependentUpon>202003040858215_AddcolumnInUserAndRole.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1101,6 +1124,9 @@
     <Content Include="Areas\Admin\Views\ProVaration\DetailProVariation.cshtml" />
     <Content Include="Areas\Admin\Views\Category\DetailCategory.cshtml" />
     <Content Include="Areas\Admin\Views\Category\_DeleteCategoryPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\_CreateAndEditRolePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Role\_DeleteRolePartial.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1286,6 +1312,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Home\" />
+    <Folder Include="Areas\Admin\Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1322,6 +1349,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202002280207338_ChangeFK_ProductVariationVsShoppingCartDetail.resx">
       <DependentUpon>202002280207338_ChangeFK_ProductVariationVsShoppingCartDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003040237045_addDiscriminatorOnRoleTable.resx">
+      <DependentUpon>202003040237045_addDiscriminatorOnRoleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003040703187_addDescriptionOnRoleTable.resx">
+      <DependentUpon>202003040703187_addDescriptionOnRoleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003040855076_DeleteDescriptionOnRoleTable.resx">
+      <DependentUpon>202003040855076_DeleteDescriptionOnRoleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003040858215_AddcolumnInUserAndRole.resx">
+      <DependentUpon>202003040858215_AddcolumnInUserAndRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

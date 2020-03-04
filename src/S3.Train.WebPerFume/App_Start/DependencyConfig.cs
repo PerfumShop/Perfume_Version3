@@ -2,6 +2,7 @@
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
 using S3.Train.WebPerFume.Models;
+using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.Service;
 using System;
@@ -56,7 +57,10 @@ namespace S3.Train.WebPerFume.App_Start
             builder.RegisterType<ShoppingCartService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ShoppingCartDetailService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<VendorService>().AsImplementedInterfaces().SingleInstance();
-
+            builder.RegisterType<AccountManager>().As<IAccountManager>();
+            builder.RegisterType<RoleService>().As<IRoleService>();
+            builder.RegisterType<UserService>().As<IUserService>();
+            builder.RegisterType<UserIdentityService>().As<IUserIdentityService>();
         }
     }
 }
