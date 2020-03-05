@@ -38,7 +38,7 @@ namespace S3Train.Service
 
         public IQueryable<T> Query<T>() where T : class
         {
-            throw new NotImplementedException();
+            return Set<T>();
         }
     }
 }
