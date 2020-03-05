@@ -16,218 +16,545 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-            //var brands = new List<Brand>
-            //{
-            //    new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+            var brands = new List<Brand>
+            {
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Christian Dior",
-            //        Summary = "The 'Miss Dior Cherie' perfume and the 'Dior Homme' fragrance were released in 2005.",
-            //        Logo = "logodior",
-            //    },
-            //     new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Christian Dior",
+                    Summary = "The 'Miss Dior Cherie' perfume and the 'Dior Homme' fragrance were released in 2005.",
+                    Logo = "logodior",
+                },
+                 new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Chanel",
-            //        Summary = "Chanel is well-known for the perfume No. 5 de Chanel and Chanel Suit",
-            //        Logo = "logochanel",
-            //    },
-            //    new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Chanel",
+                    Summary = "Chanel is well-known for the perfume No. 5 de Chanel and Chanel Suit",
+                    Logo = "logochanel",
+                },
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Burberry",
-            //        Summary = "Burberry",
-            //        Logo = "logoburberry",
-            //    },
-            //    new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Burberry",
+                    Summary = "Burberry",
+                    Logo = "logoburberry",
+                },
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Gucci",
-            //        Summary = "is an Italian luxury brand",
-            //        Logo = "logogucci",
-            //    },
-            //     new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Gucci",
+                    Summary = "is an Italian luxury brand",
+                    Logo = "logogucci",
+                },
+                 new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Saint Laurent",
-            //        Summary = "",
-            //        Logo = "logoSaintLaurent",
-            //    },
-            //    new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Saint Laurent",
+                    Summary = "",
+                    Logo = "logoSaintLaurent",
+                },
+                new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Carven",
-            //        Summary = "",
-            //        Logo = "logocarven",
-            //    },
+                    Name = "Carven",
+                    Summary = "",
+                    Logo = "logocarven",
+                },
 
-            //     new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                 new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Tom Ford",
-            //        Summary = "",
-            //        Logo = "logotomford",
-            //    },
-            //     new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Tom Ford",
+                    Summary = "",
+                    Logo = "logotomford",
+                },
+                 new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Van Cleef & Arpels",
-            //        Summary = "",
-            //        Logo = "logoVanCleef&Arpels",
-            //    },
-            //      new Brand
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
+                    Name = "Van Cleef & Arpels",
+                    Summary = "",
+                    Logo = "logoVanCleef&Arpels",
+                },
+                  new Brand
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
 
-            //        Name = "Le LaBo",
-            //        Summary = "",
-            //        Logo = "logolelabo",
-            //    },
-            //};
-            //brands.ForEach(x => context.Brands.AddOrUpdate(c => c.Name, x));
-            //context.SaveChanges();
-            //var vendors = new List<Vendor>
-            //{
-            //     new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Van Cleef & Arpels",
-            //        Address = "Paris",
-            //        PhoneNumber = "03030405",
-            //        Email="Vancleefarpels@gmail.com",
-            //    },
-            //     new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Carven",
-            //        Address = "Paris",
-            //        PhoneNumber = "03030405",
-            //        Email="carven@gmail.com",
-            //    },
-            //     new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "YVesSaint Laurent",
-            //        Address = "Paris",
-            //        PhoneNumber = "03030405",
-            //        Email="YvesSaintLaurent@gmail.com",
-            //    },
-            //     new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Coco Chanel",
-            //        Address = "Paris",
-            //        PhoneNumber = "03030405",
-            //        Email="cocochanel@gmail.com",
-            //    },
-            //     new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Burberry",
-            //        Address = "United Kingdom",
-            //        PhoneNumber = "03030405",
-            //        Email="Burberry@gmail.com",
-            //    },
-            //      new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Gucci",
-            //        Address = "Italy",
-            //        PhoneNumber = "03030405",
-            //        Email="gucci@gmail.com",
-            //    },
-            //      new Vendor
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Christian Dior",
-            //        Address = "Italy",
-            //        PhoneNumber = "03030405",
-            //        Email="dior@gmail.com",
-            //    },
-            //};
-            //vendors.ForEach(x => context.Vendors.AddOrUpdate(c => c.Name, x));
-            //context.SaveChanges();
-            //var categories = new List<Category>
-            //{
-            //new Category
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Highlights",
-            //        Summary = "Typical products of the shop",
+                    Name = "Le LaBo",
+                    Summary = "",
+                    Logo = "logolelabo",
+                },
+            };
+            brands.ForEach(x => context.Brands.AddOrUpdate(c => c.Name, x));
+            context.SaveChanges();
+            var vendors = new List<Vendor>
+            {
+                 new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Van Cleef & Arpels",
+                    Address = "Paris",
+                    PhoneNumber = "03030405",
+                    Email="Vancleefarpels@gmail.com",
+                },
+                 new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Carven",
+                    Address = "Paris",
+                    PhoneNumber = "03030405",
+                    Email="carven@gmail.com",
+                },
+                 new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "YVesSaint Laurent",
+                    Address = "Paris",
+                    PhoneNumber = "03030405",
+                    Email="YvesSaintLaurent@gmail.com",
+                },
+                 new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Coco Chanel",
+                    Address = "Paris",
+                    PhoneNumber = "03030405",
+                    Email="cocochanel@gmail.com",
+                },
+                 new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Burberry",
+                    Address = "United Kingdom",
+                    PhoneNumber = "03030405",
+                    Email="Burberry@gmail.com",
+                },
+                  new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Gucci",
+                    Address = "Italy",
+                    PhoneNumber = "03030405",
+                    Email="gucci@gmail.com",
+                },
+                  new Vendor
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Christian Dior",
+                    Address = "Italy",
+                    PhoneNumber = "03030405",
+                    Email="dior@gmail.com",
+                },
+            };
+            vendors.ForEach(x => context.Vendors.AddOrUpdate(c => c.Name, x));
+            context.SaveChanges();
+            var categories = new List<Category>
+            {
+            new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Highlights",
+                    Summary = "Typical products of the shop",
 
-            //    },
-            //new Category
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Selling",
-            //        Summary = "Products sold the most",
+                },
+            new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Selling",
+                    Summary = "Products sold the most",
 
-            //    },
-            //new Category
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "New Products",
-            //        Summary = "Launches new products",
+                },
+            new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "New Products",
+                    Summary = "Launches new products",
 
-            //    },
-            //new Category
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        CreatedDate = DateTime.Now,
-            //        IsActive = true,
-            //        Name = "Promotion Item",
-            //        Summary = "Promotion products",
+                },
+            new Category
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Promotion Item",
+                    Summary = "Promotion products",
 
-            //    },
-            //};
-            //categories.ForEach(x => context.Categories.AddOrUpdate(c => c.Name, x));
-            //context.SaveChanges();
+                },
+            };
+            categories.ForEach(x => context.Categories.AddOrUpdate(c => c.Name, x));
+            context.SaveChanges();
+
+            var banners = new List<Banner>
+            {
+            new Banner
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Image = "banner1",
+                    Link ="banner1",
+                    AdType = BannerType.MainBanner
+                },
+            new Banner
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Image = "banner2",
+                    Link ="banner2",
+                    AdType = BannerType.MenBanner
+                },
+            new Banner
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Image = "banner3",
+                    Link ="banner3",
+                    AdType = BannerType.WomenBanner
+                },
+            };
+            banners.ForEach(x => context.Banners.AddOrUpdate(c => c.Image, x));
+            context.SaveChanges();
+            var productAds = new List<ProductAdvertisement>
+                {
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/1",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver One",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.SliderBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/11",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver One One",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.SliderBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/2",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Two",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.WomenSquareBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/3",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Three",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.MenSquareBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/4",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Four",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.UnisexSquareBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/5",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Five",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.MidVertRectangleBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/6",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Six",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.MidHorRectangleBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/7",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Seven",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.LgVertRectangleBanner
+                    },
+                    new ProductAdvertisement
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+
+                        EventUrl = "controller/action/8",
+                        EventUrlCaption = string.Empty,
+                        ImagePath = "http://placehold.it/900x350",
+                        Title = "Adver Eight",
+                        Description = "Lorem ipsum",
+                        AdType = ProductAdvertisementType.LgHorRectangleBanner
+                    },
+
+                };
+            productAds.ForEach(x => context.ProductAdvertisements.AddOrUpdate(p => p.Title, x));
+            context.SaveChanges();
+
+            var products = new List<Product>
+            {
+                new Product
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name= "Carven Eau de Toilette",
+                    Description="A wave of freshness and freedom for a fresher and more luminous expression of the Carven style.",
+                    ImagePath = "product1",
+                    Vendor_Id=vendors.Single(x=>x.Name.Equals("Carven",StringComparison.OrdinalIgnoreCase)).Id,
+                    Brand_Id= brands.Single(x=>x.Name.Equals("Carven",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                new Product
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name = "Acqua Di Parma",
+                    ImagePath = "product2",
+                    Description = "A wave of freshness and freedom for a fresher and more luminous expression of the Carven style.",
+                    Vendor_Id = vendors.Single(x => x.Name.Equals("Carven", StringComparison.OrdinalIgnoreCase)).Id,
+                    Brand_Id = brands.Single(x => x.Name.Equals("Carven", StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                new Product
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name= "Mandarino di Mmalfi",
+                    ImagePath = "product3",
+                    Description="A wave of freshness and freedom for a fresher and more luminous expression of the Carven style.",
+                    Vendor_Id=vendors.Single(x=>x.Name.Equals("Gucci",StringComparison.OrdinalIgnoreCase)).Id,
+                    Brand_Id= brands.Single(x=>x.Name.Equals("Tom Ford",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                new Product
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    Name= "Bis",
+                    ImagePath = "product4",
+                    Description="A wave of freshness and freedom for a fresher and more luminous expression of the Carven style.",
+                    Vendor_Id=vendors.Single(x=>x.Name.Equals("Gucci",StringComparison.OrdinalIgnoreCase)).Id,
+                    Brand_Id= brands.Single(x=>x.Name.Equals("Le LaBo",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+            };
+            products.ForEach(s => context.Products.AddOrUpdate(p => p.Name, s));
+            context.SaveChanges();
+            var productvariations = new List<ProductVariation>
+            {
+                new ProductVariation
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    SKU= "CCEdT100f",
+                    Volume="100ml",
+                    StockQuantity=2,
+                    Price=90,
+
+                    Product_Id=products.Single(x=>x.Name.Equals("Carven Eau de Toilette",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                 new ProductVariation
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    SKU= "CCEdT50f",
+                    Volume="50ml",
+                    StockQuantity=2,
+                    Price=60,
+
+                    Product_Id=products.Single(x=>x.Name.Equals("Carven Eau de Toilette",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                new ProductVariation
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    SKU= "AADP50m",
+                    Volume="50ml",
+                    StockQuantity=2,
+                    Price=60,
+
+                    Product_Id=products.Single(x=>x.Name.Equals("Acqua Di Parma",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+                 new ProductVariation
+                {
+                    Id= Guid.NewGuid(),
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    SKU= "TMdM100f",
+                    Volume="100ml",
+                    StockQuantity=5,
+                    Price=60,
+
+                    Product_Id=products.Single(x=>x.Name.Equals("Mandarino di Mmalfi",StringComparison.OrdinalIgnoreCase)).Id,
+                },
+            };
+            productvariations.ForEach(s => context.ProductVariations.AddOrUpdate(p => p.Id, s));
+            context.SaveChanges();
+
+            var productimages = new List<ProductImage>
+            {
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("CCEdT100f",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl_3.jpeg",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("CCEdT100f",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl_3.jpeg",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("CCEdT50f",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl-tomford.PNG",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("CCEdT50f",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl-tomford.PNG",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("AADP50m",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl-tomford.PNG",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("AADP50m",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl-subtle1.jpeg",
+            },
+            new ProductImage
+            {
+                Id= Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                IsActive = true,
+                ProductVariation_Id= productvariations.Single(x=>x.SKU.Equals("TMdM100f",StringComparison.OrdinalIgnoreCase)).Id,
+                ImagePath="girl-subtle1.jpeg",
+            },
+            };
+            productimages.ForEach(s => context.ProductImages.AddOrUpdate(x => x.Id, s));
+            context.SaveChanges();
+
+
+
+
+
+
 
             ////var products = new List<Product>
             ////{
