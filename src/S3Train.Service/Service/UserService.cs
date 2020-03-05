@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using S3Train.Contract;
+using S3Train.Core.Enum;
 using S3Train.Domain;
 using S3Train.Model.User;
 using System;
@@ -14,101 +16,158 @@ namespace S3Train.Service
 {
     public class UserService : IUserService
     {
-        
-
-        public Task<IdentityResult> ConfirmEmail(string userId, string token)
+        private readonly IAccountManager _accountManager;
+        private readonly IUserIdentityService _userIdentityService;
+        public UserService(IAccountManager accountManager, IUserIdentityService userIdentityService)
         {
-            throw new NotImplementedException();
+            _accountManager = accountManager;
+            _userIdentityService = userIdentityService;
         }
 
-        public Task<IdentityResult> Create(ApplicationUser user, string password)
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId, string token)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.ConfirmEmailAsync(userId, token);
+        }
+
+        public async Task<IdentityResult> CreateAsync(ApplicationUser user, string password)
+        {
+            var result = await _accountManager.UserManager.CreateAsync(user, password);
+            return result;
         }
 
         public Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user, string applicationType)
         {
-            throw new NotImplementedException();
+            return _accountManager.UserManager.CreateIdentityAsync(user, applicationType);
         }
 
-        public Task<string> GenerateEmailConfirmationTokenAsync(string userId)
+        public async Task<string> GenerateEmailConfirmationTokenAsync(string userId)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.GenerateEmailConfirmationTokenAsync(userId);
         }
 
-        public Task<string> GeneratePasswordResetToken(string userId)
+        public async Task<string> GeneratePasswordResetTokenAsync(string userId)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.GeneratePasswordResetTokenAsync(userId);
         }
 
-        public Task<IList<UserLoginInfo>> GetLogins(string id)
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(string id)
         {
-            throw new NotImplementedException();
+            var user = await _accountManager.UserManager.FindByIdAsync(id);
+            if (user == null)
+                return new List<UserLoginInfo>();
+
+            return await _accountManager.UserManager.GetLoginsAsync(id);
         }
 
-        public Task<IList<string>> GetRolesForUser(string userId)
+        public async Task<IList<string>> GetRolesForUserAsync(string userId)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.GetRolesAsync(userId);
         }
 
-        public Task<IPagedList<UserViewModel>> GetUser(int pageIndex, int pageSize)
+        public async Task<IPagedList<UserViewModel>> GetUserAsync(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.Users.Where(c => c.UserName != DefaultUser.Administration)
+                .OrderByDescending(order => order.Email)
+                .Select(u => new UserViewModel
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    FullName = u.FullName,
+                    Avatar = u.Avatar,
+                    PhoneNumber = u.PhoneNumber,
+                }).ToPagedListAsync(pageIndex, pageSize);
         }
 
-        public Task<ApplicationUser> GetUserByEmail(string email)
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.FindByEmailAsync(email);
         }
 
-        public Task<ApplicationUser> GetUserById(string id)
+        public async Task<ApplicationUser> GetUserByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.FindByIdAsync(id);
         }
 
-        public Task<ApplicationUser> GetUserByUserName(string userName)
+        public async Task<ApplicationUser> GetUserByUserNameAsync(string userName)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.FindByNameAsync(userName);
         }
 
-        public Task<ApplicationUser> GetUserByUserNameAndPassword(string userName, string password)
+        public async Task<ApplicationUser> GetUserByUserNameAndPasswordAsync(string userName, string password)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.FindAsync(userName, password);
         }
 
-        public Task<IdentityResult> RemoveFromRoles(string userId, params string[] roles)
+        public async Task<IdentityResult> RemoveFromRolesAsync(string userId, params string[] roles)
         {
-            throw new NotImplementedException();
+            if (userId == string.Empty)
+                return null;
+
+            var result = await _accountManager.UserManager.RemoveFromRolesAsync(userId, roles);
+            return result;
         }
 
-        public Task<IdentityResult> ResetPassword(string userId, string token, string password)
+        public async Task<IdentityResult> ResetPasswordAsync(string userId, string token, string password)
         {
-            throw new NotImplementedException();
+            return await _accountManager.UserManager.ResetPasswordAsync(userId, token, password);
         }
 
-        public Task SignInAsync(ApplicationUser user, bool isPersistent, bool shouldLockout = false)
+        public async Task SignInAsync(ApplicationUser user, bool isPersistent, bool shouldLockout = false)
         {
-            throw new NotImplementedException();
+            ClaimsIdentity identity = await _accountManager.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+
+            var claims = _userIdentityService.ConvertApplicationUserToClaims(user);
+            identity.AddClaims(claims);
+
+            _accountManager.AuthenticationManager.SignIn(new AuthenticationProperties
+            {
+                IsPersistent = isPersistent
+            }, identity);
         }
 
         public void SignOut()
         {
-            throw new NotImplementedException();
+            _accountManager.AuthenticationManager.SignOut();
         }
 
-        public Task<IdentityResult> Update(ApplicationUser user)
+        public async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
-            throw new NotImplementedException();
+            var result = await _accountManager.UserManager.UpdateAsync(user);
+            return result;
         }
 
-        public Task<IdentityResult> UpdatePassword(string id, string password)
+        public async Task<IdentityResult> UpdatePasswordAsync(string id, string password)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrEmpty(password))
+            {
+                return IdentityResult.Failed(new ArgumentNullException(password).ToString());
+            }
+
+            var userInfor = await _accountManager.UserManager.FindByIdAsync(id);
+            if (userInfor == null)
+            {
+                return IdentityResult.Failed(new Exception("User does not found").ToString());
+            }
+
+            var removePassword = await _accountManager.UserManager.RemovePasswordAsync(id);
+            if (!removePassword.Succeeded)
+            {
+                return IdentityResult.Failed(new Exception("Remove password fail").ToString());
+            }
+
+            var userChangePassword = await _accountManager.UserManager.AddPasswordAsync(id, password);
+            return userChangePassword;
         }
 
-        public Task<IdentityResult> UserAddToRoles(string userId, params string[] roles)
+        public async Task<IdentityResult> UserAddToRolesAsync(string userId, params string[] roles)
         {
-            throw new NotImplementedException();
+            if (userId == string.Empty)
+                return null;
+
+            var result = await _accountManager.UserManager.AddToRolesAsync(userId, roles);
+            return result;
         }
+
     }
 }
