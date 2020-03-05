@@ -13,5 +13,8 @@ namespace S3Train.Contract
         ProductAdvertisement GetWomenSquareBanner();
         ProductAdvertisement GetMenSquareBanner();
         ProductAdvertisement GetUnisexSquareBanner();
+        ProductAdvertisement GetSliderBanner();
+
+        IList<ProductAdvertisement> GetAllBannerByType(ProductAdvertisementType productAdvertisementType);
     }
 }

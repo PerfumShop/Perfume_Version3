@@ -14,6 +14,7 @@ namespace S3.Train.WebPerFume.Models
         public ProductAd SquareMen { get; set; }
         public ProductAd Squarewomen { get; set; }
         public ProductAd SquareUnisex { get; set; }
+        public IList<ProductAd> BannerSlider { get; set; }
     }
 
     public class BannerModel
