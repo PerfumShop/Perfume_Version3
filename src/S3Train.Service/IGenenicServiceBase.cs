@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using S3Train.Domain;
+using X.PagedList;
 
 namespace S3Train
 {
@@ -14,6 +16,8 @@ namespace S3Train
         /// <returns></returns>
         List<T> SelectAll();
 
+        IPagedList<T> Gets(int? pageIndex, int pageSize = 20, Expression<Func<T, bool>> where = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
         /// <summary>
         /// Select all data Type IQueryable
         /// </summary>
