@@ -45,8 +45,21 @@ namespace S3.Train.WebPerFume.Controllers
             model.SquareUnisex = GetProAd(_productAdvertisement.GetUnisexSquareBanner());
             //model.productsModels = GetProducts(_productVariationService.SelectAll());
 
+            model.BannerSlider = GetAllSliderBanner();
+
             return View(model);
         }
+
+        private IList<ProductAd> GetAllSliderBanner()
+        {
+            IList<ProductAdvertisement> AllSliderBanner = _productAdvertisement.GetAllBannerByType(ProductAdvertisementType.SliderBanner);
+            return AllSliderBanner.Select(x => new ProductAd
+            {
+                ImagePath = x.ImagePath,
+                EventUrl = x.EventUrl
+            }).ToList();
+        }
+
         private IList<ProductsModel> GetProducts(IList<ProductVariation> products)
         {
             return products.Select(x => new ProductsModel
@@ -79,7 +92,7 @@ namespace S3.Train.WebPerFume.Controllers
 
             return model;
         }
-        private ProductAd GetProAd( ProductAdvertisement productad)
+        private ProductAd GetProAd(ProductAdvertisement productad)
         {
             var pr = new ProductAd
             {
@@ -89,7 +102,6 @@ namespace S3.Train.WebPerFume.Controllers
 
             return pr;
         }
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
