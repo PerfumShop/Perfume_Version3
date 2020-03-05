@@ -230,6 +230,7 @@
     <Reference Include="X.PagedList.Web.Common, Version=7.9.1.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
       <HintPath>..\packages\X.PagedList.Web.Common.7.9.1\lib\net461\X.PagedList.Web.Common.dll</HintPath>
     </Reference>
+    <Reference Include="X.PagedList, Version=7.9.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Owin">
@@ -1140,6 +1141,9 @@
     <Content Include="Areas\Admin\Views\Role\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Role\_CreateAndEditRolePartial.cshtml" />
     <Content Include="Areas\Admin\Views\Role\_DeleteRolePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\_AddOrUpdateUserPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Create.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1325,7 +1329,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Home\" />
-    <Folder Include="Areas\Admin\Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1338,6 +1341,10 @@
     <ProjectReference Include="..\S3Train.Domain\S3Train.Domain.csproj">
       <Project>{e1778609-49e4-4de5-a064-570f6e8bcd0f}</Project>
       <Name>S3Train.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\S3Train.Model\S3Train.Model.csproj">
+      <Project>{40b960c1-9793-47dd-b300-3d010f5fb0cf}</Project>
+      <Name>S3Train.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\S3Train.Service\S3Train.Service.csproj">
       <Project>{95439e7b-f59d-4acd-a2b0-75c27f3319af}</Project>

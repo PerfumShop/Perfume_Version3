@@ -1,13 +1,10 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
-using S3.Train.WebPerFume.Models;
+using Microsoft.Owin;
 using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
@@ -21,6 +18,7 @@ namespace S3.Train.WebPerFume.App_Start
         public static IContainer RegisterDependencyResolvers()
         {
             ContainerBuilder builder = new ContainerBuilder();
+            RegisterContext(builder);
             RegisterDependencyMappingDefaults(builder);
             RegisterDependencyMappingOverrides(builder);
             IContainer container = builder.Build();
@@ -29,6 +27,22 @@ namespace S3.Train.WebPerFume.App_Start
             // Set Up WebAPI Resolver
             GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             return container;
+        }
+
+        private static void RegisterContext(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new AutofacWebTypesModule());
+
+            builder.Register(ctx =>
+            {
+                HttpContextBase httpContext = ctx.Resolve<HttpContextBase>();
+                if (httpContext != null)
+                {
+                    return httpContext.GetOwinContext();
+                }
+                return HttpContext.Current.GetOwinContext();
+            }).As<IOwinContext>()
+                .InstancePerLifetimeScope();
         }
 
         private static void RegisterDependencyMappingDefaults(ContainerBuilder builder)
@@ -46,6 +60,7 @@ namespace S3.Train.WebPerFume.App_Start
         private static void RegisterDependencyMappingOverrides(ContainerBuilder builder)
         {
             builder.RegisterType<ApplicationDbContext>();
+            builder.RegisterType<AccountManager>().As<IAccountManager>();
             builder.RegisterType<BannerService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<BrandService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CategoryService>().AsImplementedInterfaces().SingleInstance();
@@ -57,7 +72,6 @@ namespace S3.Train.WebPerFume.App_Start
             builder.RegisterType<ShoppingCartService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ShoppingCartDetailService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<VendorService>().AsImplementedInterfaces().SingleInstance();
-            builder.RegisterType<AccountManager>().As<IAccountManager>();
             builder.RegisterType<RoleService>().As<IRoleService>();
             builder.RegisterType<UserService>().As<IUserService>();
             builder.RegisterType<UserIdentityService>().As<IUserIdentityService>();
