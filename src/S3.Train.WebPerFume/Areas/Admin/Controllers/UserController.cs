@@ -34,12 +34,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 
         public ActionResult Create()
         {
-            List<SelectListItem> list = new List<SelectListItem>();
-            var roles = _roleService.GetAllRoles();
-            foreach (var role in roles)
-                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
-            ViewBag.Roles = list;
-
+            ViewBag.Roles = DropDownRole();
             return View();
         }
 
@@ -60,11 +55,21 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //public async Task<ActionResult> Update(string id)
-        //{
-        //    var user = await _userService.GetUserByIdAsync(id);
-        //    return PartialView("~/Areas/Admin/Views/Role/_CreateAndEditRolePartial.cshtml", );
-        //}
+        public async Task<ActionResult> Update(string id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            ViewBag.Roles = DropDownRole();
+            var model = new UserViewModel()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Avatar = user.Avatar,
+                UserName = user.UserName
+            };
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<ActionResult> Update(UserViewModel model)
@@ -82,5 +87,19 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _userService.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
+        private List<SelectListItem> DropDownRole()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            var roles = _roleService.GetAllRoles();
+            foreach (var role in roles)
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            return list;
+        }
     }
 }
