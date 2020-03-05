@@ -1,6 +1,4 @@
 ﻿@using S3.Train.WebPerFume.Areas.Admin.Models;
-@using X.PagedList.Mvc
-@using X.PagedList.Mvc.Common
 @model ProductIndexViewModel
 
 @{
@@ -94,7 +92,7 @@
                 <td colspan="8">
                     @Html.PagedListPager(Model.Paged, pageIndex => Url.Action("Index", new RouteValueDictionary {
                         { "pageIndex" , pageIndex },
-                        { "pageSize", Model.PageSize > 0 ? Model.PageSize : 10 } ,
+                        { "pageSize", Model.PageSize > 0 ? Model.PageSize : GlobalConfigs.DEFAULT_PAGESIZE } ,
                     }), new PagedListRenderOptions
                             {
                         LiElementClasses = new string[] { "page-item" },
