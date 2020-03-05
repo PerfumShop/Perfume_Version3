@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using S3Train.Core.Constant;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
@@ -17,11 +18,11 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IBrandService _brandService;
         private readonly IVendorService _vendorService;
         private readonly IProductVariationService _productVariationService;
-       
+
 
         public ProductController() { }
 
-        public ProductController(IProductService productService, IBrandService brandService, 
+        public ProductController(IProductService productService, IBrandService brandService,
             IVendorService vendorService, IProductVariationService productVariationService)
         {
             _productService = productService;
@@ -31,9 +32,22 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         }
 
         // GET: Admin/Product
-        public ActionResult Index()
+        public ActionResult Index(int? pageIndex, int? pageSize)
         {
-            var model = GetProducts(_productService.SelectAll().OrderBy(x => x.Name).ToList());
+            pageIndex = (pageIndex ?? 1);
+            pageSize = pageSize ?? GlobalConfigs.DEFAULT_PAGESIZE;
+
+            var model = new ProductIndexViewModel()
+            {
+                PageIndex = pageIndex.Value,
+                PageSize = pageSize.Value
+            };
+
+            var products = _productService.Gets(pageIndex, pageSize.Value, null, p => p.OrderBy(c => c.Name));
+
+            model.Paged = products;
+            model.Items = GetProducts(products.ToList());
+
             return View(model);
         }
 
@@ -45,7 +59,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Brand = _brandService.GetById(product.Brand_Id),
-                Vendor = _vendorService.GetById(product.Vendor_Id), 
+                Vendor = _vendorService.GetById(product.Vendor_Id),
                 Description = product.Description,
                 ImagePath = product.ImagePath,
                 CreateDate = product.CreatedDate,
@@ -116,7 +130,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     _productService.Insert(product);
 
                     // Add ProductVariation if checked = true
-                    foreach(var proVa in model.Volumes)
+                    foreach (var proVa in model.Volumes)
                     {
                         if (proVa.Checked)
                             AddProductVariation(product.Id, proVa.Volume);
@@ -161,7 +175,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// </summary>
         /// <param name="products"></param>
         /// <returns></returns>
-        public IList<ProductViewModel> GetProducts(IList<Product> products)
+        public List<ProductViewModel> GetProducts(IList<Product> products)
         {
             return products.Select(x => new ProductViewModel
             {
