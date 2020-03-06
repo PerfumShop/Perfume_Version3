@@ -899,6 +899,7 @@
     <Content Include="Content\img\product-men\nuoc-hoa-chanel-bleu-edp-100ml-nam-4-jpg-1566878192-27082019105632.jpg" />
     <Content Include="Content\img\product-men\nuoc-hoa-nam-polo-blue-ralph-lauren-for-men-125ml.jpg" />
     <Content Include="Content\jquery-ui.min.css" />
+    <Content Include="Content\LoginStyle.css" />
     <Content Include="Content\LoginModal.css" />
     <Content Include="Content\nice-select.css" />
     <Content Include="Content\owl.carousel.min.css" />
@@ -1253,7 +1254,9 @@
     <Content Include="Scripts\vendors\iconfonts\mdi\preview.html" />
     <Content Include="Scripts\vendors\js\vendor.bundle.addons.js" />
     <Content Include="Scripts\vendors\js\vendor.bundle.base.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1271,8 +1274,6 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
@@ -1326,6 +1327,8 @@
     <Content Include="Views\Home\Shop.cshtml" />
     <Content Include="Views\Shared\_LoginModelPartial.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\LoginPartial.cshtml" />
     <None Include="Web.LocalConnectStrings.config" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 @model LoginViewModel
 @Html.AntiForgeryToken()
 <!-- Modal -->
-@using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+@using (Ajax.BeginForm("LogIn", "Account",new AjaxOptions{ UpdateTargetId = "validationSummary", InsertionMode = InsertionMode.Replace }))
 {
     @Html.AntiForgeryToken()
     <div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

@@ -59,10 +59,10 @@ namespace S3.Train.WebPerFume.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public PartialViewResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView("~/Views/Account/LoginPartial.cshtml", new LoginViewModel());
         }
 
         //
@@ -86,7 +86,7 @@ namespace S3.Train.WebPerFume.Controllers
                 case SignInStatus.Success:
                     {
                         if (UserManager.IsInRole(user.Id,"Admin"))
-                            return View("~/Areas/Admin/Views/product/Index.cshtml");
+                            return View("~/Areas/Admin/Views/HomeAdmin/Index.cshtml");
                         else
                             return RedirectToAction("Index","Home");
                     }
@@ -96,8 +96,8 @@ namespace S3.Train.WebPerFume.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    ModelState.AddModelError("", "Email or password not true.");
+                    return PartialView("~/Views/Account/LoginPartial.cshtml", model);
             }
         }
 

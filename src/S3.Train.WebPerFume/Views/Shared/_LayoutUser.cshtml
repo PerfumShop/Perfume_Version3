@@ -46,7 +46,7 @@
                     </div>
                 </div>
                 <div class="ht-right">
-                    @Html.Partial("~/Views/Shared/_LoginModelPartial.cshtml", null)
+                    @Html.Partial("~/Views/Account/LoginPartial.cshtml", new S3.Train.WebPerFume.Models.LoginViewModel())
                     <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
                             <option value='yt' data-image="/Content/img/flag/flag-1.jpg" data-imagecss="flag yt"
@@ -330,36 +330,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#test").click(function () {
-                //collect the user data
-                var data = {};
-                data.Email = $("#email").val();
-                data.Password = $("#pass").val();
-                var token = $('input[name="__RequestVerificationToken"]').val();
-
-                $.ajax({
-                    url: "/Account/Login",
-                    method: "POST",
-                    data: {
-                        model: data,
-                        __RequestVerificationToken: token,
-                        returnUrl: "Home/Index"   // you can modify the returnUrl value here
-                    },
-                    success: function () {
-                        alert("Login Success");
-                        location.reload(true);
-                    },
-                    error: function () {
-                        alert("fail");
-                    },
-                });
-            });
-        });
-    </script>
-
     @RenderSection("scripts", required: false)
 </body>
 

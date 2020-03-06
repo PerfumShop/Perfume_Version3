@@ -28,7 +28,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         // GET: Admin/User
         public async Task<ActionResult> Index()
         {
-            var model = await _userService.GetUserAsync(1,10);
+            var model = await _userService.GetUserAsync(1, 10);
             return View(model);
         }
 
@@ -74,15 +74,17 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         [HttpPost]
         public async Task<ActionResult> Update(UserViewModel model)
         {
-            var user = new ApplicationUser ()
-            {
-                Id = model.Id,
-                Email = model.Email,
-                FullName = model.FullName,
-                PhoneNumber = model.PhoneNumber,
-                Avatar = model.Avatar,
-                UserName = model.UserName
-            };
+            var user = await _userService.GetUserByIdAsync(model.Id);
+
+            if (user == null)
+                return View(model);
+
+            user.Email = model.Email;
+            user.FullName = model.FullName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Avatar = model.Avatar;
+            user.UserName = model.UserName;
+
             await _userService.UpdateAsync(user);
             return RedirectToAction("Index");
         }

@@ -57,7 +57,7 @@
                             @Html.DisplayFor(modelItem => item.Role)
                         </td>
                         <td>
-                            @Html.ActionLink("Update", "Update", "User",new { id = item.Id}, new { @class = "btn btn-gradient-info btn-sm" })
+                            @Html.ActionLink("Update", "Update", "User",new { id = item.Id}, new { @class = "btn btn-gradient-info btn-fw" })
                             @Html.Partial("DeleteUserPartial", item)
                         </td>
                     </tr>

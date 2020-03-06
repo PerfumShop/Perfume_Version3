@@ -245,6 +245,36 @@
 			}
 		}
 		$button.parent().find('input').val(newVal);
-	});
+    });
+
+    // Login Modal
+    $("#test").click(function () {
+        //collect the user data
+        var data = {};
+        data.Email = $("#email").val();
+        data.Password = $("#pass").val();
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        $.ajax({
+            url: "/Account/Login",
+            method: "POST",
+            data: {
+                model: data,
+                __RequestVerificationToken: token,
+                returnUrl: "Home/Index"   // you can modify the returnUrl value here
+            },
+            success: function () {
+                var userRole = '@(User.IsInRole("Admin") ? "true" : "false")';
+                if (userRole == true) {
+                    window.location.replace("Admin/HomeAdmin/Index");
+                } else {
+                    alert("Login Success");
+                    location.reload(true);
+                }
+            },
+            error: function () {
+                alert("fail");
+            },
+        });
+    });
 
 })(jQuery);
