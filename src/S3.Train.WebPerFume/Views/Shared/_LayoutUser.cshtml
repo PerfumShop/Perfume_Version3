@@ -349,7 +349,12 @@
                         returnUrl: "Home/Index"   // you can modify the returnUrl value here
                     },
                     success: function () {
-                        alert("Login Success");
+                        var userRole = '@(Roles.IsUserInRole("Admin") ? "true" : "false")';
+                        if (userRole) {
+                            window.location.replace("/Admin/HomeAdmin/Index");
+                        } else {
+                            location.reload();
+                        }
                     },
                     error: function () {
                         alert("fail");

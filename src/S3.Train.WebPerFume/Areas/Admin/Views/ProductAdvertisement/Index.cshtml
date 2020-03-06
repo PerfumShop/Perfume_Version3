@@ -69,7 +69,7 @@
                         }
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "AddOrEditProductAdvertisement", "ProductAdvertisement", new { @class = "btn btn-gradient-info btn-fw" }, new { id = item.Id })
+                        @Html.ActionLink("Edit", "AddOrEditProductAdvertisement", "ProductAdvertisement", new { id = item.Id }, new { @class = "btn btn-gradient-info btn-fw" })
                         <br />
                         @Html.Partial("_DeleteProductAdvertisement", item)
                     </td>
