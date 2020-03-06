@@ -59,10 +59,10 @@ namespace S3.Train.WebPerFume.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public PartialViewResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView("~/Views/Account/LoginPartial.cshtml", new LoginViewModel());
         }
 
         //
@@ -97,7 +97,7 @@ namespace S3.Train.WebPerFume.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Email or password not true.");
-                    return View(model);
+                    return PartialView("~/Views/Account/LoginPartial.cshtml", model);
             }
         }
 

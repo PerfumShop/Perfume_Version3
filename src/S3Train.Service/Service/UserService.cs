@@ -169,5 +169,14 @@ namespace S3Train.Service
             return result;
         }
 
+        public async Task<IdentityResult> DeleteAsync(string id)
+        {
+            if (id == string.Empty)
+                return null;
+
+            var result = await _accountManager.UserManager.FindByIdAsync(id);
+
+            return await _accountManager.UserManager.DeleteAsync(result);
+        }
     }
 }

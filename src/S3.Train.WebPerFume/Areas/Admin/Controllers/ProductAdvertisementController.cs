@@ -103,16 +103,27 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 productadvertisement.ImagePath = UpFile(image, localFile);
                 productadvertisement.IsActive = true;
                 productadvertisement.AdType = model.productadvertisementType;
+
                 if (isNew)
                 {
                     productadvertisement.CreatedDate = DateTime.Now;
                     productadvertisement.Id = Guid.NewGuid();
                     _productadvertisementService.Insert(productadvertisement);
+
+                    // chage status = false for all Product Advertisement Type same type 
+                    if (model.productadvertisementType != ProductAdvertisementType.SliderBanner)
+                    {
+                        foreach (var proVa in _productadvertisementService.GetAllBannerByType(model.productadvertisementType))
+                        {
+                            _productadvertisementService.ChangeStatus(proVa, false);
+                        }
+                    }
                 }
                 else
                 {
                     _productadvertisementService.Update(productadvertisement);
                 }
+                
             }
             catch (Exception ex)
             {
@@ -121,7 +132,30 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Change status
+        /// </summary>
+        /// <param name="proVa_id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public ActionResult ChangeStatus(Guid proVa_id, bool status)
+        {
+            var productAdvertisement = _productadvertisementService.GetById(proVa_id);
 
+            var listProVaSameType = _productadvertisementService.GetAllBannerByType(productAdvertisement.AdType);
+
+            var count = listProVaSameType.Where(m => m.IsActive == true).Count();
+            if (count == 1 && productAdvertisement.AdType != ProductAdvertisementType.SliderBanner)
+            {
+                ViewBag.MessageChangeStatus = "You can change status it. Because you have only one advertisement is true ";
+                return RedirectToAction("index");
+            }
+            else
+            {
+                _productadvertisementService.ChangeStatus(productAdvertisement, status);
+                return RedirectToAction("index");
+            }
+        }
 
         [HttpGet]
         public PartialViewResult DeleteProductAdvertisement(Guid id)

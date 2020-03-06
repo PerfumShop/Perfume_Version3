@@ -28,18 +28,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         // GET: Admin/User
         public async Task<ActionResult> Index()
         {
-            var model = await _userService.GetUserAsync(1,10);
+            var model = await _userService.GetUserAsync(1, 10);
             return View(model);
         }
 
         public ActionResult Create()
         {
-            List<SelectListItem> list = new List<SelectListItem>();
-            var roles = _roleService.GetAllRoles();
-            foreach (var role in roles)
-                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
-            ViewBag.Roles = list;
-
+            ViewBag.Roles = DropDownRole();
             return View();
         }
 
@@ -60,27 +55,53 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        //public async Task<ActionResult> Update(string id)
-        //{
-        //    var user = await _userService.GetUserByIdAsync(id);
-        //    return PartialView("~/Areas/Admin/Views/Role/_CreateAndEditRolePartial.cshtml", );
-        //}
+        public async Task<ActionResult> Update(string id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+            ViewBag.Roles = DropDownRole();
+            var model = new UserViewModel()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FullName = user.FullName,
+                PhoneNumber = user.PhoneNumber,
+                Avatar = user.Avatar,
+                UserName = user.UserName
+            };
+            return View(model);
+        }
 
         [HttpPost]
         public async Task<ActionResult> Update(UserViewModel model)
         {
-            var user = new ApplicationUser ()
-            {
-                Id = model.Id,
-                Email = model.Email,
-                FullName = model.FullName,
-                PhoneNumber = model.PhoneNumber,
-                Avatar = model.Avatar,
-                UserName = model.UserName
-            };
+            var user = await _userService.GetUserByIdAsync(model.Id);
+
+            if (user == null)
+                return View(model);
+
+            user.Email = model.Email;
+            user.FullName = model.FullName;
+            user.PhoneNumber = model.PhoneNumber;
+            user.Avatar = model.Avatar;
+            user.UserName = model.UserName;
+
             await _userService.UpdateAsync(user);
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _userService.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+
+        private List<SelectListItem> DropDownRole()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            var roles = _roleService.GetAllRoles();
+            foreach (var role in roles)
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+            return list;
+        }
     }
 }

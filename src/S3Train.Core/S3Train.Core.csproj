@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constant\ClaimTypesCustom.cs" />
+    <Compile Include="Constant\GlobalConfig.cs" />
     <Compile Include="Enum\ConstantEnum.cs" />
     <Compile Include="Extension\CollectionExtension.cs" />
     <Compile Include="Extension\CommonHelper.cs" />
