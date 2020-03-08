@@ -25,6 +25,9 @@
                     @Html.DisplayNameFor(model => model.ImagePath)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.productadvertisementType)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.EventUrlCaption)
                 </th>
                 <th>
@@ -48,6 +51,9 @@
                     </td>
                     <td class="py-1 align-middle">
                         <img src="~/Content/img/banner/@item.ImagePath" class="img-" alt="@item.Title" />
+                    </td>
+                    <td class="align-middle">
+                        <a href="@item.productadvertisementType" class="text-black">@item.productadvertisementType</a>
                     </td>
                     <td class="align-middle">
                         <a href="@item.EventUrl" class="text-black">@item.EventUrlCaption</a>

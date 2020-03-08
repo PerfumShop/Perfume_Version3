@@ -3,8 +3,8 @@
 
 @using (Html.BeginForm("DeleteProductVariation", "ProVaration", FormMethod.Post))
 {
-    @Html.HiddenFor(m => m.Id)
-    <button type="button" class="btn btn-gradient-danger btn-fw" data-toggle="modal" data-target="#exampleModal@(Model.Id)">
+    @Html.HiddenFor(model => Model.Id)
+    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal@(Model.Id)">
         Delete
     </button>
 
@@ -19,11 +19,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are You Sure Delete @Model.SKU @Model.Volume?
+                    Are You Sure Delete @Model.SKU @Model.Volume @Model.Id?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-gradient-secondary" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-gradient-success">Yes</button>
+                    <button type="button" class="btn btn-gradient-secondary btn-fw" data-dismiss="modal">No</button>
+                    <a href="@Url.Action("DeleteProductVariation","ProVaration", new { id = Model.Id})">
+                        <label class="btn btn-gradient-success btn-fw">Off</label>
+                    </a>
                 </div>
             </div>
         </div>

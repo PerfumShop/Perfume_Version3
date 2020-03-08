@@ -50,7 +50,9 @@
                         @stt
                     </td>
                     <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.Name)
+                        <a href="@Url.Action("DetailProduct","Product", new { id = item.Id})">
+                            @item.Name
+                        </a>
                     </td>
 
                     <td class="py-1 align-middle">

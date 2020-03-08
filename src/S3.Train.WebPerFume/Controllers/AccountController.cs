@@ -21,6 +21,7 @@ namespace S3.Train.WebPerFume.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly IUserService _userService;
 
         public AccountController()
         {
@@ -28,6 +29,7 @@ namespace S3.Train.WebPerFume.Controllers
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IUserService userService )
         {
+            _userService = userService;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -62,6 +64,7 @@ namespace S3.Train.WebPerFume.Controllers
         public PartialViewResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            ModelState.AddModelError("LoginViewModel", "Some Error.");
             return PartialView("~/Views/Account/LoginPartial.cshtml", new LoginViewModel());
         }
 
@@ -74,7 +77,7 @@ namespace S3.Train.WebPerFume.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return PartialView("~/Views/Account/LoginPartial.cshtml", model);
             }
 
             // This doesn't count login failures towards account lockout
@@ -96,7 +99,7 @@ namespace S3.Train.WebPerFume.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Email or password not true.");
+                    ModelState.AddModelError("LoginViewModel", "Email or password not true.");
                     return PartialView("~/Views/Account/LoginPartial.cshtml", model);
             }
         }
@@ -164,9 +167,10 @@ namespace S3.Train.WebPerFume.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Avatar = "defaultAvatar.jpg"
                 };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await _userService.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // temp code tạo role và gắn role cho user khi  đăng ký

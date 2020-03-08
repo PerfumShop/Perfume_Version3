@@ -1,0 +1,89 @@
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models;
+@model List<ProVarationViewModel>
+
+@{
+    int stt = 1;
+}
+
+    <h4 class="card-text">Product Variation</h4>
+    <div>
+        @Html.ActionLink("New", "AddOrEditProductVariation", "ProVaration", new { @class = "btn btn-gradient-success btn-fw" })
+    </div>
+    <hr />
+    <table id="myTable" class="table table-hover display">
+        <thead>
+            <tr>
+                <th>
+                    #
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    ImagePath
+                </th>
+                <th>
+                    CreateDate
+                </th>
+                <th>
+                    Is Active
+                </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">
+                        @stt
+                    </td>
+                    <td class="align-middle">
+                        @item.Volume
+                    </td>
+
+                    <td class="py-1 align-middle">
+                        <a href="#" class="py-1">
+                            <img src="~/Content/img/product-men/@item.Image" alt="@item.Volume" />
+                        </a>
+                    </td>
+                    <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td class="align-middle">
+                        @{
+                            if (item.IsActive)
+                            {
+                                <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
+                                    <label class="badge badge-success">On</label>
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
+                                    <label class="badge badge-danger">Off</label>
+                                </a>
+                            }
+                            stt = stt + 1;
+                        }
+                    </td>
+                    <td class="align-middle">
+                        @Html.ActionLink("Update", "AddOrEditProductVariation", "ProVaration", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
+                        <br />
+                        @Html.Partial("~/Areas/Admin/Views/ProVaration/DeleteProductVariationPartial.cshtml", item)
+                    </td>
+                </tr>
+            }
+           
+        </tbody>
+
+    </table>
+
+@section scripts
+{
+    <script>
+        /* $(document).ready(function () {
+             $('#myTable').DataTable();
+         });*/
+    </script>
+}

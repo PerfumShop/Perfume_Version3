@@ -20,6 +20,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         public Guid Id { get; set; }
 
         public List<VolumeCheckBoxModel> Volumes { get; set; }
+        public List<ProVarationViewModel> ProVa { get; set; }
 
         [Display(Name = "Vendor")]
         public Guid Vendor_Id { get; set; }

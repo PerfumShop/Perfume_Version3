@@ -1,0 +1,80 @@
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models;
+@model ProductViewModel
+@{
+    ViewBag.Title = "DetailProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="h3 card-header">Detail @Model.Name</div>
+        <br />
+        <div class="container">
+            <div class="row row-cols-1 h-100">
+                <div class="col col-lg">
+                    <strong> Name:</strong> @Model.Name
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong> Logo:</strong> <img src="~/Content/img/product-men/@Model.ImagePath" class="img-lg img-thumbnail" />
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong> Active:</strong>
+                    @{
+                        if (Model.IsActive)
+                        {
+                            <a href="@Url.Action("ChangeStatusProduct","Product", new { product_Id= Model.Id, status = !Model.IsActive})">
+                                <label class="badge badge-success">On</label>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("ChangeStatusProduct","Product", new { product_Id= Model.Id, status = !Model.IsActive})">
+                                <label class="badge badge-danger">Off</label>
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Create Date:</strong> @Model.CreateDate
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong> Update Date:</strong>
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>   Summary:</strong> @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                </div>
+            </div>
+            <br />
+            @Html.Partial("~/Areas/Admin/Views/Shared/DisplayProVaTablePartial.cshtml", Model.ProVa )
+        </div>
+        <div class="row">
+            <div class="col-md-auto">
+                @Html.ActionLink("Update", "Index", "Product",new { id = Model.Id}, new { @class = "btn btn btn-gradient-info btn-fw" })
+            </div>
+            <div class="col-md-auto">
+                @Html.Partial("_DeleteProduct", Model)
+            </div>
+            <div class="col-md-auto">
+                @Html.ActionLink("Back To List", "Index", "Product", new { @class = "btn btn btn-gradient-secondary btn-fw" })
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
