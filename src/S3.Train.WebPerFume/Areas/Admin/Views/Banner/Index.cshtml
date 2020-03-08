@@ -22,6 +22,9 @@
                     @Html.DisplayNameFor(model => model.Image)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.bannerType)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.Link)
                 </th>
                 <th>
@@ -42,6 +45,9 @@
                         <img src="~/Content/img/banner/@item.Image" class="img-" alt="@item.Link" />
                     </td>
                     <td class="align-middle">
+                        @Html.DisplayFor(modelItem => item.bannerType)
+                    </td>
+                    <td class="align-middle">
                         <a href="@item.Link" class="text-black">@item.Link</a>
                     </td>
                     <td class="align-middle">
@@ -51,11 +57,15 @@
                         @{
                             if (item.IsActive)
                             {
-                                <label class="badge badge-success">On</label>
+                                 <a href="@Url.Action("ChangeStatus","Banner", new { banner_Id= item.Id, status = false})">
+                                    <label class="badge badge-success">On</label>
+                                </a>
                             }
                             else
                             {
-                                <label class="badge badge-danger">Off</label>
+                                <a href="@Url.Action("ChangeStatus","Banner", new { banner_Id= item.Id, status = true})">
+                                    <label class="badge badge-danger">Off</label>
+                                </a>
                             }
                             stt += 1;
                         }

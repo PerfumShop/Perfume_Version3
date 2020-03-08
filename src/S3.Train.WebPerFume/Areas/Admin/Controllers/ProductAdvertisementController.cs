@@ -106,10 +106,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 
                 if (isNew)
                 {
-                    productadvertisement.CreatedDate = DateTime.Now;
-                    productadvertisement.Id = Guid.NewGuid();
-                    _productadvertisementService.Insert(productadvertisement);
-
                     // chage status = false for all Product Advertisement Type same type 
                     if (model.productadvertisementType != ProductAdvertisementType.SliderBanner)
                     {
@@ -118,6 +114,10 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                             _productadvertisementService.ChangeStatus(proVa, false);
                         }
                     }
+                    // Add new 
+                    productadvertisement.CreatedDate = DateTime.Now;
+                    productadvertisement.Id = Guid.NewGuid();
+                    _productadvertisementService.Insert(productadvertisement);
                 }
                 else
                 {
@@ -145,16 +145,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             var listProVaSameType = _productadvertisementService.GetAllBannerByType(productAdvertisement.AdType);
 
             var count = listProVaSameType.Where(m => m.IsActive == true).Count();
-            if (count == 1 && productAdvertisement.AdType != ProductAdvertisementType.SliderBanner)
+
+            _productadvertisementService.ChangeStatus(productAdvertisement, status);
+            if(count <= 1)
             {
-                ViewBag.MessageChangeStatus = "You can change status it. Because you have only one advertisement is true ";
-                return RedirectToAction("index");
+                _productadvertisementService.ChangeStatus(productAdvertisement, !status);
             }
-            else
-            {
-                _productadvertisementService.ChangeStatus(productAdvertisement, status);
-                return RedirectToAction("index");
-            }
+            return RedirectToAction("index");
         }
 
         [HttpGet]
@@ -191,7 +188,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Title= x.Title,
                 EventUrl = x.EventUrl,
                 EventUrlCaption = x.EventUrlCaption,
-
+                productadvertisementType = x.AdType,
                 Description = x.Description,
                 ImagePath = x.ImagePath,
                 CreateDate = x.CreatedDate,
