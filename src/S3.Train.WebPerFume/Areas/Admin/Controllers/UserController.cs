@@ -45,10 +45,10 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = model.Email,
+                UserName = model.UserName,
                 FullName = model.FullName,
                 PhoneNumber = model.PhoneNumber,
-                Avatar = model.Avatar,
-                UserName = model.UserName
+                Avatar = model.Avatar
             };
             await _userService.CreateAsync(user, model.PassWord);
             await _userService.UserAddToRolesAsync(user.Id, model.Role);

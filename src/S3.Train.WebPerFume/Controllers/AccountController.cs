@@ -61,11 +61,10 @@ namespace S3.Train.WebPerFume.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public PartialViewResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            ModelState.AddModelError("LoginViewModel", "Some Error.");
-            return PartialView("~/Views/Account/LoginPartial.cshtml", new LoginViewModel());
+            return View();
         }
 
         //
@@ -77,18 +76,18 @@ namespace S3.Train.WebPerFume.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return PartialView("~/Views/Account/LoginPartial.cshtml", model);
+                return View(model);
             }
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            var user = await UserManager.FindAsync(model.Email, model.Password);
+            ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
+            var result = await SignInManager.PasswordSignInAsync(signedUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
                     {
-                        if (UserManager.IsInRole(user.Id,"Admin"))
+                        if (UserManager.IsInRole(signedUser.Id,"Admin"))
                             return View("~/Areas/Admin/Views/HomeAdmin/Index.cshtml");
                         else
                             return RedirectToAction("Index","Home");
@@ -100,7 +99,7 @@ namespace S3.Train.WebPerFume.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("LoginViewModel", "Email or password not true.");
-                    return PartialView("~/Views/Account/LoginPartial.cshtml", model);
+                    return View(model);
             }
         }
 
@@ -166,16 +165,18 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 var user = new ApplicationUser
                 {
+                    Id = Guid.NewGuid().ToString(),
                     UserName = model.Email,
                     Email = model.Email,
                     Avatar = "defaultAvatar.jpg"
                 };
-                var result = await _userService.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // temp code tạo role và gắn role cho user khi  đăng ký
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);
+
                     // await roleStore.CreateAsync(new IdentityRole("Customer"));
                     await UserManager.AddToRoleAsync(user.Id, "Customer");
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using S3Train.Contract;
 using S3Train.Domain;
+using S3Train.Model.Search;
 
 namespace S3Train.Service
 {
@@ -71,6 +73,18 @@ namespace S3Train.Service
                 }
             }
             this.DbContext.SaveChanges();
+        }
+
+        public IQueryable<Product> ManySearch(SearchViewModel model)
+        {
+            var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations).AsQueryable();
+
+            if(!string.IsNullOrEmpty(model.SearchText))
+            {
+               query = query.Where(x => x.Name.Contains(model.SearchText) || x.Brand.Name.Contains(model.SearchText));
+            }
+
+            return query;
         }
     }
 }

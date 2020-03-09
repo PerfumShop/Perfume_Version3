@@ -185,8 +185,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Product_Id = x.Product_Id,
                 Price = x.Price,
                 Volume = x.Volume,
-                Image = _productImageService.GetProductImage(x.Id) == null ? null : 
-                                        ConvertDomainToModel.GetProductImage(_productImageService.GetProductImage(x.Id)),
+                ProductImage = x.ProductImage,
                 DiscountPrice =x.DiscountPrice,
                 CreateDate = x.CreatedDate,
                 UpdateDate = x.UpdatedDate,

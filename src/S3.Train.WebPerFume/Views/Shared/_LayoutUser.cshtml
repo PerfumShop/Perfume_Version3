@@ -80,8 +80,7 @@
                         <div class="advanced-search">
                             <button type="button" class="category-btn">All Categories</button>
                             <div class="input-group">
-                                <input type="text" placeholder="What do you need?">
-                                <button type="button"><i class="ti-search"></i></button>
+                                @Html.Partial("~/Views/Shared/_SearchProductPartial.cshtml", new S3Train.Model.Search.SearchViewModel())
                             </div>
                         </div>
                     </div>
@@ -189,7 +188,7 @@
                                 <li>@Html.ActionLink("Shopping Cart", "Shoppingcart", "Home")</li>
                                 <li>@Html.ActionLink("Check-out", "Checkout", "Home")</li>
 
-                                <li>@Html.ActionLink("Register", "Register", "Home")</li>
+                                <li>@Html.ActionLink("Register", "Register", "Account")</li>
                                 <li>@Html.ActionLink("Login", "Login", "Home")</li>
                             </ul>
                         </li>
