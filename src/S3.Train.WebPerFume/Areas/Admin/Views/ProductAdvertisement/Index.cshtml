@@ -25,6 +25,9 @@
                     @Html.DisplayNameFor(model => model.ImagePath)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.productadvertisementType)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.EventUrlCaption)
                 </th>
                 <th>
@@ -33,7 +36,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.IsActive)
                 </th>
-                <th>Functions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         @foreach (var item in Model)
@@ -50,6 +53,9 @@
                         <img src="~/Content/img/banner/@item.ImagePath" class="img-" alt="@item.Title" />
                     </td>
                     <td class="align-middle">
+                        <a href="@item.productadvertisementType" class="text-black">@item.productadvertisementType</a>
+                    </td>
+                    <td class="align-middle">
                         <a href="@item.EventUrl" class="text-black">@item.EventUrlCaption</a>
                     </td>
                     <td class="align-middle">
@@ -59,17 +65,21 @@
                         @{
                             if (item.IsActive)
                             {
-                                <label class="badge badge-success">On</label>
+                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = !item.IsActive})">
+                                    <label class="badge badge-success">On</label>
+                                </a>
                             }
                             else
                             {
-                                <label class="badge badge-danger">Off</label>
+                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = !item.IsActive})">
+                                    <label class="badge badge-danger">Off</label>
+                                </a>
                             }
                             stt += 1;
                         }
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "AddOrEditProductAdvertisement", "ProductAdvertisement", new { @class = "btn btn-gradient-info btn-fw" }, new { id = item.Id })
+                        @Html.ActionLink("Edit", "AddOrEditProductAdvertisement", "ProductAdvertisement", new { id = item.Id }, new { @class = "btn btn-gradient-info btn-fw" })
                         <br />
                         @Html.Partial("_DeleteProductAdvertisement", item)
                     </td>

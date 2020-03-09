@@ -81,6 +81,11 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 banner.AdType = model.bannerType;
                 if (isNew)
                 {
+                    // chage status = false for all Product Advertisement Type same type 
+                    foreach (var proVa in _bannerService.GetAllBannerSameType(model.bannerType))
+                    {
+                        _bannerService.ChangeStatus(proVa, false);
+                    }
                     banner.CreatedDate = DateTime.Now;
                     banner.Id = Guid.NewGuid();
                     _bannerService.Insert(banner);
@@ -118,17 +123,25 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        /// <summary>
-        /// Drop Down List Brand
-        /// </summary>
-        /// <returns></returns>
-        
+        public ActionResult ChangeStatus(Guid banner_Id, bool status)
+        {
+            var banner = _bannerService.GetById(banner_Id);
 
-        /// <summary>
-        /// Drop Down List Vendor
-        /// </summary>
-        /// <returns></returns>
-      
+            var listBannerSameType = _bannerService.GetAllBannerSameType(banner.AdType);
+
+            if (status)
+            {
+                foreach (var item in listBannerSameType)
+                {
+                    if (item.Id != banner_Id)
+                        _bannerService.ChangeStatus(item, false);
+                }
+            }
+
+            _bannerService.ChangeStatus(banner, status);
+
+            return RedirectToAction("index");
+        }
 
         private IList<BannerViewModel> GetBanners(IList<Banner> banners)
         {
@@ -136,11 +149,11 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             {
                 Id = x.Id,
                 Link = x.Link,
-                
+                bannerType = x.AdType,
                 Image = x.Image,
                 CreateDate = x.CreatedDate,
                 IsActive = x.IsActive
-            }).ToList();
+            }).OrderByDescending(p=>p.CreateDate).ToList();
         }
 
 

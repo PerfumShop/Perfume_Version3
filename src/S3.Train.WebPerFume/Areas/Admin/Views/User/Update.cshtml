@@ -1,16 +1,17 @@
 ﻿@using S3Train.Model.User
 @model UserViewModel
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Update";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 <div class="card">
     <div class="card-body">
         <h2 class="card-text">Create User</h2>
-        @using (Html.BeginForm("Create", "User", FormMethod.Post))
+        @using (Html.BeginForm("Update", "User", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
-
+            @Html.HiddenFor(m => m.Id)
             <div class="modal-body">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md" })
@@ -67,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="">
+            <div>
                 <button type="submit" class="btn btn-gradient-success btn-fw">Yes</button>
             </div>
         }

@@ -124,35 +124,51 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             {
                 throw ex;
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("DetailProduct", "Product", new { id = model.Product_Id });
         }
         #endregion
 
         #region Delete Product Variation
-        /// <summary>
-        /// Delete Product Variation
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public PartialViewResult DeleteProductVariation(Guid id)
-        {
-            var productVariation = _productVariationService.GetById(id);
-            var model = new ProVarationViewModel
-            {
-                SKU = productVariation.SKU
-            };
-            return PartialView("~/Areas/Admin/Views/Product/_DeleteProduct.cshtml", model);
-        }
+        ///// <summary>
+        ///// Delete Product Variation
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public PartialViewResult DeleteProductVariation(Guid id)
+        //{
+        //    var productVariation = _productVariationService.GetById(id);
+        //    var model = new ProVarationViewModel
+        //    {
+        //        Id = productVariation.Id,
+        //        Product_Id = productVariation.Product_Id,
+        //        SKU = productVariation.SKU
+        //    };
+        //    return PartialView("~/Areas/Admin/Views/ProVaration/DeleteProductVariationPartial.cshtml", model);
+        //}
 
-        [HttpPost]
-        public ActionResult DeleteProductVariation(ProVarationViewModel model)
+        
+        public ActionResult DeleteProductVariation(Guid id)
         {
-            var product = _productVariationService.GetById(model.Id);
+            var product = _productVariationService.GetById(id);
             _productVariationService.Delete(product);
-            return RedirectToAction("Index");
+            return RedirectToAction("DetailProduct", "Product", new { id = product.Product_Id });
         }
         #endregion
+
+        /// <summary>
+        /// Change status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public ActionResult ChangeStatus(Guid id, bool status)
+        {
+            var productVariation = _productVariationService.GetById(id);
+            _productVariationService.ChangeStatus(productVariation, status);
+            return RedirectToAction("DetailProduct", "Product",new { id = productVariation.Product_Id });
+        }
+
 
         /// <summary>
         /// get product variation have image with image id
@@ -166,6 +182,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Id = x.Id,
                 SKU = x.SKU,
                 StockQuantity = x.StockQuantity,
+                Product_Id = x.Product_Id,
                 Price = x.Price,
                 Volume = x.Volume,
                 Image = _productImageService.GetProductImage(x.Id) == null ? null : 
@@ -223,20 +240,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             foreach(var proImage in _productImageService.GetProductImageList(ProVaId))
             {
                 _productImageService.Delete(proImage);
-            }
-        }
-
-        /// <summary>
-        /// Update many image in product image table
-        /// </summary>
-        /// <param name="httpPostedFileBases">list image post</param>
-        /// <param name="ProVaId">Product variation id</param>
-        public void UpdateImageOnProductImageTable(IEnumerable<HttpPostedFileBase> httpPostedFileBases, Guid ProImage)
-        {
-            string local = Server.MapPath("~/Content/img/product-men");
-            foreach (var file in httpPostedFileBases)
-            {
-                
             }
         }
 

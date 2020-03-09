@@ -14,6 +14,11 @@ namespace S3Train.Service
         {
         }
 
+        public List<Banner> GetAllBannerSameType(BannerType bannerType)
+        {
+            return this.EntityDbSet.Where(b => b.AdType == bannerType && b.IsActive).ToList();
+        }
+
         public Banner GetMainBanner()
         {
             return this.EntityDbSet.FirstOrDefault(b => b.AdType == BannerType.MainBanner && b.IsActive);
