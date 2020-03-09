@@ -3,6 +3,7 @@ using S3Train.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace S3Train.Service
 
         public IList<ProductVariation> GetProductVariations(Guid ProductId)
         {
-            return this.EntityDbSet.Where(x => x.Product_Id == ProductId).ToList();
+            return this.EntityDbSet.Where(x => x.Product_Id == ProductId).Include(p=>p.ProductImage).ToList();
         }
     }
 }

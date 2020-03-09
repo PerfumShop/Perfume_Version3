@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using S3Train.Core.Constant;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
@@ -17,26 +18,42 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IBrandService _brandService;
         private readonly IVendorService _vendorService;
         private readonly IProductVariationService _productVariationService;
-       
+        private readonly IProductImageService _productImageService;
+
 
         public ProductController() { }
 
-        public ProductController(IProductService productService, IBrandService brandService, 
-            IVendorService vendorService, IProductVariationService productVariationService)
+        public ProductController(IProductService productService, IBrandService brandService,
+            IVendorService vendorService, IProductVariationService productVariationService, IProductImageService productImageService)
         {
             _productService = productService;
             _brandService = brandService;
             _vendorService = vendorService;
             _productVariationService = productVariationService;
+            _productImageService = productImageService;
         }
 
         // GET: Admin/Product
-        public ActionResult Index()
+        public ActionResult Index(int? pageIndex, int? pageSize)
         {
-            var model = GetProducts(_productService.SelectAll().OrderBy(x => x.Name).ToList());
+            pageIndex = (pageIndex ?? 1);
+            pageSize = pageSize ?? GlobalConfigs.DEFAULT_PAGESIZE;
+
+            var model = new ProductIndexViewModel()
+            {
+                PageIndex = pageIndex.Value,
+                PageSize = pageSize.Value
+            };
+
+            var products = _productService.Gets(pageIndex, pageSize.Value, null, p => p.OrderBy(c => c.Name));
+
+            model.Paged = products;
+            model.Items = GetProducts(products.ToList());
+
             return View(model);
         }
 
+        
         public ActionResult DetailProduct(Guid id)
         {
             var product = _productService.GetById(id);
@@ -45,10 +62,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Id = product.Id,
                 Name = product.Name,
                 Brand = _brandService.GetById(product.Brand_Id),
-                Vendor = _vendorService.GetById(product.Vendor_Id), 
+                Vendor = _vendorService.GetById(product.Vendor_Id),
+                ProVa = GetProductVariations(
+                    _productVariationService.GetProductVariations(product.Id)).ToList(),
                 Description = product.Description,
                 ImagePath = product.ImagePath,
-                CreateDate = product.CreatedDate,
+                CreatedDate = product.CreatedDate,
+                UpdateDate = product.UpdatedDate,
                 IsActive = product.IsActive
             };
             return View(model);
@@ -116,7 +136,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     _productService.Insert(product);
 
                     // Add ProductVariation if checked = true
-                    foreach(var proVa in model.Volumes)
+                    foreach (var proVa in model.Volumes)
                     {
                         if (proVa.Checked)
                             AddProductVariation(product.Id, proVa.Volume);
@@ -161,7 +181,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// </summary>
         /// <param name="products"></param>
         /// <returns></returns>
-        public IList<ProductViewModel> GetProducts(IList<Product> products)
+        public List<ProductViewModel> GetProducts(IList<Product> products)
         {
             return products.Select(x => new ProductViewModel
             {
@@ -170,11 +190,37 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Brand = _brandService.GetById(x.Brand_Id),
                 Vendor = _vendorService.GetById(x.Vendor_Id),
                 Description = x.Description,
+                ProVa = GetProductVariations(
+                    _productVariationService.GetProductVariations(x.Id)).ToList(),
                 ImagePath = x.ImagePath,
-                CreateDate = x.CreatedDate,
+                CreatedDate = x.CreatedDate,
+                UpdateDate = x.UpdatedDate,
                 IsActive = x.IsActive
             }).ToList();
         }
+
+        /// <summary>
+        /// get product variation have image with image id
+        /// </summary>
+        /// <param name="proVas">ProductVatiation List</param>
+        /// <returns>ProVarationViewModel List</returns>
+        public IList<ProVarationViewModel> GetProductVariations(IList<ProductVariation> proVas)
+        {
+            return proVas.Select(x => new ProVarationViewModel
+            {
+                Id = x.Id,
+                SKU = x.SKU,
+                StockQuantity = x.StockQuantity,
+                Price = x.Price,
+                Volume = x.Volume,
+                ProductImage = x.ProductImage,
+                DiscountPrice = x.DiscountPrice,
+                CreateDate = x.CreatedDate,
+                UpdateDate = x.UpdatedDate,
+                IsActive = x.IsActive
+            }).ToList();
+        }
+
 
         /// <summary>
         /// Add Product Variation With product Id and volume

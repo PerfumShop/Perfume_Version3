@@ -4,10 +4,13 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
 using S3Train.Domain;
+using X.PagedList;
+
 namespace S3Train
 {
     /// <summary>
@@ -34,6 +37,15 @@ namespace S3Train
         public List<T> SelectAll()
         {
             return this.EntityDbSet.ToList();
+        }
+
+        public IPagedList<T> Gets(int? pageIndex, int pageSize = 20, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
+        {
+            var page = pageIndex ?? 1;
+
+            var iQueryableDbSet = @where != null ? EntityDbSet.Where(@where) : EntityDbSet;
+
+            return orderBy != null ? orderBy(iQueryableDbSet).ToPagedList(page, pageSize) : iQueryableDbSet.ToPagedList(page, pageSize);
         }
 
         /// <summary>

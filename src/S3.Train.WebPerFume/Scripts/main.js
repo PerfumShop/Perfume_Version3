@@ -245,6 +245,69 @@
 			}
 		}
 		$button.parent().find('input').val(newVal);
-	});
+    });
+
+    // Login Modal
+    $("#test").click(function () {
+        //collect the user data
+        var data = {};
+        data.Email = $("#email").val();
+        data.Password = $("#pass").val();
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        $.ajax({
+            url: "/Account/Login",
+            method: "POST",
+            data: {
+                model: data,
+                __RequestVerificationToken: token,
+                returnUrl: "Home/Index"   // you can modify the returnUrl value here
+            },
+            success: function () {
+                var userRole = '@(User.IsInRole("Admin") ? "true" : "false")';
+                if (userRole == true) {
+                    window.location.replace("Admin/HomeAdmin/Index");
+                } else {
+                    alert("Login Success");
+                    location.reload(true);
+                }
+            },
+            error: function () {
+                alert("fail");
+            },
+        });
+    });
+
+
+    $('#BTN').click(function () {
+        var $formContainer = $('#formContainer');
+        var url = $formContainer.attr('data-url');
+        $formContainer.load(url, function () {
+            var $form = $('#myForm');
+            $.validator.unobtrusive.parse($form);
+            $form.submit(function () {
+                var $form = $(this);
+                if ($form.valid()) {
+                    $.ajax({
+                        url: url,
+                        async: true,
+                        type: 'POST',
+                        data: JSON.stringify("Your Object or parameter"),
+                        beforeSend: function (xhr, opts) {
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        complete: function () { },
+                        success: function (data) {
+                            $form.html(data);
+                            $form.removeData('validator');
+                            $form.removeData('unobtrusiveValidation');
+                            $.validator.unobtrusive.parse($form);
+                        }
+                    });
+                }
+                return false;
+            });
+        });
+        return false;
+    });
 
 })(jQuery);

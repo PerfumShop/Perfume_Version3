@@ -5,16 +5,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using X.PagedList;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Models
 {
+    public class ProductIndexViewModel : IndexViewModelBase
+    {
+        public IPagedList<Product> Paged { get; set; }
+        public List<ProductViewModel> Items { get; set; }
+    }
+
     public class ProductViewModel
     {
         public Guid Id { get; set; }
 
         public List<VolumeCheckBoxModel> Volumes { get; set; }
+        public List<ProVarationViewModel> ProVa { get; set; }
 
-        [Display(Name="Vendor")]
+        [Display(Name = "Vendor")]
         public Guid Vendor_Id { get; set; }
 
         [Display(Name = "Brand")]
@@ -33,6 +41,10 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         [Display(Name = "Create Date")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime CreateDate { get; set; }
+
+        [Display(Name = "Create Date")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime? UpdateDate { get; set; }
 
         [Display(Name = "Image")]
         [Required]

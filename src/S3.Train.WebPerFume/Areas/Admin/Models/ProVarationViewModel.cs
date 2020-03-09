@@ -1,4 +1,5 @@
-﻿using System;
+﻿using S3Train.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,16 +14,18 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
 
         public Guid Product_Id { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime? UpdateDate { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime CreateDate { get; set; }
 
         public bool IsActive { get; set; }
 
         public ProductImageModel Image { get; set; }
+        public virtual ICollection<ProductImage> ProductImage { get; set; }
 
         [Display(Name = "Discounrt Price")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
         public decimal DiscountPrice { get; set; }
 
         public string SKU { get; set; }
@@ -32,7 +35,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         [Display(Name = "Quantity")]
         public decimal StockQuantity { get; set; }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:c}")]
         public decimal Price { get; set; }
 
         [Display(Name = "Product")]

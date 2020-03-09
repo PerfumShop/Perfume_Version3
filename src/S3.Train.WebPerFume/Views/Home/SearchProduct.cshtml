@@ -1,0 +1,85 @@
+﻿@using S3.Train.WebPerFume.Models
+@model IEnumerable<ProductsModel>
+@{
+    ViewBag.Title = "SearchProduct";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+@{
+    if (Model.Count() > 0)
+    {
+        <div class="breacrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-text">
+                            <a href="#"><i class="fa fa-home"></i> Home</a>
+                            <span>Shop</span>
+                        </div>
+                        <div class="d-flex flex-row-reverse">
+                            <div class="p-2">Search result "@ViewBag.SearchText":  @Model.Count().ToString().</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="product-shop spad">
+            <div class="container">
+                <div class="row">
+                    <div class="row">
+                        @foreach (var item in Model)
+                        {
+                            <div class="col-lg-3 col-sm-6">
+                                <div class="product-item">
+                                    <div class="pi-pic">
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded w-100">
+                                        @foreach (var ca in item.Categories)
+                                        {
+                                            <div class="sale pp-sale">Sale</div>
+                                        }
+                                        <div class="icon">
+                                            <i class="icon_heart_alt"></i>
+                                        </div>
+                                        <ul>
+                                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name">@item.Brand.Name</div>
+                                        <a href="#">
+                                            <h5>@item.Name</h5>
+                                        </a>
+                                        <div class="product-price">
+                                            $@item.Price
+                                            <span>$@item.DiscountPrice</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        <div class="breacrumb-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="breadcrumb-text">
+                            <a href="#"><i class="fa fa-home"></i> Home</a>
+                            <span>Shop</span>
+                        </div>
+                        <div class="align-self-lg-center h2">
+                            No Search Result "@ViewBag.SearchText"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -1,5 +1,5 @@
-﻿@model S3.Train.WebPerFume.Areas.Admin.Models.ProductViewModel
-
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models;
+@model ProductViewModel
 @{
     ViewBag.Title = "DetailProduct";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -7,7 +7,7 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="h3 card-header">Detail @Model.Name Product</div>
+        <div class="h3 card-header">Detail @Model.Name</div>
         <br />
         <div class="container">
             <div class="row row-cols-1 h-100">
@@ -18,7 +18,7 @@
             <br />
             <div class="row row-cols-1 h-50">
                 <div class="col col-lg">
-                    <strong> Image:</strong> <img src="~/Content/img/product-men/@Model.ImagePath" class="img-lg img-thumbnail" />
+                    <strong> Logo:</strong> <img src="~/Content/img/product-men/@Model.ImagePath" class="img-lg img-thumbnail" />
                 </div>
             </div>
             <br />
@@ -48,27 +48,34 @@
                 </div>
             </div>
             <br />
-            
-            <br />
             <div class="row row-cols-1 h-50">
                 <div class="col col-lg">
-                    <strong>   Description:</strong> @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                    <strong> Update Date:</strong> 
                 </div>
             </div>
             <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>   Summary:</strong> @Html.Raw(HttpUtility.HtmlDecode(Model.Description))
+                </div>
+            </div>
+            <br />
+            @Html.Partial("~/Areas/Admin/Views/Shared/DisplayProVaTablePartial.cshtml", Model.ProVa )
         </div>
+        <br />
         <div class="row">
             <div class="col-md-auto">
-                @Html.ActionLink("Back To List", "Index", "Brand", new { @class = "btn btn btn-primary btn-fw" })
+                @Html.ActionLink("Update", "Index", "Product",new { id = Model.Id}, new { @class = "btn btn btn-gradient-info btn-fw" })
             </div>
             <div class="col-md-auto">
-                @Html.Partial("_AddOrEditBrandPartial", Model)
+                @Html.Partial("_DeleteProduct", Model)
             </div>
             <div class="col-md-auto">
-                @Html.Partial("_DeleteBrandPartial", Model)
+                @Html.ActionLink("Back To List", "Index", "Product", new { @class = "btn btn btn-gradient-secondary btn-fw" })
             </div>
         </div>
 
     </div>
 
 </div>
+

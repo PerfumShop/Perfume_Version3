@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using S3Train.Domain;
+using S3Train.Model.Search;
 
 namespace S3Train.Contract
 {
@@ -9,8 +11,9 @@ namespace S3Train.Contract
         IList<Product> GetProductsByBrandId(Guid brand_Id);
         IList<Product> GetProductsByVendorId(Guid vendor_Id);
         List<Product> GetProductsByCategoryId(Guid category_Id);
-
+        IQueryable<Product> ManySearch(SearchViewModel model);
         void InsertProductOnCategory(Guid category_Id, Guid product_Id);
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
+        
     }
 }

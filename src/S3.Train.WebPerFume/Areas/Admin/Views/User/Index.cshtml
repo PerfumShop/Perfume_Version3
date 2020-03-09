@@ -1,0 +1,69 @@
+﻿@using X.PagedList
+@model IPagedList<S3Train.Model.User.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-text">User</h2>
+        @Html.ActionLink("New","Create","User",new { @class= "btn btn-gradient-success btn-fw" })
+        <hr />
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Avatar
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        PhoneNumber
+                    </th>
+                    <th>
+                        UserName
+                    </th>
+                    <th>
+                        FullName
+                    </th>
+                    <th>
+                        Role
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Avatar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Role)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Update", "Update", "User",new { id = item.Id}, new { @class = "btn btn-gradient-info btn-fw" })
+                            @Html.Partial("DeleteUserPartial", item)
+                        </td>
+                    </tr>
+                </tbody>
+            }
+
+        </table>
+    </div>
+</div>

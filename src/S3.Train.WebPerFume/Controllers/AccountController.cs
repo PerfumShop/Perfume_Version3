@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using S3.Train.WebPerFume.Models;
+using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.IdentityManager;
 
@@ -20,13 +21,15 @@ namespace S3.Train.WebPerFume.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly IUserService _userService;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IUserService userService )
         {
+            _userService = userService;
             UserManager = userManager;
             SignInManager = signInManager;
         }
@@ -78,14 +81,14 @@ namespace S3.Train.WebPerFume.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            var user = await UserManager.FindAsync(model.Email, model.Password);
+            ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
+            var result = await SignInManager.PasswordSignInAsync(signedUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
                     {
-                        if (UserManager.IsInRole(user.Id,"Admin"))
-                            return RedirectToAction("Index","Brand");
+                        if (UserManager.IsInRole(signedUser.Id,"Admin"))
+                            return View("~/Areas/Admin/Views/HomeAdmin/Index.cshtml");
                         else
                             return RedirectToAction("Index","Home");
                     }
@@ -95,7 +98,7 @@ namespace S3.Train.WebPerFume.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("LoginViewModel", "Email or password not true.");
                     return View(model);
             }
         }
@@ -162,8 +165,10 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 var user = new ApplicationUser
                 {
+                    Id = Guid.NewGuid().ToString(),
                     UserName = model.Email,
-                    Email = model.Email
+                    Email = model.Email,
+                    Avatar = "defaultAvatar.jpg"
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -171,6 +176,7 @@ namespace S3.Train.WebPerFume.Controllers
                     // temp code tạo role và gắn role cho user khi  đăng ký
                     var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
                     var roleManager = new RoleManager<IdentityRole>(roleStore);
+
                     // await roleStore.CreateAsync(new IdentityRole("Customer"));
                     await UserManager.AddToRoleAsync(user.Id, "Customer");
 
@@ -230,12 +236,12 @@ namespace S3.Train.WebPerFume.Controllers
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                //For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                //Send an email with this link
+                string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
             // If we got this far, something failed, redisplay form
