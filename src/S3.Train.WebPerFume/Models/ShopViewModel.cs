@@ -14,5 +14,6 @@ namespace S3.Train.WebPerFume.Models
         public IList<CategoryModel> categoryModels;
         public IList<ProductModel> productModels;
         public IList<BrandModel> brandModels;
+        public IList<ProductVarModel> productVarModels;
     }
 }

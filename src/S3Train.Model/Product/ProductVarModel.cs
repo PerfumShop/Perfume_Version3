@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace S3Train.Model.Brand
+namespace S3Train.Model.Product
 {
-    public class BrandModel
+    public class ProductVarModel
     {
-        public string Name { get; set; }
+        public string Volume { get; set; }
     }
 }
