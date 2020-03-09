@@ -899,7 +899,6 @@
     <Content Include="Content\img\product-men\nuoc-hoa-chanel-bleu-edp-100ml-nam-4-jpg-1566878192-27082019105632.jpg" />
     <Content Include="Content\img\product-men\nuoc-hoa-nam-polo-blue-ralph-lauren-for-men-125ml.jpg" />
     <Content Include="Content\jquery-ui.min.css" />
-    <Content Include="Content\LoginStyle.css" />
     <Content Include="Content\LoginModal.css" />
     <Content Include="Content\nice-select.css" />
     <Content Include="Content\owl.carousel.min.css" />
@@ -1329,7 +1328,11 @@
     <Content Include="Views\Home\Shop.cshtml" />
     <Content Include="Views\Shared\_LoginModelPartial.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Account\LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_SearchProductPartial.cshtml" />
+    <Content Include="Views\Home\SearchProduct.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
     <Content Include="Views\Home\ProductDetail.cshtml" />
     <Content Include="Views\Home\Shoppingcart.cshtml" />

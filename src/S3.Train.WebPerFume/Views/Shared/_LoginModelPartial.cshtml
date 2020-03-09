@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using S3.Train.WebPerFume.Models
 @model LoginViewModel
-@Html.AntiForgeryToken()
+
 <!-- Modal -->
 @using (Html.BeginForm("LogIn", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 {

@@ -50,7 +50,7 @@
             <br />
             <div class="row row-cols-1 h-50">
                 <div class="col col-lg">
-                    <strong> Update Date:</strong>
+                    <strong> Update Date:</strong> 
                 </div>
             </div>
             <br />
@@ -62,6 +62,7 @@
             <br />
             @Html.Partial("~/Areas/Admin/Views/Shared/DisplayProVaTablePartial.cshtml", Model.ProVa )
         </div>
+        <br />
         <div class="row">
             <div class="col-md-auto">
                 @Html.ActionLink("Update", "Index", "Product",new { id = Model.Id}, new { @class = "btn btn btn-gradient-info btn-fw" })

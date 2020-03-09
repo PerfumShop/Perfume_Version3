@@ -7,7 +7,7 @@
 
     <h4 class="card-text">Product Variation</h4>
     <div>
-        @Html.ActionLink("New", "AddOrEditProductVariation", "ProVaration", new { @class = "btn btn-gradient-success btn-fw" })
+        @Html.ActionLink("Add Variation", "AddOrEditProductVariation", "ProVaration", new { @class = "btn btn-gradient-success btn-fw" })
     </div>
     <hr />
     <table id="myTable" class="table table-hover display">
@@ -20,13 +20,22 @@
                     Type
                 </th>
                 <th>
-                    ImagePath
+                    Image
                 </th>
                 <th>
-                    CreateDate
+                    Price
                 </th>
                 <th>
-                    Is Active
+                    Discount Price
+                </th>
+                <th>
+                    Create Date
+                </th>
+                <th>
+                    Update Date
+                </th>
+                <th>
+                    Active
                 </th>
                 <th>Action</th>
             </tr>
@@ -34,45 +43,57 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td class="align-middle">
-                        @stt
-                    </td>
-                    <td class="align-middle">
-                        @item.Volume
-                    </td>
+            <tr>
+                <td class="align-middle">
+                    @stt
+                </td>
+                <td class="align-middle">
+                    @item.Volume
+                </td>
 
-                    <td class="py-1 align-middle">
+                <td class="py-1 align-middle">
+                    @foreach (var img in item.ProductImage)
+                    {
                         <a href="#" class="py-1">
-                            <img src="~/Content/img/product-men/@item.Image" alt="@item.Volume" />
+                            <img src="~/Content/img/product-men/@img.ImagePath" alt="@item.Volume" />
                         </a>
-                    </td>
-                    <td class="align-middle">
-                        @Html.DisplayFor(modelItem => item.CreateDate)
-                    </td>
-                    <td class="align-middle">
-                        @{
-                            if (item.IsActive)
-                            {
-                                <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
-                                    <label class="badge badge-success">On</label>
-                                </a>
-                            }
-                            else
-                            {
-                                <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
-                                    <label class="badge badge-danger">Off</label>
-                                </a>
-                            }
-                            stt = stt + 1;
+                    }
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.DiscountPrice)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td class="align-middle">
+                    @Html.DisplayFor(modelItem => item.UpdateDate)
+                </td>
+                <td class="align-middle">
+                    @{
+                        if (item.IsActive)
+                        {
+                            <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
+                                <label class="badge badge-success">On</label>
+                            </a>
                         }
-                    </td>
-                    <td class="align-middle">
-                        @Html.ActionLink("Update", "AddOrEditProductVariation", "ProVaration", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
-                        <br />
-                        @Html.Partial("~/Areas/Admin/Views/ProVaration/DeleteProductVariationPartial.cshtml", item)
-                    </td>
-                </tr>
+                        else
+                        {
+                            <a href="@Url.Action("ChangeStatus","ProVaration", new { id= item.Id, status = !item.IsActive})">
+                                <label class="badge badge-danger">Off</label>
+                            </a>
+                        }
+                        stt = stt + 1;
+                    }
+                </td>
+                <td class="align-middle">
+                    @Html.ActionLink("Update", "AddOrEditProductVariation", "ProVaration", new { id = item.Id }, new { @class = "btn btn-info btn-sm" })
+                    <br />
+                    @Html.Partial("~/Areas/Admin/Views/ProVaration/DeleteProductVariationPartial.cshtml", item)
+                </td>
+            </tr>
             }
            
         </tbody>

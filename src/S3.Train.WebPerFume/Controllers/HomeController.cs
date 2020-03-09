@@ -1,6 +1,7 @@
 ﻿using S3.Train.WebPerFume.Models;
 using S3Train.Contract;
 using S3Train.Domain;
+using S3Train.Model.Search;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IProductVariationService  _productVariationService;
         private readonly IProductService  _productService;
         private readonly IProductImageService _productImageService;
+        private readonly ICategoryService _categoryService;
+        private readonly IBrandService _brandService;
 
         public HomeController()
         {
@@ -24,13 +27,15 @@ namespace S3.Train.WebPerFume.Controllers
 
         public HomeController(IBannerService bannerService,IProductAdvertisement productAdvertisement,
             IProductVariationService productVariationService, IProductService productService,
-            IProductImageService productImageService)
+            IProductImageService productImageService, ICategoryService categoryService, IBrandService brandService)
         {
             _bannerService = bannerService;
             _productAdvertisement = productAdvertisement;
             _productVariationService = productVariationService;
             _productService = productService;
             _productImageService = productImageService;
+            _categoryService = categoryService;
+            _brandService = brandService;
         }
 
         public ActionResult Index()
@@ -57,18 +62,6 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 ImagePath = x.ImagePath,
                 EventUrl = x.EventUrl
-            }).ToList();
-        }
-
-        private IList<ProductsModel> GetProducts(IList<ProductVariation> products)
-        {
-            return products.Select(x => new ProductsModel
-            {
-               Id= x.Id,
-               Name = _productService.GetById(x.Product_Id).Name,
-               Price=x.Price,
-               DiscountPrice=x.DiscountPrice,
-               ImagePath=_productImageService.GetProductImage(x.Id).ImagePath,
             }).ToList();
         }
 
@@ -116,18 +109,56 @@ namespace S3.Train.WebPerFume.Controllers
             return View();
         }
 
-        public ActionResult Register()
+
+        /// <summary>
+        /// function search
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SearchProduct(SearchViewModel model)
         {
-            return View();
+            if (!string.IsNullOrEmpty(model.SearchText))
+            {
+                var result = GetProducts(_productService.ManySearch(model));
+                ViewBag.SearchText = model.SearchText;
+                return View(result);
+            }
+            else
+            {
+                ViewBag.Error = "You";
+                return RedirectToAction("index");
+            }
+            
         }
-        public ActionResult Login()
-        {
-            return View();
-        }
+
         public ActionResult Checkout()
         { return View(); }
         public ActionResult Shop()
         { return View(); }
+
+
+
+        /// <summary>
+        /// Convert List Product to List ProductViewModel All Properties
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        public IQueryable<ProductsModel> GetProducts(IQueryable<Product> products)
+        {
+            return products.Select(x => new ProductsModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ImagePath = x.ImagePath,
+                Brand = x.Brand,
+                Price = x.ProductVariations.FirstOrDefault(p=> p.Product_Id == x.Id).Price,
+                DiscountPrice = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).DiscountPrice,
+                Categories = x.Categories,
+                ProductVariations = x.ProductVariations
+            }).AsQueryable();
+        }
         public ActionResult ProductDetail()
         { return View(); }
         public ActionResult Shoppingcart()

@@ -67,7 +67,8 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     _productVariationService.GetProductVariations(product.Id)).ToList(),
                 Description = product.Description,
                 ImagePath = product.ImagePath,
-                CreateDate = product.CreatedDate,
+                CreatedDate = product.CreatedDate,
+                UpdateDate = product.UpdatedDate,
                 IsActive = product.IsActive
             };
             return View(model);
@@ -192,7 +193,8 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 ProVa = GetProductVariations(
                     _productVariationService.GetProductVariations(x.Id)).ToList(),
                 ImagePath = x.ImagePath,
-                CreateDate = x.CreatedDate,
+                CreatedDate = x.CreatedDate,
+                UpdateDate = x.UpdatedDate,
                 IsActive = x.IsActive
             }).ToList();
         }
@@ -211,8 +213,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 StockQuantity = x.StockQuantity,
                 Price = x.Price,
                 Volume = x.Volume,
-                Image = _productImageService.GetProductImage(x.Id) == null ? null :
-                                        ConvertDomainToModel.GetProductImage(_productImageService.GetProductImage(x.Id)),
+                ProductImage = x.ProductImage,
                 DiscountPrice = x.DiscountPrice,
                 CreateDate = x.CreatedDate,
                 UpdateDate = x.UpdatedDate,
