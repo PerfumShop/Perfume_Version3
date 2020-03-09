@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brand\BrandModel.cs" />
+    <Compile Include="Category\CategoryModel.cs" />
+    <Compile Include="Product\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Role\RoleViewModel.cs" />
     <Compile Include="User\UserViewModel.cs" />
