@@ -1331,6 +1331,8 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
+    <Content Include="Views\Home\ProductDetail.cshtml" />
+    <Content Include="Views\Home\Shoppingcart.cshtml" />
     <None Include="Web.LocalConnectStrings.config" />
   </ItemGroup>
   <ItemGroup>

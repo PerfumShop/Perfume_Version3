@@ -128,5 +128,9 @@ namespace S3.Train.WebPerFume.Controllers
         { return View(); }
         public ActionResult Shop()
         { return View(); }
+        public ActionResult ProductDetail()
+        { return View(); }
+        public ActionResult Shoppingcart()
+        { return View(); }
     }
 }
