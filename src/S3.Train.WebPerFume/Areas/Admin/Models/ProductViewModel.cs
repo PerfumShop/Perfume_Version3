@@ -42,6 +42,10 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime CreateDate { get; set; }
 
+        [Display(Name = "Create Date")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
+        public DateTime? UpdateDate { get; set; }
+
         [Display(Name = "Image")]
         [Required]
         public string ImagePath { get; set; }

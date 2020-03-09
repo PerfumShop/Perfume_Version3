@@ -19,12 +19,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are You Sure Delete @Model.SKU @Model.Volume @Model.Id?
+                    Are You Sure Delete @Model?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-gradient-secondary btn-fw" data-dismiss="modal">No</button>
                     <a href="@Url.Action("DeleteProductVariation","ProVaration", new { id = Model.Id})">
-                        <label class="btn btn-gradient-success btn-fw">Off</label>
+                        <label class="btn btn-gradient-success btn-fw">Yes</label>
                     </a>
                 </div>
             </div>
