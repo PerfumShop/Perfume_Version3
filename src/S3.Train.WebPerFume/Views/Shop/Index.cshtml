@@ -2,7 +2,10 @@
     ViewBag.Title = "Shop";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-@model S3.Train.WebPerFume.Models.ShopViewModel
+@using S3.Train.WebPerFume.Models;
+@model ShopViewModel
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
     <div class="container">
@@ -27,7 +30,7 @@
                     <ul class="filter-catagories">
                         @foreach (var item in Model.categoryModels)
                         {
-                        <li><a href="#">@item.Name</a></li>
+                            <li><a href="#">@item.Name</a></li>
                         }
                     </ul>
                 </div>
@@ -162,16 +165,24 @@
                                     </div>
                                 </div>
                             </div>
-                        }                    
+                        }
                     </div>
                 </div>
-                <div class="loading-more">
-                    <i class="icon_loading"></i>
-                    <a href="#">
-                        Loading More
-                    </a>
+                <div class="pageging">
+                    <div colspan="8">
+                       Page @(Model.productModels.PageCount < Model.productModels.PageNumber ? 0 : Model.productModels.PageNumber) of @Model.productModels.PageCount
+                       @Html.PagedListPager(Model.productModels, currentPage => Url.Action("Index", new { currentPage }), new PagedListRenderOptions
+                       {
+                       LiElementClasses = new string[] { "page-item" },
+                       PageClasses = new string[] { "page-link" },
+                       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                       DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                       MaximumPageNumbersToDisplay = 5,
+                       EllipsesElementClass = "page-link",
+                       })
+                    </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 </section>
