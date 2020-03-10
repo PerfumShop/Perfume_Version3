@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using X.PagedList;
 
 namespace S3.Train.WebPerFume.Controllers
 {
@@ -36,13 +37,13 @@ namespace S3.Train.WebPerFume.Controllers
         }
 
         // GET: Shop
-        public ActionResult Index()
+        public ActionResult Index(int? currentPage)
         {
             var model = new ShopViewModel
             {
                 brandModels = GetBrandViewModel(),
                 categoryModels = GetCategoryViewModel(),
-                productModels = GetProductViewModel(),
+                productModels = GetProductViewModel(currentPage),
                 productVarModels = GetProductVarViewModel()
             };
 
@@ -58,8 +59,10 @@ namespace S3.Train.WebPerFume.Controllers
             }).ToList();
         }
 
-        private IList<ProductModel> GetProductViewModel()
+        private IPagedList<ProductModel> GetProductViewModel(int? currentPage)
         {
+            int pageSize = 6;
+            int pageNumber = (currentPage ?? 1);
             IList<Product> products = _productService.SelectAll();
             return products.Select(x => new ProductModel
             {
@@ -68,7 +71,7 @@ namespace S3.Train.WebPerFume.Controllers
                 //some product not have product variations
                 Price = 10,//_productVariationService.GetOneProductVariations(x.Id).Price,/
                 DiscountPrice = 10,//_productVariationService.GetOneProductVariations(x.Id).DiscountPrice
-            }).ToList();
+            }).ToPagedList(pageNumber, pageSize);
         }
 
         private IList<CategoryModel> GetCategoryViewModel()
