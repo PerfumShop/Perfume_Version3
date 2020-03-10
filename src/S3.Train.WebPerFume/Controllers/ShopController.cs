@@ -37,13 +37,13 @@ namespace S3.Train.WebPerFume.Controllers
         }
 
         // GET: Shop
-        public ActionResult Index(int? currentPage)
+        public ActionResult Index(string sortOrder,int? currentPage)
         {
             var model = new ShopViewModel
             {
                 brandModels = GetBrandViewModel(),
                 categoryModels = GetCategoryViewModel(),
-                productModels = GetProductViewModel(currentPage),
+                productModels = GetProductViewModel(sortOrder,currentPage),
                 productVarModels = GetProductVarViewModel()
             };
 
@@ -59,11 +59,17 @@ namespace S3.Train.WebPerFume.Controllers
             }).ToList();
         }
 
-        private IPagedList<ProductModel> GetProductViewModel(int? currentPage)
+        private IPagedList<ProductModel> GetProductViewModel(string sortOrder,int? currentPage)
         {
             int pageSize = 6;
             int pageNumber = (currentPage ?? 1);
-            IList<Product> products = _productService.SelectAll();
+            IList<Product> products = new List<Product>();
+            switch (sortOrder)
+            {
+                default:
+                    products = _productService.GetAll(order => order.OrderBy(s => s.Name));
+                    break;
+            }
             return products.Select(x => new ProductModel
             {
                 Name = x.Name,

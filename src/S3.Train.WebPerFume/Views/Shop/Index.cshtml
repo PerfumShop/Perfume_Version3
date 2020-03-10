@@ -123,8 +123,11 @@
                     <div class="row">
                         <div class="col-lg-7 col-md-7">
                             <div class="select-option">
-                                <select class="sorting">
-                                    <option value="">Default Sorting</option>
+                                <select id="orderDropDownList" class="sorting">
+                                    <option value="Name">Name</option>
+                                    <option value="Price">Price</option>
+                                    <option value="Category">Category</option>
+                                    <option value="Brand">Brand</option>
                                 </select>
                                 <select class="p-show">
                                     <option value="">Show:</option>
@@ -187,3 +190,24 @@
     </div>
 </section>
 <!-- Product Shop Section End -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#orderDropDownList").on("change", function () {
+            alert('The option with value ' + $(this).val());
+        //    var order = $("#orderDropDownList").val();
+        //    alert('The option with value ' + $(this).val());
+        //    $.ajax({
+        //        url: "/Shop/?urrentPage=1?sortOrder=" + order,
+        //        type: "GET",
+        //        success: function (result) {
+        //            debugger;
+        //            alert(result);
+        //        },
+        //        error: function (e) {
+        //            alert(this.url);
+        //        }
+        //    });
+        });
+    });
+</script>
