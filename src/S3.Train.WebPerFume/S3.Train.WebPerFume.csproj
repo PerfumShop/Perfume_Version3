@@ -273,6 +273,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ShopController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -312,6 +313,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ShopViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1325,8 +1327,8 @@
     <Content Include="Views\Shared\EditorTemplate\FormControlPassword.cshtml" />
     <Content Include="Views\Shared\EditorTemplate\DropDownList.cshtml" />
     <Content Include="Areas\Admin\Views\Product\_DeleteProduct.cshtml" />
-    <Content Include="Views\Home\Shop.cshtml" />
     <Content Include="Views\Shared\_LoginModelPartial.cshtml" />
+    <Content Include="Views\Shop\Index.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
     <Content Include="Views\Shared\_SearchProductPartial.cshtml" />
