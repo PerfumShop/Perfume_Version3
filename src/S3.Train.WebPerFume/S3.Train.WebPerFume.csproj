@@ -915,8 +915,10 @@
     <Content Include="Content\pages\tables\basic-table.html" />
     <Content Include="Content\pages\ui-features\buttons.html" />
     <Content Include="Content\pages\ui-features\typography.html" />
+    <Content Include="Content\reset.css" />
     <Content Include="Content\slicknav.min.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\style1.css" />
     <Content Include="Content\styleAdmin.css" />
     <Content Include="Content\themify-icons.css" />
     <Content Include="favicon.ico" />
@@ -1150,6 +1152,7 @@
     <Content Include="Areas\Admin\Views\User\Update.cshtml" />
     <Content Include="Areas\Admin\Views\Product\DetailProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayProVaTablePartial.cshtml" />
+    <Content Include="Views\Shared\_quickviewProduct.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1174,8 +1177,12 @@
     <Content Include="Scripts\js\chart.js" />
     <Content Include="Scripts\js\dashboard.js" />
     <Content Include="Scripts\js\file-upload.js" />
+    <Content Include="Scripts\js\jquery-2.1.1.js" />
+    <Content Include="Scripts\js\main.js" />
     <Content Include="Scripts\js\misc.js" />
+    <Content Include="Scripts\js\modernizr.js" />
     <Content Include="Scripts\js\off-canvas.js" />
+    <Content Include="Scripts\js\velocity.min.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\owl.carousel.min.js" />
