@@ -39,10 +39,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="X.PagedList">
+      <HintPath>..\S3.Train.WebPerFume\bin\X.PagedList.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brand\BrandModel.cs" />
     <Compile Include="Category\CategoryModel.cs" />
+    <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Product\ProductModel.cs" />
     <Compile Include="Product\ProductVarModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

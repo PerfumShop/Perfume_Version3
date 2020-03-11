@@ -2,10 +2,7 @@
     ViewBag.Title = "Shop";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-@using S3.Train.WebPerFume.Models;
-@model ShopViewModel
-@using X.PagedList.Mvc.Common
-@using X.PagedList.Mvc
+@model S3.Train.WebPerFume.Models.ShopViewModel
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
     <div class="container">
@@ -123,8 +120,15 @@
                     <div class="row">
                         <div class="col-lg-7 col-md-7">
                             <div class="select-option">
-                                <select class="sorting">
-                                    <option value="">Default Sorting</option>
+                                <select id="orderDropDownList" class="sorting">
+                                    <option value="name">Name Ascending</option>
+                                    <option value="name_desc">Name Descending </option>
+                                    <option value="price">Price Ascending</option>
+                                    <option value="price_desc">Price Descending</option>
+                                    <option value="category">Category Ascending</option>
+                                    <option value="category_desc">Category Descending</option>
+                                    <option value="brand">Brand Ascending</option>
+                                    <option value="brand_desc">Brand Descending</option>
                                 </select>
                                 <select class="p-show">
                                     <option value="">Show:</option>
@@ -136,54 +140,51 @@
                         </div>
                     </div>
                 </div>
-                <div class="product-list">
-                    <div class="row">
-                        @foreach (var item in Model.productModels)
-                        {
-                            <div class="col-lg-4 col-sm-6">
-                                <div class="product-item">
-                                    <div class="pi-pic">
-                                        <img src="~/Content/img/product-girls/@item.ImagePath" alt="">
-                                        <div class="icon">
-                                            <i class="icon_heart_alt"></i>
-                                        </div>
-                                        <ul>
-                                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                            <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="pi-text">
-                                        <div class="catagory-name">Coat</div>
-                                        <a href="#">
-                                            <h5>@item.Name</h5>
-                                        </a>
-                                        <div class="product-price">
-                                            @item.Price$
-                                            <span>@item.DiscountPrice$</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <div class="pageging">
-                    <div colspan="8">
-                       Page @(Model.productModels.PageCount < Model.productModels.PageNumber ? 0 : Model.productModels.PageNumber) of @Model.productModels.PageCount
-                       @Html.PagedListPager(Model.productModels, currentPage => Url.Action("Index", new { currentPage }), new PagedListRenderOptions
-                       {
-                       LiElementClasses = new string[] { "page-item" },
-                       PageClasses = new string[] { "page-link" },
-                       DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-                       DisplayLinkToLastPage = PagedListDisplayMode.Always,
-                       MaximumPageNumbersToDisplay = 5,
-                       EllipsesElementClass = "page-link",
-                       })
-                    </div>
-                </div>
-            </div> 
+                @{ Html.RenderPartial("/Views/Partials/ProductList.cshtml", Model.productListModels); }
+            </div>
         </div>
     </div>
 </section>
 <!-- Product Shop Section End -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).on('click.nice_select', '.nice-select .option:not(.disabled)', function (event) {
+        setTimeout(function () {
+            var order = $("#orderDropDownList").val()
+            //alert('The option with value ' + order);
+            $.ajax({
+                url: "/Shop/ProductList",
+                type: "GET",
+                data: {
+                    currentPage: 1,
+                    sortOrder: order
+                },
+                success: function (result) {
+                    //alert(result);
+                    $('#productlist').html(result);
+                },
+                error: function (e) {
+                    alert(this.url);
+                }
+            });
+        }, 1000)
+    });
+    //$(document).ready(function () {
+    //    $("#orderDropDownList").on("change", function () {
+    //        alert('The option with value ' + $(this).val());
+    //        //    var order = $("#orderDropDownList").val();
+    //        //    alert('The option with value ' + $(this).val());
+    //        //    $.ajax({
+    //        //        url: "/Shop/?urrentPage=1?sortOrder=" + order,
+    //        //        type: "GET",
+    //        //        success: function (result) {
+    //        //            debugger;
+    //        //            alert(result);
+    //        //        },
+    //        //        error: function (e) {
+    //        //            alert(this.url);
+    //        //        }
+    //        //    });
+    //    });
+    //});
+</script>
