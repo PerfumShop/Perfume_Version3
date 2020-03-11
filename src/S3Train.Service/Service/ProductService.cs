@@ -59,6 +59,11 @@ namespace S3Train.Service
             this.DbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete Product in category
+        /// </summary>
+        /// <param name="category_Id"></param>
+        /// <param name="product_Id"></param>
         public void DeleteProductOnCategory(Guid category_Id, Guid product_Id)
         {
             var category = DbContext.Categories.FirstOrDefault(c => c.Id == category_Id);
@@ -85,6 +90,23 @@ namespace S3Train.Service
             }
 
             return query;
+        }
+
+
+        /// <summary>
+        /// Get product by id in related 3 table
+        /// </summary>
+        /// <param name="id">product id</param>
+        /// <returns>product</returns>
+        public Product GetProductById(Guid id)
+        {
+            var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations);
+
+            if(string.IsNullOrEmpty(id.ToString()))
+                throw new NotImplementedException();
+
+            var product = query.FirstOrDefault(p => p.Id == id);
+            return product;
         }
     }
 }

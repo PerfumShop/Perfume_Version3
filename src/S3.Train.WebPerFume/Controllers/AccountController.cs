@@ -394,7 +394,13 @@ namespace S3.Train.WebPerFume.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserName = model.Email,
+                    Email = model.Email,
+                    Avatar = "defaultAvatar.jpg"
+                };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

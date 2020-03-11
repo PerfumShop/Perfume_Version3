@@ -14,6 +14,6 @@ namespace S3Train.Contract
         IQueryable<Product> ManySearch(SearchViewModel model);
         void InsertProductOnCategory(Guid category_Id, Guid product_Id);
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
-        
+        Product GetProductById(Guid id);
     }
 }

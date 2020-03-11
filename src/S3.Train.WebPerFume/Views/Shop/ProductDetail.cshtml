@@ -1,7 +1,7 @@
-﻿
-
+﻿@using S3.Train.WebPerFume.Models
+@model ProductDetailModel
 @{
-    Layout = "ShoppingCart";
+    ViewBag.Title = "ProductDetail";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <div class="breacrumb-section">
@@ -17,6 +17,16 @@
         </div>
     </div>
 </div>
+@foreach(var proVa in Model.ProductVariations)
+{
+    foreach(var img in proVa.ProductImage)
+    {
+       <div>
+           @img.ImagePath
+       </div>
+    }
+    break;
+}
 <section class="product-shop spad page-details">
     <div class="container">
         <div class="col-lg-12">
@@ -139,7 +149,7 @@
                                             aliquip ex ea commodo consequat. Duis aute irure dolor in
                                         </p>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
