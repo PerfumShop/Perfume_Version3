@@ -1,4 +1,5 @@
-﻿using S3.Train.WebPerFume.Models;
+﻿using S3.Train.WebPerFume.CommonFunction;
+using S3.Train.WebPerFume.Models;
 using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.Model.Search;
@@ -121,13 +122,13 @@ namespace S3.Train.WebPerFume.Controllers
         {
             if (!string.IsNullOrEmpty(model.SearchText))
             {
-                var result = GetProducts(_productService.ManySearch(model));
+                var result = ConvertDomainToModel.GetProducts(_productService.ManySearch(model));
                 ViewBag.SearchText = model.SearchText;
                 return View(result);
             }
             else
             {
-                ViewBag.Error = "You";
+                ViewBag.Error = "Not Empty";
                 return RedirectToAction("index");
             }
             
@@ -135,25 +136,7 @@ namespace S3.Train.WebPerFume.Controllers
 
         public ActionResult Checkout()
         { return View(); }
-        /// <summary>
-        /// Convert List Product to List ProductViewModel All Properties
-        /// </summary>
-        /// <param name="products"></param>
-        /// <returns></returns>
-        public IQueryable<ProductsModel> GetProducts(IQueryable<Product> products)
-        {
-            return products.Select(x => new ProductsModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                ImagePath = x.ImagePath,
-                Brand = x.Brand,
-                Price = x.ProductVariations.FirstOrDefault(p=> p.Product_Id == x.Id).Price,
-                DiscountPrice = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).DiscountPrice,
-                Categories = x.Categories,
-                ProductVariations = x.ProductVariations
-            }).AsQueryable();
-        }
+
         public ActionResult ProductDetail()
         { return View(); }
         public ActionResult Shoppingcart()

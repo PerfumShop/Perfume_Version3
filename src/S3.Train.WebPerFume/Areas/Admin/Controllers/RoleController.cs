@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
+    [Authorize(Users = "Admin")]
     public class RoleController : Controller
     {
         private ApplicationRoleManager _roleManager;

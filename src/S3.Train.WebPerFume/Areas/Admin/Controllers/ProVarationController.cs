@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
+    [Authorize(Users = "Admin")]
     public class ProVarationController : Controller
     {
         private readonly IProductService _productService;

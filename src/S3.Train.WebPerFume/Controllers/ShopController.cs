@@ -1,4 +1,5 @@
-﻿using S3.Train.WebPerFume.Models;
+﻿using S3.Train.WebPerFume.CommonFunction;
+using S3.Train.WebPerFume.Models;
 using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.Model.Brand;
@@ -56,9 +57,12 @@ namespace S3.Train.WebPerFume.Controllers
         /// </summary>
         /// <param name="id">Product ID</param>
         /// <returns>View with model info product</returns>
-        public ActionResult ProductDetail(Guid id)
+        public ActionResult ProductDetail(Guid id, string volume)
         {
-            var model = GetProductDetailModel(_productService.GetProductById(id));
+            var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, volume));
+
+            var product = _productService.GetProductById(id);
+            ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id).AsQueryable());
             return View(model);
         }
 
@@ -102,24 +106,19 @@ namespace S3.Train.WebPerFume.Controllers
             }).ToList();
         }
 
-
-        /// <summary>
-        /// Convert from product to ProductDetailModel
-        /// </summary>
-        /// <param name="product">product</param>
-        /// <returns>Product Detail Model</returns>
-        private ProductDetailModel GetProductDetailModel(Product product)
+        private ProductVaDetailViewModel GetProductVaDetailViewModel(ProductVariation productVariation)
         {
-            var model = new ProductDetailModel
+            var model = new ProductVaDetailViewModel
             {
-                Id = product.Id,
-                Brand = product.Brand,
-                Categories =  product.Categories,
-                Description = product.Description,
-                ImagePath =  product.ImagePath,
-                Name =  product.Name,
-                ProductVariations = product.ProductVariations,
-                Vendor = product.Vendor
+               Id = productVariation.Id,
+               Price = productVariation.Price,
+               DiscountPrice = productVariation.DiscountPrice,
+               Product = productVariation.Product,
+               ProductImage = productVariation.ProductImage,
+               SKU = productVariation.SKU,
+               Volume = productVariation.Volume,
+               StockQuantity = productVariation.StockQuantity,
+               Product_Id = productVariation.Product_Id
             };
             return model;
         }

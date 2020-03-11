@@ -12,6 +12,7 @@ using S3Train.Core.Constant;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
+    [Authorize(Users = "Admin")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;

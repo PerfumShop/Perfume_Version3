@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace S3.Train.WebPerFume.Areas.Admin.Controllers
 {
+    [Authorize(Users = "Admin")]
     public class BannerController : Controller
     {
         // GET: Admin/Banner
