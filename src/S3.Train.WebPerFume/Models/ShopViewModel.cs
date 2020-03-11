@@ -13,9 +13,9 @@ namespace S3.Train.WebPerFume.Models
 {
     public class ShopViewModel
     {
-        public IList<CategoryModel> categoryModels;
-        public IPagedList<ProductModel> productModels;
-        public IList<BrandModel> brandModels;
-        public IList<ProductVarModel> productVarModels;
+        public IList<CategoryModel> categoryModels { get; set; }
+        public ProductListModel productListModels { get; set; }
+        public IList<BrandModel> brandModels { get; set; }
+        public IList<ProductVarModel> productVarModels { get; set; }
     }
 }
