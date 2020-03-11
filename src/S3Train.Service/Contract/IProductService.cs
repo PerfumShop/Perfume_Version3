@@ -18,5 +18,6 @@ namespace S3Train.Contract
         IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate);
         IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate, Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
         List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
+        Product GetProductById(Guid id);
     }
 }

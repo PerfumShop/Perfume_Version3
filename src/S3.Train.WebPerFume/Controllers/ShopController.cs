@@ -20,6 +20,8 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IProductService _productService;
         private readonly IProductImageService _productImageService;
         private readonly IProductVariationService _productVariationService;
+
+
         public ShopController()
         {
 
@@ -100,6 +102,17 @@ namespace S3.Train.WebPerFume.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Product Detail
+        /// </summary>
+        /// <param name="id">Product ID</param>
+        /// <returns>View with model info product</returns>
+        public ActionResult ProductDetail(Guid id)
+        {
+            var model = GetProductDetailModel(_productService.GetProductById(id));
+            return View(model);
+        }
+
         private IList<ProductVarModel> GetProductVarViewModel()
         {
             IList<ProductVariation> categories = _productVariationService.SelectAll();
@@ -170,6 +183,28 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 Name = x.Name
             }).ToList();
+        }
+
+
+        /// <summary>
+        /// Convert from product to ProductDetailModel
+        /// </summary>
+        /// <param name="product">product</param>
+        /// <returns>Product Detail Model</returns>
+        private ProductDetailModel GetProductDetailModel(Product product)
+        {
+            var model = new ProductDetailModel
+            {
+                Id = product.Id,
+                Brand = product.Brand,
+                Categories =  product.Categories,
+                Description = product.Description,
+                ImagePath =  product.ImagePath,
+                Name =  product.Name,
+                ProductVariations = product.ProductVariations,
+                Vendor = product.Vendor
+            };
+            return model;
         }
     }
 }

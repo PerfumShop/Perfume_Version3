@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Google;
 using Owin;
 using S3Train.Domain;
 using S3Train.IdentityManager;
@@ -58,15 +59,15 @@ namespace S3.Train.WebPerFume
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "2448317115273949",
+               appSecret: "36617a0322144055ff8d36121a15b9be");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "927435872565-ho6ugcs4m5jjpt0q45g2fd5djku9mtpe.apps.googleusercontent.com",
+                ClientSecret = "IDaate6mKOjY92-gceLywCYa"
+            });
         }
     }
 }
