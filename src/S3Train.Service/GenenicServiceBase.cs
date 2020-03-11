@@ -274,6 +274,7 @@ namespace S3Train
                 {
                     throw new ArgumentNullException("entity");
                 }
+                entity.UpdatedDate = DateTime.Now;
                 entity.IsActive = status;
                 this.DbContext.SaveChanges();
             }

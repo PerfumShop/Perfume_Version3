@@ -17,7 +17,8 @@ namespace S3Train.Service
 
         public IList<Product> GetProductsByBrandId(Guid brand_Id)
         {
-            return this.EntityDbSet.Where(x => x.Brand_Id == brand_Id && x.IsActive == true).ToList();
+            var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations).AsQueryable();
+            return query.Where(x => x.Brand_Id == brand_Id && x.IsActive == true).ToList();
         }
         public IList<Product> GetProductsByVendorId(Guid vendor_Id)
         {
