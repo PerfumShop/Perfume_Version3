@@ -1152,6 +1152,7 @@
     <Content Include="Areas\Admin\Views\User\Update.cshtml" />
     <Content Include="Areas\Admin\Views\Product\DetailProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayProVaTablePartial.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\Shared\_quickviewProduct.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -1346,7 +1347,9 @@
     <Content Include="Views\Partials\ProductList.cshtml" />
     <Content Include="Views\Shop\ProductDetail.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
-    <None Include="Web.LocalConnectStrings.config" />
+    <None Include="Web.LocalConnectStrings.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
