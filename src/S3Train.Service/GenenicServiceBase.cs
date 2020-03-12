@@ -38,7 +38,28 @@ namespace S3Train
         {
             return this.EntityDbSet.ToList();
         }
+        public List<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+        {
+            return orderBy(EntityDbSet).ToList();
+        }
+        public IEnumerable<T> Gets(Expression<Func<T, bool>> predicate)
+        {
+            return EntityDbSet.Where(predicate).ToList();
+        }
 
+        public IEnumerable<T> Gets(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+        {
+            return orderBy(EntityDbSet.Where(predicate)).ToList();
+        }
+        public T Get(Expression<Func<T, bool>> predicate)
+        {
+            return EntityDbSet.FirstOrDefault(predicate);
+        }
+
+        public T Get(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+        {
+            return orderBy(EntityDbSet.Where(predicate)).FirstOrDefault();
+        }
         public IPagedList<T> Gets(int? pageIndex, int pageSize = 20, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
             var page = pageIndex ?? 1;

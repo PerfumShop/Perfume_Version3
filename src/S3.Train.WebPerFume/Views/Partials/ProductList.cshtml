@@ -1,0 +1,49 @@
+﻿@model S3Train.Model.Product.ProductListModel
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc
+<div id="productlist" class="product-list">
+    <div class="row">
+        @foreach (var item in Model.productModels)
+        {
+            <div class="col-lg-4 col-sm-6">
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <img src="~/Content/img/product-girls/@item.ImagePath" alt="">
+                        <div class="icon">
+                            <i class="icon_heart_alt"></i>
+                        </div>
+                        <ul>
+                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                            <li class="quick-view"><a href="#">+ Quick View</a></li>
+                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="pi-text">
+                        <div class="catagory-name">Coat</div>
+                        <a href="#">
+                            <h5>@item.Name</h5>
+                        </a>
+                        <div class="product-price">
+                            @item.Price$
+                            <span>@item.DiscountPrice$</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="pageging">
+        <div colspan="8">
+            Page @(Model.productModels.PageCount < Model.productModels.PageNumber ? 0 : Model.productModels.PageNumber) of @Model.productModels.PageCount
+            @Html.PagedListPager(Model.productModels, currentPage => Url.Action("Index", new { currentPage }), new PagedListRenderOptions
+            {
+            LiElementClasses = new string[] { "page-item" },
+            PageClasses = new string[] { "page-link" },
+            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+            DisplayLinkToLastPage = PagedListDisplayMode.Always,
+            MaximumPageNumbersToDisplay = 5,
+            EllipsesElementClass = "page-link",
+            })
+        </div>
+    </div>
+</div>

@@ -7,15 +7,17 @@ using S3Train.Domain;
 using S3Train.Model.Brand;
 using S3Train.Model.Category;
 using S3Train.Model.Product;
+using System.Web.Mvc;
+using X.PagedList;
 
 namespace S3.Train.WebPerFume.Models
 {
     public class ShopViewModel
     {
-        public IList<CategoryModel> categoryModels;
-        public IList<ProductModel> productModels;
-        public IList<BrandModel> brandModels;
-        public IList<ProductVarModel> productVarModels;
+        public IList<CategoryModel> categoryModels { get; set; }
+        public ProductListModel productListModels { get; set; }
+        public IList<BrandModel> brandModels { get; set; }
+        public IList<ProductVarModel> productVarModels { get; set; }
     }
 
     public class ProductDetailModel

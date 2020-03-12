@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using S3Train.Contract;
 using S3Train.Domain;
 using S3Train.Model.Search;
@@ -92,7 +93,18 @@ namespace S3Train.Service
 
             return query;
         }
+        public IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate)
+        {
+            return EntityDbSet.Where(predicate).Include(c=> c.Categories).Include(b=>b.Brand).Include(v=>v.ProductVariations).ToList();
+        }
 
+        public IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate, Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
+        {
+            return orderBy(EntityDbSet.Where(predicate)).Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations).ToList();
+        }
+        public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
+        {
+            return orderBy(EntityDbSet).Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations).ToList();
 
         /// <summary>
         /// Get product by id in related 3 table
