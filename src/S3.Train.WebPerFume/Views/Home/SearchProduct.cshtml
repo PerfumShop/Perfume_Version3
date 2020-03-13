@@ -32,7 +32,9 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
-                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded w-100">
+                                        <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
+                                            <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded">
+                                        </a>
                                         @foreach (var ca in item.Categories)
                                         {
                                             <div class="sale pp-sale">Sale</div>
@@ -48,7 +50,7 @@
                                     </div>
                                     <div class="pi-text">
                                         <div class="catagory-name">@item.Brand.Name</div>
-                                        <a href="#">
+                                        <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
                                             <h5>@item.Name</h5>
                                         </a>
                                         <div class="product-price">

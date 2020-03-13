@@ -17,7 +17,8 @@ namespace S3Train.Service
 
         public IList<Product> GetProductsByBrandId(Guid brand_Id)
         {
-            return this.EntityDbSet.Where(x => x.Brand_Id == brand_Id && x.IsActive == true).ToList();
+            var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations).AsQueryable();
+            return query.Where(x => x.Brand_Id == brand_Id && x.IsActive == true).ToList();
         }
         public IList<Product> GetProductsByVendorId(Guid vendor_Id)
         {
@@ -60,6 +61,11 @@ namespace S3Train.Service
             this.DbContext.SaveChanges();
         }
 
+        /// <summary>
+        /// Delete Product in category
+        /// </summary>
+        /// <param name="category_Id"></param>
+        /// <param name="product_Id"></param>
         public void DeleteProductOnCategory(Guid category_Id, Guid product_Id)
         {
             var category = DbContext.Categories.FirstOrDefault(c => c.Id == category_Id);
@@ -136,6 +142,25 @@ namespace S3Train.Service
                         break;
                 }
             return products;
+        }
+        public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
+        {
+            return orderBy(EntityDbSet).Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations).ToList();
+
+        /// <summary>
+        /// Get product by id in related 3 table
+        /// </summary>
+        /// <param name="id">product id</param>
+        /// <returns>product</returns>
+        public Product GetProductById(Guid id)
+        {
+            var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations);
+
+            if(string.IsNullOrEmpty(id.ToString()))
+                throw new NotImplementedException();
+
+            var product = query.FirstOrDefault(p => p.Id == id);
+            return product;
         }
     }
 }

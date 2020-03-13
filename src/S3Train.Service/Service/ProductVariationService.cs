@@ -20,6 +20,20 @@ namespace S3Train.Service
             return this.EntityDbSet.FirstOrDefault(x => x.Product_Id == ProductId);
         }
 
+
+        /// <summary>
+        /// get product variation with id and volume
+        /// </summary>
+        /// <param name="id">product variation id</param>
+        /// <param name="volume"></param>
+        /// <returns>product variation</returns>
+        public ProductVariation GetProductVariationByIdAndVolume_version2(Guid id, string volume)
+        {
+            var query = this.EntityDbSet.Include(p => p.Product).Include(p => p.ProductImage);
+            var model = query.FirstOrDefault(p => p.Product_Id == id && p.Volume == volume);
+            return model;
+        }
+
         public ProductVariation GetProductVariationByIdAndVolume(Guid id, string volume)
         {
             return this.EntityDbSet.FirstOrDefault(x => x.Product_Id == id && x.Volume == volume);

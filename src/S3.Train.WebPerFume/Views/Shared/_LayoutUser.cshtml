@@ -60,10 +60,9 @@
                         </select>
                     </div>
                     <div class="top-social">
-                        <a href="#"><i class="ti-facebook"></i></a>
-                        <a href="#"><i class="ti-twitter-alt"></i></a>
-                        <a href="#"><i class="ti-linkedin"></i></a>
-                        <a href="#"><i class="ti-pinterest"></i></a>
+                        <section id="socialLoginForm">
+                            @Html.Partial("~/Views/Account/_ExternalLoginsListPartial.cshtml", new S3.Train.WebPerFume.Models.ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                        </section>
                     </div>
                 </div>
             </div>
@@ -189,7 +188,7 @@
                                 <li>@Html.ActionLink("Check-out", "Checkout", "Home")</li>
 
                                 <li>@Html.ActionLink("Register", "Register", "Account")</li>
-                                <li>@Html.ActionLink("Login", "Login", "Home")</li>
+                                <li>@Html.ActionLink("Login", "Login", "Account")</li>
                             </ul>
                         </li>
                     </ul>

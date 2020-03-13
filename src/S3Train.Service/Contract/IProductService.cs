@@ -16,5 +16,7 @@ namespace S3Train.Contract
         void InsertProductOnCategory(Guid category_Id, Guid product_Id);
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
         IQueryable<Product> GetProducts(int? currentPage, string searchFilter, string searchValue, string sortOrder);
+        List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
+        Product GetProductById(Guid id);
     }
 }

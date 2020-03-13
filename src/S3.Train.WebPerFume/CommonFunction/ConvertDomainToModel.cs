@@ -1,4 +1,5 @@
 ﻿using S3.Train.WebPerFume.Areas.Admin.Models;
+using S3.Train.WebPerFume.Models;
 using S3Train.Domain;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,27 @@ namespace S3.Train.WebPerFume.CommonFunction
                 IsActive = productVariation.IsActive
             };
             return model;
+        }
+
+
+        /// <summary>
+        /// Convert List Product to List ProductViewModel All Properties
+        /// </summary>
+        /// <param name="products"></param>
+        /// <returns></returns>
+        public static IQueryable<ProductsModel> GetProducts(IQueryable<Product> products)
+        {
+            return products.Select(x => new ProductsModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ImagePath = x.ImagePath,
+                Brand = x.Brand,
+                Price = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).Price,
+                DiscountPrice = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).DiscountPrice,
+                Categories = x.Categories,
+                ProductVariations = x.ProductVariations
+            }).AsQueryable();
         }
 
     }
