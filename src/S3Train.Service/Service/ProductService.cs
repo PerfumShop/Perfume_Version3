@@ -105,7 +105,7 @@ namespace S3Train.Service
         public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
         {
             return orderBy(EntityDbSet).Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations).ToList();
-
+        }
         /// <summary>
         /// Get product by id in related 3 table
         /// </summary>

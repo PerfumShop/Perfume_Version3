@@ -9,5 +9,6 @@ namespace S3Train.Contract
 {
     public interface IShoppingCartService : IGenenicServiceBase<ShoppingCart>
     {
+        ShoppingCart GetShoppingCartByUserId(string userId);
     }
 }
