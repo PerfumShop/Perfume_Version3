@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,7 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Brand\BrandModel.cs" />
+    <Compile Include="Cart\ShoppingCartItemModel.cs" />
     <Compile Include="Category\CategoryModel.cs" />
+    <Compile Include="Customer\CustomerModel.cs" />
     <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Product\ProductModel.cs" />
     <Compile Include="Product\ProductVarModel.cs" />

@@ -42,9 +42,9 @@ namespace S3Train.Service
         {
             var category = DbContext.Categories.FirstOrDefault(c => c.Id == category_Id);
             var product = this.EntityDbSet.FirstOrDefault(p => p.Id == product_Id);
-            var checkPro = category.Products.FirstOrDefault(p=>p.Id == product.Id);
+            var checkPro = category.Products.FirstOrDefault(p => p.Id == product.Id);
 
-            if(category != null && product != null)
+            if (category != null && product != null)
             {
                 if (checkPro != null)
                 {
@@ -56,8 +56,8 @@ namespace S3Train.Service
                     category.Products.Add(product);
                 }
             }
-            
-            
+
+
             this.DbContext.SaveChanges();
         }
 
@@ -86,9 +86,9 @@ namespace S3Train.Service
         {
             var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations).AsQueryable();
 
-            if(!string.IsNullOrEmpty(model.SearchText))
+            if (!string.IsNullOrEmpty(model.SearchText))
             {
-               query = query.Where(x => x.Name.Contains(model.SearchText) || x.Brand.Name.Contains(model.SearchText));
+                query = query.Where(x => x.Name.Contains(model.SearchText) || x.Brand.Name.Contains(model.SearchText));
             }
 
             return query;
@@ -111,36 +111,36 @@ namespace S3Train.Service
                         break;
                 }
             }
-                switch (sortOrder)
-                {
-                    case "name":
-                        products = products.OrderBy(s => s.Name);
-                        break;
-                    case "name_desc":
-                        products = products.OrderByDescending(s => s.Name);
-                        break;
-                    case "price":
-                        products = products.OrderBy(s => s.ProductVariations.FirstOrDefault().Price);
-                        break;
-                    case "price_desc":
-                        products = products.OrderByDescending(s => s.ProductVariations.FirstOrDefault().Price);
-                        break;
-                    case "category":
-                        products = products.OrderBy(s => s.Categories.FirstOrDefault().Name);
-                        break;
-                    case "category_desc":
-                        products = products.OrderByDescending(s => s.Categories.FirstOrDefault().Name);
-                        break;
-                    case "brand":
-                        products = products.OrderBy(s => s.Brand.Name);
-                        break;
-                    case "brand_desc":
-                        products = products.OrderByDescending(s => s.Brand.Name);
-                        break;
-                    default:
-                        products = products.OrderBy(s => s.Name);
-                        break;
-                }
+            switch (sortOrder)
+            {
+                case "name":
+                    products = products.OrderBy(s => s.Name);
+                    break;
+                case "name_desc":
+                    products = products.OrderByDescending(s => s.Name);
+                    break;
+                case "price":
+                    products = products.OrderBy(s => s.ProductVariations.FirstOrDefault().Price);
+                    break;
+                case "price_desc":
+                    products = products.OrderByDescending(s => s.ProductVariations.FirstOrDefault().Price);
+                    break;
+                case "category":
+                    products = products.OrderBy(s => s.Categories.FirstOrDefault().Name);
+                    break;
+                case "category_desc":
+                    products = products.OrderByDescending(s => s.Categories.FirstOrDefault().Name);
+                    break;
+                case "brand":
+                    products = products.OrderBy(s => s.Brand.Name);
+                    break;
+                case "brand_desc":
+                    products = products.OrderByDescending(s => s.Brand.Name);
+                    break;
+                default:
+                    products = products.OrderBy(s => s.Name);
+                    break;
+            }
             return products;
         }
         public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
@@ -156,11 +156,12 @@ namespace S3Train.Service
         {
             var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations);
 
-            if(string.IsNullOrEmpty(id.ToString()))
+            if (string.IsNullOrEmpty(id.ToString()))
                 throw new NotImplementedException();
 
             var product = query.FirstOrDefault(p => p.Id == id);
             return product;
         }
+
     }
 }
