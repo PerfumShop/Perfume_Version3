@@ -42,23 +42,10 @@ namespace S3Train
         {
             return orderBy(EntityDbSet).ToList();
         }
-        public IEnumerable<T> Gets(Expression<Func<T, bool>> predicate)
+        public IQueryable<T> Gets(Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {
-            return EntityDbSet.Where(predicate).ToList();
-        }
-
-        public IEnumerable<T> Gets(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
-        {
-            return orderBy(EntityDbSet.Where(predicate)).ToList();
-        }
-        public T Get(Expression<Func<T, bool>> predicate)
-        {
-            return EntityDbSet.FirstOrDefault(predicate);
-        }
-
-        public T Get(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
-        {
-            return orderBy(EntityDbSet.Where(predicate)).FirstOrDefault();
+            var iQueryableDbSet = @where != null ? EntityDbSet.Where(@where) : EntityDbSet;
+            return orderBy != null ? orderBy(iQueryableDbSet) : iQueryableDbSet;
         }
         public IPagedList<T> Gets(int? pageIndex, int pageSize = 20, Expression<Func<T, bool>> where = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null)
         {

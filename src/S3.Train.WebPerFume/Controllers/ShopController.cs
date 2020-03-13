@@ -40,63 +40,45 @@ namespace S3.Train.WebPerFume.Controllers
         }
 
         // GET: Shop
-        public ActionResult Index(string sortOrder,int? currentPage)
+        public ActionResult Index(string sortOrder,int? currentPage, string currentFilter, string currentFilterValue, string searchValue, string searchFilter)
         {
             var model = new ShopViewModel
             {
                 brandModels = GetBrandViewModel(),
                 categoryModels = GetCategoryViewModel(),
-                productListModels = GetProductListViewModel(sortOrder,currentPage),
+                productListModels = GetProductListViewModel(sortOrder,currentPage, currentFilter, currentFilterValue, searchValue, searchFilter),
                 productVarModels = GetProductVarViewModel()
             };
 
             return View(model);
         }
-        public ActionResult ProductList(string sortOrder, int? currentPage)
+        public ActionResult ProductList(string sortOrder, int? currentPage,string currentFilter, string currentFilterValue, string searchValue, string searchFilter)
         {
-            return PartialView("/Views/Partials/ProductList.cshtml", GetProductListViewModel(sortOrder, currentPage));
+            return PartialView("/Views/Partials/ProductList.cshtml", GetProductListViewModel(sortOrder, currentPage, currentFilter, currentFilterValue, searchValue, searchFilter));
         }
-        private ProductListModel GetProductListViewModel(string sortOrder, int? currentPage)
+        private ProductListModel GetProductListViewModel(string sortOrder, int? currentPage,string currentFilter, string currentFilterValue, string searchValue, string searchFilter)
         {
+            ViewBag.CurrentSort = sortOrder;
+            if (searchFilter != null)
+            {
+                currentPage = 1;
+            }
+            else
+            {
+                searchFilter = currentFilter;
+                searchValue = currentFilterValue;
+            }
+            ViewBag.CurrentFilter = searchFilter;
+            ViewBag.CurrentFilterValue = searchValue;
             ProductListModel result = new ProductListModel();
             int pageSize = 6;
             int pageNumber = (currentPage ?? 1);
-            IList<Product> products = new List<Product>();
-            switch (sortOrder)
-                {
-                    case "name":
-                        products = _productService.GetAllProduct(order => order.OrderBy(s => s.Name));
-                        break;
-                    case "name_desc":
-                        products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Name));
-                        break;
-                    case "price":
-                        products = _productService.GetAllProduct(order => order.OrderBy(s => s.ProductVariations.FirstOrDefault().Price));
-                        break;
-                    case "price_desc":
-                        products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.ProductVariations.FirstOrDefault().Price));
-                        break;
-                    case "category":
-                        products = _productService.GetAllProduct(order => order.OrderBy(s => s.Categories.FirstOrDefault().Name));
-                        break;
-                    case "category_desc":
-                        products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Categories.FirstOrDefault().Name));
-                        break;
-                    case "brand":
-                        products = _productService.GetAllProduct(order => order.OrderBy(s => s.Brand.Name));
-                        break;
-                    case "brand_desc":
-                        products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Brand.Name));
-                        break;
-                    default:
-                        products = _productService.GetAllProduct(order => order.OrderBy(s => s.Name));
-                        break;
-                }
+            IList<Product> products = _productService.GetProducts(currentPage, searchFilter, searchValue, sortOrder).ToList();
             result.productModels = products.Select(x => new ProductModel
                 {
                     Name = x.Name,
                     ImagePath = x.ImagePath,
-                    //some product not have product variations
+                    //some product have no product variations
                     Price = 10,//_productVariationService.GetOneProductVariations(x.Id).Price,/
                     DiscountPrice = 10,//_productVariationService.GetOneProductVariations(x.Id).DiscountPrice
                 }).ToPagedList(pageNumber, pageSize);
@@ -124,51 +106,6 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 Volume = x.Volume
             }).ToList();
-        }
-
-        private IPagedList<ProductModel> GetProductViewModel(string sortOrder,int? currentPage)
-        {
-            int pageSize = 6;
-            int pageNumber = (currentPage ?? 1);
-            IList<Product> products = new List<Product>();
-            switch (sortOrder)
-            {
-                case "name":
-                    products = _productService.GetAllProduct(order => order.OrderBy(s => s.Name));
-                    break;
-                case "name_decs":
-                    products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Name));
-                    break;
-                case "price":
-                    products = _productService.GetAllProduct(order => order.OrderBy(s => s.ProductVariations.FirstOrDefault().Price));
-                    break;
-                case "price_decs":
-                    products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.ProductVariations.FirstOrDefault().Price));
-                    break;
-                case "category":
-                    products = _productService.GetAllProduct(order => order.OrderBy(s => s.Categories.FirstOrDefault().Name));
-                    break;
-                case "category_decs":
-                    products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Categories.FirstOrDefault().Name));
-                    break;
-                case "brand":
-                    products = _productService.GetAllProduct(order => order.OrderBy(s => s.Brand.Name));
-                    break;
-                case "brand_decs":
-                    products = _productService.GetAllProduct(order => order.OrderByDescending(s => s.Brand.Name));
-                    break;
-                default:
-                    products = _productService.GetAllProduct(order => order.OrderBy(s => s.ProductVariations.FirstOrDefault().Price));
-                    break;
-            }
-            return products.Select(x => new ProductModel
-            {
-                Name = x.Name,
-                ImagePath = x.ImagePath,
-                //some product not have product variations
-                Price = 10,//_productVariationService.GetOneProductVariations(x.Id).Price,/
-                DiscountPrice = 10,//_productVariationService.GetOneProductVariations(x.Id).DiscountPrice
-            }).ToPagedList(pageNumber, pageSize);
         }
 
         private IList<CategoryModel> GetCategoryViewModel()
