@@ -35,15 +35,15 @@
     <div class="pageging">
         <div colspan="8">
             Page @(Model.productModels.PageCount < Model.productModels.PageNumber ? 0 : Model.productModels.PageNumber) of @Model.productModels.PageCount
-            @Html.PagedListPager(Model.productModels, currentPage => Url.Action("Index", new { currentPage }), new PagedListRenderOptions
-            {
-            LiElementClasses = new string[] { "page-item" },
-            PageClasses = new string[] { "page-link" },
-            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-            DisplayLinkToLastPage = PagedListDisplayMode.Always,
-            MaximumPageNumbersToDisplay = 5,
-            EllipsesElementClass = "page-link",
-            })
+            @Html.PagedListPager(Model.productModels, currentPage => Url.Action("ProductList", new { currentPage, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions()
+       {
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link" },
+           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+           DisplayLinkToLastPage = PagedListDisplayMode.Always,
+           MaximumPageNumbersToDisplay = 5,
+           EllipsesElementClass = "page-link",
+       }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "productlist" }))
         </div>
     </div>
 </div>
