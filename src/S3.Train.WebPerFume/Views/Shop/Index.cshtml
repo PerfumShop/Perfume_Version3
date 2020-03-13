@@ -24,12 +24,18 @@
             <div class="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
                 <div class="filter-widget">
                     <h4 class="fw-title">Categories</h4>
-                    <ul class="filter-catagories">
-                        @foreach (var item in Model.categoryModels)
-                        {
-                            <li><a href="#">@item.Name</a></li>
-                        }
-                    </ul>
+                        <div class="fw-tags">
+                            @foreach (var item in Model.categoryModels)
+                            {
+                                @Ajax.ActionLink(item.Name, "ProductList", "Shop", new { currentPage = 1, searchValue = item.Name, searchFilter = "category", sortOder = ViewBag.CurrentSort },
+                           new AjaxOptions
+                           {
+                               HttpMethod = "GET",
+                               InsertionMode = InsertionMode.Replace,
+                               UpdateTargetId = "productlist"
+                           })
+                            }
+                        </div>
                 </div>
                 <div class="filter-widget">
                     <h4 class="fw-title">Brand</h4>
@@ -96,10 +102,34 @@
                 <div class="filter-widget">
                     <h4 class="fw-title">Size</h4>
                     <div class="fw-tags">
-                        @foreach (var item in Model.productVarModels)
-                        {
-                            <a href="">@item.Volume</a>
-                        }
+                        @Ajax.ActionLink("25ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "25ml", searchFilter = "volume", sortOder = ViewBag.CurrentSort},
+                       new AjaxOptions
+                       {
+                           HttpMethod = "GET",
+                           InsertionMode = InsertionMode.Replace,
+                           UpdateTargetId = "productlist"
+                       })
+                        @Ajax.ActionLink("50ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "50ml", searchFilter ="volume", sortOder = ViewBag.CurrentSort },
+                       new AjaxOptions
+                       {
+                           HttpMethod = "GET",
+                           InsertionMode = InsertionMode.Replace,
+                           UpdateTargetId = "productlist"
+                       })
+                        @Ajax.ActionLink("100ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "100ml", searchFilter = "volume", sortOder = ViewBag.CurrentSort },
+                       new AjaxOptions
+                       {
+                           HttpMethod = "GET",
+                           InsertionMode =  InsertionMode.Replace,
+                           UpdateTargetId = "productlist"
+                       })
+                        @Ajax.ActionLink("200ml", "Prod    ist", "Shop", new { currentPage = 1, searchValue = "100ml",searchFilter = "volume", sortOder = ViewBag.CurrentSort },
+                         new AjaxOptions
+                         {
+                             HttpMethod = "GET",
+                             InsertionMode = InsertionMode.Replace,
+                             UpdateTargetId = "productlist"
+                         })
                     </div>
                 </div>
                 <div class="filter-widget">
@@ -148,16 +178,19 @@
 <!-- Product Shop Section End -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
+    $(document).ready(function () {
     $(document).on('click.nice_select', '.nice-select .option:not(.disabled)', function (event) {
         setTimeout(function () {
-            var order = $("#orderDropDownList").val()
+            var order = $("#orderDropDownList").val();
             //alert('The option with value ' + order);
             $.ajax({
                 url: "/Shop/ProductList",
                 type: "GET",
                 data: {
                     currentPage: 1,
-                    sortOrder: order
+                    sortOrder: order,
+                    searchValue: '@ViewBag.CurrentFilterValue',
+                    searchFilter: '@ViewBag.CurrentFilter',
                 },
                 success: function (result) {
                     //alert(result);
@@ -168,6 +201,7 @@
                 }
             });
         }, 1000)
+        });
     });
     //$(document).ready(function () {
     //    $("#orderDropDownList").on("change", function () {

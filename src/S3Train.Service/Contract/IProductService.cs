@@ -15,8 +15,6 @@ namespace S3Train.Contract
         IQueryable<Product> ManySearch(SearchViewModel model);
         void InsertProductOnCategory(Guid category_Id, Guid product_Id);
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
-        IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate);
-        IEnumerable<Product> GetProducts(Expression<Func<Product, bool>> predicate, Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
-        List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
+        IQueryable<Product> GetProducts(int? currentPage, string searchFilter, string searchValue, string sortOrder);
     }
 }
