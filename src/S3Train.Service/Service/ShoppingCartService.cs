@@ -2,6 +2,8 @@
 using S3Train.Domain;
 using System.Linq;
 using System.Data.Entity;
+using System;
+using System.Collections.Generic;
 
 namespace S3Train.Service
 {

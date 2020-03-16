@@ -3,99 +3,114 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
-    <!-- Shopping Cart Section Begin -->
-    <section class="checkout-section spad">
-        <div class="container">
-            @using (Html.BeginForm("ActionName", "ControllerName", FormMethod.Post, new { @class = "checkout-form" }))
-            {
-                @Html.AntiForgeryToken()
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <a href="#" class="content-btn">Click Here To Login</a>
-                        </div>
-                        <h4>Biiling Details</h4>
-                        <div class="row">
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="col-lg-6">
-                                @Html.LabelFor(m => m.customerModel.FirstName)
-                                @Html.TextBoxFor(m => m.customerModel.FirstName)
-                                @Html.ValidationMessageFor(m => m.customerModel.FirstName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-lg-6">
-                                @Html.LabelFor(m => m.customerModel.LastName)
-                                @Html.TextBoxFor(m => m.customerModel.LastName)
-                                @Html.ValidationMessageFor(m => m.customerModel.LastName, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-lg-12">
-                                @Html.LabelFor(m => m.customerModel.Country)
-                                @Html.TextBoxFor(m => m.customerModel.Country)
-                            </div>
-                            <div class="col-lg-12">
-                                @Html.LabelFor(m => m.customerModel.Street)
-                                @Html.TextBoxFor(m => m.customerModel.Street)
-                                @Html.ValidationMessageFor(m => m.customerModel.Street, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-lg-12">
-                                @Html.LabelFor(m => m.customerModel.Town)
-                                @Html.TextBoxFor(m => m.customerModel.Town)
-                            </div>
-                            <div class="col-lg-12">
-                                @Html.LabelFor(m => m.customerModel.Phone)
-                                @Html.TextBoxFor(m => m.customerModel.Phone)
-                                @Html.ValidationMessageFor(m => m.customerModel.Phone, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="create-item">
-                                    <label for="acc-create">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-create">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="./index.html"><i class="fa fa-home"></i> Home</a>
+                    <a href="./shop.html">Shop</a>
+                    <span>Check Out</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb Section Begin -->
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        @using (Html.BeginForm("Order", "Checkout", FormMethod.Post, new { @class = "checkout-form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        <a href="#" class="content-btn">Click Here To Login</a>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-content">
-                            <input type="text" placeholder="Enter Your Coupon Code">
+                    <h4>Biiling Details</h4>
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-lg-6">
+                            @Html.LabelFor(m => m.customerModel.FirstName)
+                            @Html.TextBoxFor(m => m.customerModel.FirstName)
+                            @Html.ValidationMessageFor(m => m.customerModel.FirstName, "", new { @class = "text-danger" })
                         </div>
-                        <div class="place-order">
-                            <h4>Your Order</h4>
-                            <div class="order-total">
-                                <ul class="order-table">
-                                    <li>Product <span>Total</span></li>
-                                    @foreach (var item in Model.shoppingCartItems)
-                                    {
-                                        <li class="fw-normal">@item.ProductName @item.Volume x @item.Quantity <span>@item.TotalPrice</span></li>
-                                    }
-                                    <li class="fw-normal">Subtotal <span>@Model.SubTotal</span></li>
-                                    <li class="total-price">Total <span>@Model.Total</span></li>
-                                </ul>
-                                <div class="payment-check">
-                                    <div class="pc-item">
-                                        <label for="pc-check">
-                                            Cheque Payment
-                                            <input type="checkbox" id="pc-check">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                    <div class="pc-item">
-                                        <label for="pc-paypal">
-                                            Paypal
-                                            <input type="checkbox" id="pc-paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="order-btn">
-                                    <button type="submit" class="site-btn place-btn">Place Order</button>
-                                </div>
+                        <div class="col-lg-6">
+                            @Html.LabelFor(m => m.customerModel.LastName)
+                            @Html.TextBoxFor(m => m.customerModel.LastName)
+                            @Html.ValidationMessageFor(m => m.customerModel.LastName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.LabelFor(m => m.customerModel.Country)
+                            @Html.TextBoxFor(m => m.customerModel.Country)
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.LabelFor(m => m.customerModel.Street)
+                            @Html.TextBoxFor(m => m.customerModel.Street)
+                            @Html.ValidationMessageFor(m => m.customerModel.Street, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.LabelFor(m => m.customerModel.Town)
+                            @Html.TextBoxFor(m => m.customerModel.Town)
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.LabelFor(m => m.customerModel.Phone)
+                            @Html.TextBoxFor(m => m.customerModel.Phone)
+                            @Html.ValidationMessageFor(m => m.customerModel.Phone, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="create-item">
+                                <label for="acc-create">
+                                    Create an account?
+                                    <input type="checkbox" id="acc-create">
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
-    </section>
-    <!-- Shopping Cart Section End -->
+                <div class="col-lg-6">
+                    <div class="checkout-content">
+                        <input type="text" placeholder="Enter Your Coupon Code">
+                    </div>
+                    <div class="place-order">
+                        <h4>Your Order</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Product <span>Total</span></li>
+                                @foreach (var item in Model.shoppingCartItems)
+                                {
+                                    <li class="fw-normal">@item.ProductName @item.Volume x @item.Quantity <span>@item.TotalPrice</span></li>
+                                }
+                                <li class="fw-normal">Subtotal <span>@Model.SubTotal</span></li>
+                                <li class="total-price">Total <span>@Model.Total</span></li>
+                            </ul>
+                            <div class="payment-check">
+                                <div class="pc-item">
+                                    <label for="pc-check">
+                                        Cheque Payment
+                                        <input type="checkbox" id="pc-check">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="pc-item">
+                                    <label for="pc-paypal">
+                                        Paypal
+                                        <input type="checkbox" id="pc-paypal">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="order-btn">
+                                <button type="submit" class="site-btn place-btn">Place Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<!-- Shopping Cart Section End -->

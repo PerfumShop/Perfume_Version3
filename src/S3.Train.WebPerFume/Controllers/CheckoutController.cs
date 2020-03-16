@@ -11,14 +11,20 @@ namespace S3.Train.WebPerFume.Controllers
     public class CheckoutController : Controller
     {
         private readonly ICheckoutService _checkoutService;
+
+        public CheckoutController(ICheckoutService checkoutService)
+        {
+            _checkoutService = checkoutService;
+        }
+
         // GET: Checkout
         public ActionResult Index()
         {
-            if (HttpContext.Request.Cookies["some_cookie_name"] != null)
+            if (HttpContext.Request.Cookies["UserId"] != null)
             {
                 HttpCookie cookie = HttpContext.Request.Cookies.Get("UserId");
 
-                CheckoutViewModel model = _checkoutService.GetCheckoutModel(cookie);
+                CheckoutViewModel model = _checkoutService.GetCheckoutModel(cookie.Value);
                 return View(model);
             }
             else
@@ -30,12 +36,16 @@ namespace S3.Train.WebPerFume.Controllers
         [HttpPost]
         public ActionResult Order(CheckoutViewModel model)
         {
-            bool result = _checkoutService.SaveOrder(model);
-            if(result)
+            if (HttpContext.Request.Cookies["UserId"] != null)
             {
-                //success
-                return RedirectToAction("Success",
-                new { controller = "Checkout", action = "Success" });
+                HttpCookie cookie = HttpContext.Request.Cookies.Get("UserId");
+                bool result = _checkoutService.SaveOrder(model, cookie.Value);
+                if (result)
+                {
+                    //success
+                    return RedirectToAction("Success",
+                    new { controller = "Checkout", action = "Success" });
+                }
             }
             //error
             return View("error");
