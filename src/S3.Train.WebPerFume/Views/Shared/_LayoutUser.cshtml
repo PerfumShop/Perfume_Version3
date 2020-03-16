@@ -136,9 +136,8 @@
                                         <h5>$120.00</h5>
                                     </div>
                                     <div class="select-button">
-
-                                        <a class="primary-btn view-card" @Html.ActionLink("VIEW CART", "Shoppingcart", "Home")</a>
-                                        <a class="primary-btn checkout-btn" @Html.ActionLink("Check-out", "Checkout", "Home")</a>
+                                        <a class="primary-btn view-card" href="@Url.Action("Index","Cart")">View Cart</a>
+                                        <a class="primary-btn checkout-btn">Check Out</a>
                                     </div>
                                 </div>
                             </li>

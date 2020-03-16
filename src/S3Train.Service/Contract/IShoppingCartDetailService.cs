@@ -10,5 +10,6 @@ namespace S3Train.Contract
     public interface IShoppingCartDetailService : IGenenicServiceBase<ShoppingCartDetail>
     {
         ShoppingCartDetail GetByProductIdAndCartShoppingCartId(Guid productId, Guid shoppingCarId);
+        ICollection<ShoppingCartDetail> GetAllByCartId(Guid id);
     }
 }
