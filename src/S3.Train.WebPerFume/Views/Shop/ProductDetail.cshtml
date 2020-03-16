@@ -78,10 +78,14 @@
                             }
                         </div>
                         <div class="quantity">
-                            <div class="pro-qty">
-                                <input type="text" value="1">
-                            </div>
-                            <a href="#" class="primary-btn pd-cart">Add To Cart</a>
+                            @using (Html.BeginForm("AddProductToCart", "Cart", FormMethod.Post))
+                            {
+                                <input type="hidden" name="proVaId" value="@Model.Id" />
+                                <div class="pro-qty">
+                                    <input type="number" name="quantity" value="1" step="1" min="1" max="@Model.StockQuantity"/>
+                                </div>
+                                <input type="submit" class="btn btn-rounded primary-btn pd-cart" value="Add To Cart" />
+                            }
                         </div>
                         <ul class="pd-tags">
                             <li><span>CATEGORIES</span>: @foreach (var ca in Model.Product.Categories) { @ca.Name }</li>

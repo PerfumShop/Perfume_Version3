@@ -1,0 +1,69 @@
+﻿@using S3.Train.WebPerFume.Models
+@model ProductsModel
+
+<li class="cd-item" data-target="#exampleModal@(Model.Id)">
+    <img src="~/Content/ModalQVProduct/img/item-1.jpg" alt="Item Preview">
+    <a href="#0" class="cd-trigger">Quick View</a>
+</li>
+
+<div class="cd-quick-view" id="exampleModal@(Model.Id)">
+    <div class="cd-slider-wrapper">
+        <ul class="cd-slider" style="list-style-type: none;">
+            <li class="selected"><img src="~/Content/ModalQVProduct/img/item-1.jpg" alt="Product 1"></li>
+            <li><img src="~/Content/img/product-men/@Model.ImagePath" alt="Product 2"></li>
+            <li><img src="~/Content/ModalQVProduct/img/item-3.jpg" alt="Product 3"></li>
+        </ul> <!-- cd-slider -->
+
+        <ul class="cd-slider-navigation">
+            <li><a class="cd-next" href="#0">Prev</a></li>
+            <li><a class="cd-prev" href="#0">Next</a></li>
+        </ul> <!-- cd-slider-navigation -->
+    </div> <!-- cd-slider-wrapper -->
+
+    <div class="cd-item-info">
+        <h2>Produt Title</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing...</p>
+
+        <ul class="cd-item-action">
+            <li><button class="add-to-cart">Add to cart</button></li>
+            <li><a href="#0">Learn more</a></li>
+        </ul> <!-- cd-item-action -->
+    </div> <!-- cd-item-info -->
+    <a href="#0" class="cd-close">Close</a>
+</div> <!-- cd-quick-view -->
+@*<div class="col-lg-3 col-sm-6">
+        <div class="product-item">
+            <div class="pi-pic">
+                <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
+                    <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded">
+                </a>
+                @foreach (var ca in item.Categories)
+                {
+                    <div class="sale pp-sale">Sale</div>
+                }
+                <div class="icon">
+                    <i class="icon_heart_alt"></i>
+                </div>
+                <ul class="cd-items cd-container">
+                    <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+
+                    <li class="quick-view cd-item">
+                    <a href="#">
+                        @Html.Partial("~/Views/Shared/_ModalQVProductPartial.cshtml")
+                        </a>
+                    </li>
+                    <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                </ul>
+            </div>
+            <div class="pi-text">
+                <div class="catagory-name">@item.Brand.Name</div>
+                <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
+                    <h5>@item.Name</h5>
+                </a>
+                <div class="product-price">
+                    $@item.Price
+                    <span>$@item.DiscountPrice</span>
+                </div>
+            </div>
+        </div>
+    </div>*@

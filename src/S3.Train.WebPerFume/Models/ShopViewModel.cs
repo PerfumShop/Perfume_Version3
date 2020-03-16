@@ -41,7 +41,7 @@ namespace S3.Train.WebPerFume.Models
         public string Volume { get; set; }
         public decimal StockQuantity { get; set; }
         public decimal Price { get; set; }
-        public decimal DiscountPrice { get; set; }
+        public decimal? DiscountPrice { get; set; }
         public virtual Product Product { get; set; }
         public virtual ICollection<ProductImage> ProductImage { get; set; }
         public virtual ICollection<ShoppingCartDetail> ShoppingCartDetails { get; set; }
