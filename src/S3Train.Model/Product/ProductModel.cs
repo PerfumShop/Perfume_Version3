@@ -1,4 +1,5 @@
-﻿using System;
+﻿using S3Train.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace S3Train.Model.Product
         public string ImagePath { get; set; }
         public decimal Price { get; set; }
         public decimal DiscountPrice { get; set; }
+        
     }
 }

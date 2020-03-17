@@ -13,5 +13,6 @@ namespace S3Train.Contract
         IList<ProductVariation> GetProductVariations(Guid ProductId);
         ProductVariation GetOneProductVariations(Guid ProductId);
         ProductVariation GetProductVariationByIdAndVolume_version2(Guid id, string volume);
+        string GetVolumeFisrtById(Guid id);
     }
 }

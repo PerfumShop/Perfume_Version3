@@ -26,11 +26,13 @@ namespace S3.Train.WebPerFume.Services
             IList<Product> products = GetProducts(currentPage, searchFilter, searchValue, sortOrder).ToList();
             result.productModels = products.Select(x => new ProductModel
             {
+                Id = x.Id,
                 Name = x.Name,
                 ImagePath = x.ImagePath,
                 //some product have no product variations
                 Price = 10,//_productVariationService.GetOneProductVariations(x.Id).Price,/
                 DiscountPrice = 10,//_productVariationService.GetOneProductVariations(x.Id).DiscountPrice
+                //ProductVariations = x.ProductVariations,
             }).ToPagedList(pageNumber, pageSize);
             return result;
         }

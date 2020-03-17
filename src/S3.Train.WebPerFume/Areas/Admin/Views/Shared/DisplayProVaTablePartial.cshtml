@@ -7,7 +7,7 @@
 
     <h4 class="card-text">Product Variation</h4>
     <div>
-        @Html.ActionLink("Add Variation", "AddOrEditProductVariation", "ProVaration", new { @class = "btn btn-gradient-success btn-fw" })
+        <a class="btn btn-gradient-success btn-fw" href="@Url.Action("AddOrEditProductVariation","ProVaration")">Add New Product Variation</a>
     </div>
     <hr />
     <table id="myTable" class="table table-hover display">
