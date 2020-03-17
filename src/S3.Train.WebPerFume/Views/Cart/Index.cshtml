@@ -1,8 +1,9 @@
 ﻿@using S3.Train.WebPerFume.Models
-@model ShoppingCartModel
+@model IList<ShoppingCartDetailModel>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    decimal total = 0;
 }
 
 <!-- Breadcrumb Section Begin -->
@@ -21,99 +22,123 @@
 </div>
 <!-- Breadcrumb Section Begin -->
 <!-- Shopping Cart Section Begin -->
-<section class="shopping-cart spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="cart-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th class="p-name">Product Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th><i class="ti-close"></i></th>
-                            </tr>
-                        </thead>
-                        @foreach (var item in Model.ShoppingCartDetails)
-                        {
-                            <tbody>
-                                <tr>
-                                    <td class="cart-pic first-row">
-                                        <img src="~/Content/img/product-men/@item.ProductVariation.Product.ImagePath" class="rounded quantity" alt="">
-                                    </td>
-                                    <td class="cart-title first-row">
-                                        <h5>@item.ProductVariation.Product.Name @item.ProductVariation.Volume</h5>
-                                    </td>
-                                    <td class="p-price first-row price">$@item.ProductVariation.Price</td>
-                                    <td class="qua-col first-row">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="number" min="1" max="@item.ProductVariation.StockQuantity" value="@item.Quantity">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="total-price first-row">$@(item.Quantity * item.ProductVariation.Price)</td>
-                                    <td class="close-td first-row">
-                                        <a href="@Url.Action("DeleteProductOnCart","Cart", new { id = item.Id})">
-                                            <i class="ti-close text-black-50"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        }
-                    </table>
-                </div>
+@if (Model.Count() > 0)
+{
+    using (Html.BeginForm("UpdateCart", "Cart", FormMethod.Post))
+    {
+        <section class="shopping-cart spad">
+            <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="cart-buttons">
-                            <a href="@Url.Action("Index","Shop")" class="primary-btn continue-shop">Continue shopping</a>
-                            <a href="#" class="primary-btn up-cart">Update cart</a>
+                    <div class="col-lg-12">
+                        <div class="cart-table">
+                            <table id="tableCart">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th class="p-name">Product Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                        <th><i class="ti-close"></i></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td class="cart-pic first-row col-lg-auto">
+                                                @Html.HiddenFor(m => Model[i].Id)
+                                                <img src="~/Content/img/product-men/@Model[i].ProductVariation.Product.ImagePath" class="rounded quantity" alt="">
+                                            </td>
+                                            <td class="cart-title first-row col-lg-auto">
+                                                <h5>@Model[i].ProductVariation.Product.Name @Model[i].ProductVariation.Volume</h5>
+                                            </td>
+                                            <td class="p-price first-row price">$ @Model[i].ProductVariation.Price</td>
+                                            <td class="qua-col first-row">
+                                                <div class="quantity">
+                                                    <div class="pro-qty">
+                                                        @Html.EditorFor(m => Model[i].Quantity, new { htmlAttributes = new {@class="quantityPro", min = 1, max = Model[i].ProductVariation.StockQuantity, @value = Model[i].Quantity } })
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="total-price first-row totalPricePro">$ @(Model[i].Quantity * Model[i].ProductVariation.Price)</td>
+                                            <td class="close-td first-row">
+                                                <a href="@Url.Action("DeleteProductOnCart", "Cart", new { id = Model[i].Id })">
+                                                    <i class="ti-close text-black-50"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        total += Convert.ToDecimal(Model[i].Quantity * Model[i].ProductVariation.Price);
+                                    }
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="discount-coupon">
-                            <h6>Discount Codes</h6>
-                            <form action="#" class="coupon-form">
-                                <input type="text" placeholder="Enter your codes">
-                                <button type="submit" class="site-btn coupon-btn">Apply</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 offset-lg-4">
-                        <div class="proceed-checkout">
-                            <ul>
-                                <li class="subtotal">Subtotal <span>$@Model.TotalPrice.ToString()</span></li>
-                                <li class="cart-total">Total <span>$@Model.TotalPrice.ToString()</span></li>
-                            </ul>
-                            <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="cart-buttons">
+                                    <a href="@Url.Action("Index", "Shop")" class="primary-btn continue-shop">Continue shopping</a>
+                                    <input type="submit" class="primary-btn up-cart" value="Update" />
+                                </div>
+                                <div class="discount-coupon">
+                                    <h6>Discount Codes</h6>
+                                    <form action="#" class="coupon-form">
+                                        <input type="text" placeholder="Enter your codes">
+                                        <button type="submit" class="site-btn coupon-btn">Apply</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 offset-lg-4">
+                                <div class="proceed-checkout">
+                                    <ul>
+                                        <li class="subtotal">Subtotal <span class="subtotal_mo">$ @total</span></li>
+                                        <li class="cart-total">Total <span class="subtotal_mo">$ @total</span></li>
+                                    </ul>
+                                    <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
+    }
+}
+else
+{
+        <div>
+            <div class="card-title d-flex justify-content-center">
+                <h2><strong>There is no product in your cart.</strong></h2>
+            </div>
+            <div class="cart-buttons d-flex justify-content-center">
+                <a href="@Url.Action("Index", "Shop")" class="primary-btn continue-shop">Continue shopping</a>
+            </div>
         </div>
-    </div>
-</section>
+}
 
 @section Scripts
 {
     <script>
-         $(".quantity").on("change",function(){ 
-            var q = $(this).val();
-            var id = $(this).attr('id').substring(41);
-            var price = $("#MainContent_CartItemGridView_txt_gia_" + id).html();
-            $("#sub_total_" + id).html(q * price);
-            count_sub_total();
-        });
-        function count_sub_total(){
-            var total = 0;
-            
-            $(".sub_total").each(function(){
-                total += parseFloat($(this).html());
-            });
-            
-            $("#MainContent_lb_tongtien").html(total);
-    }
+        $(document).ready(function () {
+            $('.quantityPro').on("change", function () {
+                var sum = parseFloat($(this).val())
+                    * parseFloat($(this).closest('tr').find('.price').not(this).text().slice(1));
 
+                var st = "$ " + sum.toFixed(2);
+
+                $(this).closest('tr').find('.totalPricePro').text(st);
+
+                count_sub_total();
+            });
+
+            function count_sub_total() {
+                var total = 0;
+
+                $(".totalPricePro").each(function () {
+                    total += parseFloat($(this).text().slice(1));
+                });
+                var st = "$ " + total.toFixed(2);
+                $(".subtotal_mo").text(st);
+            }
+        });
     </script>
 }

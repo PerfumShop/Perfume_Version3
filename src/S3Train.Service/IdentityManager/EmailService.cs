@@ -43,7 +43,34 @@ namespace S3Train.IdentityManager
 
             smtpClient.Send(msg);
 
+            //try
+            //{
+            //    var senderEmail = new MailAddress(from, "Xuan Son");
+            //    var receiverEmail = new MailAddress(to, "Receiver");
+            //    var password = "long1234";
 
+            //    var smtp = new SmtpClient
+            //    {
+            //        Host = "smtp.gmail.com",
+            //        Port = 587,
+            //        EnableSsl = true,
+            //        DeliveryMethod = SmtpDeliveryMethod.Network,
+            //        UseDefaultCredentials = false,
+            //        Credentials = new NetworkCredential(senderEmail.Address, password)
+            //    };
+            //    using (var mess = new MailMessage(senderEmail, receiverEmail)
+            //    {
+            //        Subject = subject,
+            //        Body = body
+            //    })
+            //    {
+            //        smtp.Send(mess);
+            //    }
+            //}
+            //catch
+            //{
+            //    throw new NotImplementedException();
+            //}
         }
     }
 }
