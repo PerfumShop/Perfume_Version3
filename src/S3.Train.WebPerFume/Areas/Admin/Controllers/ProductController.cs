@@ -94,7 +94,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 model.Description = product.Description;
                 model.ImagePath = product.ImagePath;
                 model.CreateDate = product.CreatedDate;
-                model.IsActive = product.IsActive;
+                model.IsActive = true;
                 return View(model);
             }
             else
@@ -239,7 +239,8 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 SKU = "Empty",
                 StockQuantity = 0,
                 CreatedDate = DateTime.Now,
-                IsActive = true
+                IsActive = true,
+                DiscountPrice = 0
             };
 
             _productVariationService.Insert(item);

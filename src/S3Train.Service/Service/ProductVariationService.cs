@@ -43,5 +43,10 @@ namespace S3Train.Service
         {
             return this.EntityDbSet.Where(x => x.Product_Id == ProductId).Include(p=>p.ProductImage).ToList();
         }
+
+        public string GetVolumeFisrtById(Guid id)
+        {
+            return this.EntityDbSet.FirstOrDefault(x => x.Product_Id == id).Volume;
+        }
     }
 }

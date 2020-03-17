@@ -58,6 +58,11 @@
     <Compile Include="Search\SearchViewModel.cs" />
     <Compile Include="User\UserViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\S3Train.Domain\S3Train.Domain.csproj">
+      <Project>{e1778609-49e4-4de5-a064-570f6e8bcd0f}</Project>
+      <Name>S3Train.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

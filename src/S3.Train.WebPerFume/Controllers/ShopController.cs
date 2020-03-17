@@ -72,7 +72,14 @@ namespace S3.Train.WebPerFume.Controllers
         /// <returns>View with model info product</returns>
         public ActionResult ProductDetail(Guid id, string volume)
         {
-            var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, volume));
+            string vo;
+            // get volume
+            if(volume==null)
+                vo = _productVariationService.GetVolumeFisrtById(id);
+            else
+                vo = volume;
+
+            var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, vo));
 
             var product = _productService.GetProductById(id);
             ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id).AsQueryable());
