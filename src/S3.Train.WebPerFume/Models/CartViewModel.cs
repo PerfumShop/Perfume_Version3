@@ -38,7 +38,7 @@ namespace S3.Train.WebPerFume.Models
         public Guid ShoppingCart_Id { get; set; }
         public int Quantity { get; set; }
         public Guid ProductVariation_Id { get; set; }
-
+        public decimal TotalPrice { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? UpdatedDate { get; set; }
 

@@ -68,7 +68,7 @@
                                                 </a>
                                             </td>
                                         </tr>
-                                        total += Convert.ToDecimal(Model[i].Quantity * Model[i].ProductVariation.Price);
+                                        total += Model[i].TotalPrice;
                                     }
                                 </tbody>
                             </table>
@@ -90,8 +90,8 @@
                             <div class="col-lg-4 offset-lg-4">
                                 <div class="proceed-checkout">
                                     <ul>
-                                        <li class="subtotal">Subtotal <span class="subtotal_mo">$ @total</span></li>
-                                        <li class="cart-total">Total <span class="subtotal_mo">$ @total</span></li>
+                                        <li class="subtotal">Subtotal <span class="subtotal_mo">@string.Format("{0:C}", (total))</span></li>
+                                        <li class="cart-total">Total <span class="subtotal_mo">@string.Format("{0:C}", (total))</span></li>
                                     </ul>
                                     <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
                                 </div>

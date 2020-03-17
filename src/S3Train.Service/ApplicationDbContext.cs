@@ -91,6 +91,7 @@ namespace S3Train.Domain
 
             modelBuilder.Entity<ShoppingCartDetail>().ToTable("ShoppingCartDetail");
             modelBuilder.Entity<ShoppingCartDetail>().Property(x => x.Quantity).IsRequired();
+            modelBuilder.Entity<ShoppingCartDetail>().Property(x => x.TotalPrice).IsRequired();
 
             modelBuilder.Entity<Order>().ToTable("Order");
             modelBuilder.Entity<Order>().Property(x => x.DeliveryAddress).HasMaxLength(60).IsRequired();
