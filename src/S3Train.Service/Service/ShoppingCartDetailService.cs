@@ -15,6 +15,13 @@ namespace S3Train.Service
         {
         }
 
+        public ICollection<ShoppingCartDetail> GetAllByCartId(Guid id)
+        {
+            var query = this.EntityDbSet.Include(p => p.ProductVariation);
+            var result = query.Where(x => x.ShoppingCart_Id == id);
+            return result.ToList();
+        }
+
         public ShoppingCartDetail GetByProductIdAndCartShoppingCartId(Guid productId, Guid shoppingCarId)
         {
             var query = this.EntityDbSet.Include(p => p.ShoppingCart);

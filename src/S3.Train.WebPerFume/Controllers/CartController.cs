@@ -18,19 +18,37 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IShoppingCartDetailService _shoppingCartDetailService;
 
+        public CartController()
+        {
+
+        }
+
+        public CartController(IProductService productService, IProductVariationService productVariationService,
+            IShoppingCartService shoppingCartService, IShoppingCartDetailService shoppingCartDetailService)
+        {
+            _productService = productService;
+            _productVariationService = productVariationService;
+            _shoppingCartService = shoppingCartService;
+            _shoppingCartDetailService = shoppingCartDetailService;
+        }
+
         // GET: Cart
         public ActionResult Index()
         {
-            return View();
+            var cart = GetOrSetShoppingCart();
+            var model = GetShoppingCartModel(_shoppingCartService.GetShoppingCartByUserId(cart.UserId));
+            return View(model);
         }
 
-
-        public ActionResult AddProductToCart(Guid proVaId, int quantity)
+        [HttpPost]
+        public ActionResult AddProductToCart(string proVaId, int quantity)
         {
-            var shoppingCart = CreateShoppingCart();
-            var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(proVaId, shoppingCart.Id);
+            var shoppingCart = GetOrSetShoppingCart();
+            var id = Guid.Parse(proVaId);
+            var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(id, shoppingCart.Id);
+            var productVa = _productVariationService.GetById(id);
 
-            if(shoppingCartDetail != null)
+            if (shoppingCartDetail != null)
             {
                 // update quantity and update day
                 shoppingCartDetail.Quantity = quantity;
@@ -45,16 +63,32 @@ namespace S3.Train.WebPerFume.Controllers
                 {
                     Id = Guid.NewGuid(),
                     ShoppingCart_Id = shoppingCart.Id,
-                    ProductVariation_Id = proVaId,
+                    ProductVariation_Id = id,
                     Quantity = quantity,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
                 };
                 _shoppingCartDetailService.Insert(cartDetail);
             }
-            return View();
+
+            // set total price shoppng cart
+            if (shoppingCart.ShoppingCartDetails != null)
+            {
+                shoppingCart.TotalPrice = TotalPrice(shoppingCart.ShoppingCartDetails);
+            }
+            _shoppingCartService.Update(shoppingCart);
+
+            return RedirectToAction("Index");
         }
 
+        public ActionResult DeleteProductOnCart(Guid id)
+        {
+            var model = _shoppingCartDetailService.GetById(id);
+            if (model != null)
+                _shoppingCartDetailService.Delete(model);
+
+            return RedirectToAction("Index");
+        }
         /// <summary>
         /// Checked User Auth
         /// </summary>
@@ -75,7 +109,7 @@ namespace S3.Train.WebPerFume.Controllers
         private string CheckedCookie(string name)
         {
             var cookie = Request.Cookies[name];
-            if(cookie != null)
+            if (cookie != null)
             {
                 return cookie.Value;
             }
@@ -85,7 +119,7 @@ namespace S3.Train.WebPerFume.Controllers
                 {
                     Value = CheckedUserAuth()
                 };
-                userId.Expires.AddMinutes(3); // Cookie will be Expires after 3 minute
+                userId.Expires.AddDays(3); // Cookie will be Expires after 3 day
                 Response.Cookies.Add(userId);
 
                 return userId.Value;
@@ -95,12 +129,12 @@ namespace S3.Train.WebPerFume.Controllers
         /// <summary>
         /// Create Shopping Cart
         /// </summary>
-        /// <returns>Shopping Cart Id</returns>
-        private ShoppingCart CreateShoppingCart()
+        /// <returns>Shopping Cart</returns>
+        private ShoppingCart GetOrSetShoppingCart()
         {
             var userId = CheckedCookie("UserId");
             var shoppingCart = _shoppingCartService.GetShoppingCartByUserId(userId);
-            if(shoppingCart != null)
+            if (shoppingCart != null)
             {
                 return shoppingCart;
             }
@@ -119,6 +153,53 @@ namespace S3.Train.WebPerFume.Controllers
 
                 return model;
             }
+        }
+
+        /// <summary>
+        /// Total price
+        /// </summary>
+        /// <param name="shoppingCartDetails">List shoppingCartDetail</param>
+        /// <returns>totalPrice</returns>
+        private decimal TotalPrice(ICollection<ShoppingCartDetail> shoppingCartDetails)
+        {
+            decimal totalPrice = 0;
+            foreach(var item in shoppingCartDetails)
+            {
+                totalPrice = totalPrice + (item.ProductVariation.Price * item.Quantity);
+            }
+            return totalPrice;
+        }
+
+        private IList<ShoppingCartDetailModel> GetShoppingCartDetailModels(IList<ShoppingCartDetail> shoppingCartDetails)
+        {
+            return shoppingCartDetails.Select(x => new ShoppingCartDetailModel
+            {
+                Id = x.Id,
+                CreatedDate = x.CreatedDate,
+                ProductVariation = x.ProductVariation,
+                ProductVariation_Id = x.ProductVariation_Id,
+                Quantity = x.Quantity,
+                ShoppingCart = x.ShoppingCart,
+                ShoppingCart_Id = x.ShoppingCart_Id,
+                UpdatedDate = x.UpdatedDate
+            }).OrderBy(p => p.CreatedDate).ToList();
+        }
+
+        private ShoppingCartModel GetShoppingCartModel(ShoppingCart shoppingCart)
+        {
+            var model = new ShoppingCartModel
+            {
+                Id = shoppingCart.Id,
+                CreatedDate = shoppingCart.CreatedDate,
+                UserId = shoppingCart.UserId,
+                OrderDate = shoppingCart.OrderDate,
+                Orders = shoppingCart.Orders,
+                ShoppingCartDetails = _shoppingCartDetailService.GetAllByCartId(shoppingCart.Id),
+                TotalPrice = shoppingCart.TotalPrice,
+                UpdatedDate = shoppingCart.UpdatedDate
+                
+            };
+            return model;
         }
     }
 }

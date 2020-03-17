@@ -12,6 +12,12 @@ namespace S3.Train.WebPerFume.Models
         public virtual ICollection<ShoppingCart> ShoppingCarts { get; set; }
     }
 
+    public class AddProductToCartModel
+    {
+        public Guid Id { get; set; }
+        public int Quantity { get; set; }
+    }
+
     public class ShoppingCartModel
     {
         public Guid Id { get; set; }
@@ -20,7 +26,7 @@ namespace S3.Train.WebPerFume.Models
         public string UserId { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<ShoppingCartDetail> ShoppingCartDetails { get; set; }
@@ -34,7 +40,7 @@ namespace S3.Train.WebPerFume.Models
         public Guid ProductVariation_Id { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public virtual ShoppingCart ShoppingCart { get; set; }
         public virtual ProductVariation ProductVariation { get; set; }

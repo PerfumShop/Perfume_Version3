@@ -11,5 +11,7 @@ namespace S3Train.Contract
     {
         ShoppingCartDetail GetByProductIdAndCartShoppingCartId(Guid productId, Guid shoppingCarId);
         decimal? GetTotalPriceItem(Guid id);
+        ICollection<ShoppingCartDetail> GetAllByCartId(Guid id);
+
     }
 }

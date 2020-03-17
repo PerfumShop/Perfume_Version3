@@ -1,4 +1,5 @@
-﻿
+﻿@using S3.Train.WebPerFume.Models
+@model ShoppingCartModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
@@ -36,62 +37,39 @@
                                 <th><i class="ti-close"></i></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="cart-pic first-row"><img src="~/Content/img/p-burberry/burberry.jpg" alt=""></td>
-                                <td class="cart-title first-row">
-                                    <h5>Pure Pineapple</h5>
-                                </td>
-                                <td class="p-price first-row">$60.00</td>
-                                <td class="qua-col first-row">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
+                        @foreach (var item in Model.ShoppingCartDetails)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td class="cart-pic first-row">
+                                        <img src="~/Content/img/product-men/@item.ProductVariation.Product.ImagePath" class="rounded quantity" alt="">
+                                    </td>
+                                    <td class="cart-title first-row">
+                                        <h5>@item.ProductVariation.Product.Name @item.ProductVariation.Volume</h5>
+                                    </td>
+                                    <td class="p-price first-row price">$@item.ProductVariation.Price</td>
+                                    <td class="qua-col first-row">
+                                        <div class="quantity">
+                                            <div class="pro-qty">
+                                                <input type="number" min="1" max="@item.ProductVariation.StockQuantity" value="@item.Quantity">
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td class="total-price first-row">$60.00</td>
-                                <td class="close-td first-row"><i class="ti-close"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="cart-pic"><img src="~/Content/img/p-gucci/guccibloom.jpg" alt=""></td>
-                                <td class="cart-title">
-                                    <h5>American lobster</h5>
-                                </td>
-                                <td class="p-price">$60.00</td>
-                                <td class="qua-col">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="total-price">$60.00</td>
-                                <td class="close-td"><i class="ti-close"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="cart-pic"><img src="~/Content/img/p-carven/Carven Pour Homme.jpg" alt=""></td>
-                                <td class="cart-title">
-                                    <h5>Guangzhou sweater</h5>
-                                </td>
-                                <td class="p-price">$60.00</td>
-                                <td class="qua-col">
-                                    <div class="quantity">
-                                        <div class="pro-qty">
-                                            <input type="text" value="1">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="total-price">$60.00</td>
-                                <td class="close-td"><i class="ti-close"></i></td>
-                            </tr>
-                        </tbody>
+                                    </td>
+                                    <td class="total-price first-row">$@(item.Quantity * item.ProductVariation.Price)</td>
+                                    <td class="close-td first-row">
+                                        <a href="@Url.Action("DeleteProductOnCart","Cart", new { id = item.Id})">
+                                            <i class="ti-close text-black-50"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
                     </table>
                 </div>
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="cart-buttons">
-                            <a href="#" class="primary-btn continue-shop">Continue shopping</a>
+                            <a href="@Url.Action("Index","Shop")" class="primary-btn continue-shop">Continue shopping</a>
                             <a href="#" class="primary-btn up-cart">Update cart</a>
                         </div>
                         <div class="discount-coupon">
@@ -105,8 +83,8 @@
                     <div class="col-lg-4 offset-lg-4">
                         <div class="proceed-checkout">
                             <ul>
-                                <li class="subtotal">Subtotal <span>$240.00</span></li>
-                                <li class="cart-total">Total <span>$240.00</span></li>
+                                <li class="subtotal">Subtotal <span>$@Model.TotalPrice.ToString()</span></li>
+                                <li class="cart-total">Total <span>$@Model.TotalPrice.ToString()</span></li>
                             </ul>
                             <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
                         </div>
@@ -116,3 +94,26 @@
         </div>
     </div>
 </section>
+
+@section Scripts
+{
+    <script>
+         $(".quantity").on("change",function(){ 
+            var q = $(this).val();
+            var id = $(this).attr('id').substring(41);
+            var price = $("#MainContent_CartItemGridView_txt_gia_" + id).html();
+            $("#sub_total_" + id).html(q * price);
+            count_sub_total();
+        });
+        function count_sub_total(){
+            var total = 0;
+            
+            $(".sub_total").each(function(){
+                total += parseFloat($(this).html());
+            });
+            
+            $("#MainContent_lb_tongtien").html(total);
+    }
+
+    </script>
+}

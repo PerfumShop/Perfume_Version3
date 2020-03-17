@@ -16,7 +16,9 @@ namespace S3Train.Service
         public ShoppingCart GetShoppingCartByUserId(string userId)
         {
             var query = this.EntityDbSet.Include(p => p.ShoppingCartDetails);
-            return query.FirstOrDefault(x => x.UserId == userId);
+            var result = query.FirstOrDefault(x => x.UserId == userId);
+
+            return result;
         }
     }
 }
