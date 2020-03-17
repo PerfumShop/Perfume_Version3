@@ -93,56 +93,6 @@ namespace S3Train.Service
 
             return query;
         }
-
-        public IQueryable<Product> GetProducts(int? currentPage, string searchFilter, string searchValue, string sortOrder)
-        {
-            IQueryable<Product> products = Gets();
-            if (!String.IsNullOrEmpty(searchFilter))
-            {
-                switch (searchFilter)
-                {
-                    case "volume":
-                        products = Gets(f => f.ProductVariations.FirstOrDefault().Volume == searchValue)
-                    .Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations);
-                        break;
-                    case "category":
-                        products = Gets(f => f.Categories.FirstOrDefault().Name == searchValue)
-                    .Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations);
-                        break;
-                }
-            }
-            switch (sortOrder)
-            {
-                case "name":
-                    products = products.OrderBy(s => s.Name);
-                    break;
-                case "name_desc":
-                    products = products.OrderByDescending(s => s.Name);
-                    break;
-                case "price":
-                    products = products.OrderBy(s => s.ProductVariations.FirstOrDefault().Price);
-                    break;
-                case "price_desc":
-                    products = products.OrderByDescending(s => s.ProductVariations.FirstOrDefault().Price);
-                    break;
-                case "category":
-                    products = products.OrderBy(s => s.Categories.FirstOrDefault().Name);
-                    break;
-                case "category_desc":
-                    products = products.OrderByDescending(s => s.Categories.FirstOrDefault().Name);
-                    break;
-                case "brand":
-                    products = products.OrderBy(s => s.Brand.Name);
-                    break;
-                case "brand_desc":
-                    products = products.OrderByDescending(s => s.Brand.Name);
-                    break;
-                default:
-                    products = products.OrderBy(s => s.Name);
-                    break;
-            }
-            return products;
-        }
         public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
         {
             return orderBy(EntityDbSet).Include(c => c.Categories).Include(b => b.Brand).Include(v => v.ProductVariations).ToList();

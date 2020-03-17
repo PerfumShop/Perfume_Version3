@@ -49,6 +49,7 @@
     <Compile Include="Cart\ShoppingCartItemModel.cs" />
     <Compile Include="Category\CategoryModel.cs" />
     <Compile Include="Customer\CustomerModel.cs" />
+    <Compile Include="ListSettingModel.cs" />
     <Compile Include="Product\ProductListModel.cs" />
     <Compile Include="Product\ProductModel.cs" />
     <Compile Include="Product\ProductVarModel.cs" />

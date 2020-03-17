@@ -11,7 +11,7 @@ namespace S3.Train.WebPerFume.Models
     {
         public CustomerModel customerModel { get; set; }
         public IList<ShoppingCartItemModel> shoppingCartItems { get; set; }
-        public decimal SubTotal { get; set; }
-        public decimal Total { get; set; }
+        public decimal? SubTotal { get; set; }
+        public decimal? Total { get; set; }
     }
 }

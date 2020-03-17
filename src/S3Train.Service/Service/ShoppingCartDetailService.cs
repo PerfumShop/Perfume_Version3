@@ -28,5 +28,18 @@ namespace S3Train.Service
             var result = query.FirstOrDefault(p => p.ShoppingCart_Id == shoppingCarId && p.ProductVariation_Id == productId);
             return result;
         }
+
+        public decimal? GetTotalPriceItem(Guid id)
+        {
+            ShoppingCartDetail shoppingCartDetail = EntityDbSet.SingleOrDefault(x => x.Id == id);
+            if (shoppingCartDetail.ProductVariation.DiscountPrice != null)
+            {
+                return shoppingCartDetail.Quantity * shoppingCartDetail.ProductVariation.DiscountPrice;
+            }
+            else
+            {
+                return shoppingCartDetail.Quantity * shoppingCartDetail.ProductVariation.Price;
+            }
+        }
     }
 }

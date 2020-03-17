@@ -314,6 +314,10 @@
     <Compile Include="Migrations\202003040858215_AddcolumnInUserAndRole.designer.cs">
       <DependentUpon>202003040858215_AddcolumnInUserAndRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003160316035_NullDisCountPrice.cs" />
+    <Compile Include="Migrations\202003160316035_NullDisCountPrice.designer.cs">
+      <DependentUpon>202003160316035_NullDisCountPrice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CartViewModel.cs" />
@@ -324,6 +328,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CheckoutService.cs" />
     <Compile Include="Services\ICheckoutService.cs" />
+    <Compile Include="Services\IProductListViewService.cs" />
+    <Compile Include="Services\IShopService.cs" />
+    <Compile Include="Services\ProductListViewService.cs" />
+    <Compile Include="Services\ShopService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1159,7 +1167,6 @@
     <Content Include="Areas\Admin\Views\User\Update.cshtml" />
     <Content Include="Areas\Admin\Views\Product\DetailProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayProVaTablePartial.cshtml" />
-    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -1420,6 +1427,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003040858215_AddcolumnInUserAndRole.resx">
       <DependentUpon>202003040858215_AddcolumnInUserAndRole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003160316035_NullDisCountPrice.resx">
+      <DependentUpon>202003160316035_NullDisCountPrice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

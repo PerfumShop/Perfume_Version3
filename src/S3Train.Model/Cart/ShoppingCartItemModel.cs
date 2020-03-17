@@ -11,6 +11,6 @@ namespace S3Train.Model.Cart
         public string ProductName { get; set; }
         public string Volume { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace S3.Train.WebPerFume.Services
 {
     public interface ICheckoutService
     {
-        CheckoutViewModel GetCheckoutModel(object cookie);
-        bool SaveOrder(CheckoutViewModel model);
+        CheckoutViewModel GetCheckoutModel(string userId);
+        bool SaveOrder(CheckoutViewModel model, string userId);
     }
 }

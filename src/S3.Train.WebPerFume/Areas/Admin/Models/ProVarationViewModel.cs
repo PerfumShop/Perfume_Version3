@@ -26,7 +26,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         public virtual ICollection<ProductImage> ProductImage { get; set; }
 
         [Display(Name = "Discounrt Price")]
-        public decimal DiscountPrice { get; set; }
+        public decimal? DiscountPrice { get; set; }
 
         public string SKU { get; set; }
 

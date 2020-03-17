@@ -8,7 +8,7 @@
             <div class="col-lg-4 col-sm-6">
                 <div class="product-item">
                     <div class="pi-pic">
-                        <img src="~/Content/img/product-girls/@item.ImagePath" alt="">
+                        <img src="~/Content/img/product-men/@item.ImagePath" alt="">
                         <div class="icon">
                             <i class="icon_heart_alt"></i>
                         </div>
@@ -35,15 +35,18 @@
     <div class="pageging">
         <div colspan="8">
             Page @(Model.productModels.PageCount < Model.productModels.PageNumber ? 0 : Model.productModels.PageNumber) of @Model.productModels.PageCount
-            @Html.PagedListPager(Model.productModels, currentPage => Url.Action("ProductList", new { currentPage, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter}), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions()
-       {
-           LiElementClasses = new string[] { "page-item" },
-           PageClasses = new string[] { "page-link" },
-           DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-           DisplayLinkToLastPage = PagedListDisplayMode.Always,
-           MaximumPageNumbersToDisplay = 5,
-           EllipsesElementClass = "page-link",
-       }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "productlist" }))
+            @Html.PagedListPager(Model.productModels, currentPage => Url.Action("ProductList", new { currentPage,
+           sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, currentFilterValue  = ViewBag.CurrentFilterValue
+       }),
+           PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions()
+           {
+               LiElementClasses = new string[] { "page-item" },
+               PageClasses = new string[] { "page-link" },
+               DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+               DisplayLinkToLastPage = PagedListDisplayMode.Always,
+               MaximumPageNumbersToDisplay = 5,
+               EllipsesElementClass = "page-link",
+           }, new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "productlist" }))
         </div>
     </div>
 </div>
