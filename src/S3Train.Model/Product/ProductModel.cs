@@ -8,6 +8,7 @@ namespace S3Train.Model.Product
 {
     public class ProductModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public decimal Price { get; set; }

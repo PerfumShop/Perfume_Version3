@@ -31,10 +31,10 @@ namespace S3Train.Service
 
         public decimal? GetTotalPriceItem(Guid id)
         {
-            ShoppingCartDetail shoppingCartDetail = EntityDbSet.SingleOrDefault(x => x.Id == id);
+            ShoppingCartDetail shoppingCartDetail = EntityDbSet.Include(X=>X.ProductVariation).SingleOrDefault(x => x.Id == id);
             if (shoppingCartDetail.ProductVariation.DiscountPrice != null)
             {
-                return shoppingCartDetail.Quantity * shoppingCartDetail.ProductVariation.DiscountPrice;
+                return shoppingCartDetail.Quantity * shoppingCartDetail.ProductVariation.Price;
             }
             else
             {

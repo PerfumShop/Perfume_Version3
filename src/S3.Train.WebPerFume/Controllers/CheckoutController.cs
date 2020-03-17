@@ -52,7 +52,7 @@ namespace S3.Train.WebPerFume.Controllers
         }
         public ActionResult Success()
         {
-            return View("success");
+            return View("OrderSuccess");
         }
 
     }
