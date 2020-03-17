@@ -48,13 +48,14 @@ namespace S3.Train.WebPerFume.Controllers
             var id = Guid.Parse(proVaId);
             var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(id, shoppingCart.Id);
             var productVa = _productVariationService.GetById(id);
+            var productPrice = GetProductPrice(productVa); // get price of product
 
             if (shoppingCartDetail != null)
             {
                 // update quantity and update day
                 shoppingCartDetail.Quantity = quantity;
                 shoppingCartDetail.UpdatedDate = DateTime.Now;
-
+                shoppingCartDetail.TotalPrice = productPrice * quantity;
                 _shoppingCartDetailService.Update(shoppingCartDetail);
             }
             else
@@ -67,6 +68,7 @@ namespace S3.Train.WebPerFume.Controllers
                     ProductVariation_Id = id,
                     Quantity = quantity,
                     CreatedDate = DateTime.Now,
+                    TotalPrice = productPrice * quantity,
                     IsActive = true,
                 };
                 _shoppingCartDetailService.Insert(cartDetail);
@@ -83,8 +85,10 @@ namespace S3.Train.WebPerFume.Controllers
                 foreach (var item in model)
                 {
                     var pro = _shoppingCartDetailService.GetById(item.Id);
+                    var proVa = _productVariationService.GetById(pro.ProductVariation_Id);
                     pro.Quantity = item.Quantity;
                     pro.UpdatedDate = DateTime.Now;
+                    pro.TotalPrice = item.Quantity * GetProductPrice(proVa);
                     _shoppingCartDetailService.Update(pro);
                 }
             }
@@ -142,7 +146,7 @@ namespace S3.Train.WebPerFume.Controllers
         }
 
         /// <summary>
-        /// Create Shopping Cart
+        /// Get Or Set ShoppingCart
         /// </summary>
         /// <returns>Shopping Cart</returns>
         private ShoppingCart GetOrSetShoppingCart()
@@ -171,18 +175,16 @@ namespace S3.Train.WebPerFume.Controllers
         }
 
         /// <summary>
-        /// Total price
+        /// Product Price
         /// </summary>
-        /// <param name="shoppingCartDetails">List shoppingCartDetail</param>
-        /// <returns>totalPrice</returns>
-        private decimal TotalPrice(ICollection<ShoppingCartDetail> shoppingCartDetails)
+        /// <param name="productVariation"></param>
+        /// <returns>price</returns>
+        private decimal GetProductPrice(ProductVariation productVariation)
         {
-            decimal totalPrice = 0;
-            foreach(var item in shoppingCartDetails)
-            {
-                totalPrice = totalPrice + (item.ProductVariation.Price * item.Quantity);
-            }
-            return totalPrice;
+            if (productVariation.DiscountPrice > 0 && productVariation.DiscountPrice != null)
+                return Convert.ToDecimal(productVariation.DiscountPrice);
+            else
+                return productVariation.Price;
         }
 
         private IList<ShoppingCartDetailModel> GetShoppingCartDetailModels(ICollection<ShoppingCartDetail> shoppingCartDetails)
@@ -196,7 +198,8 @@ namespace S3.Train.WebPerFume.Controllers
                 Quantity = x.Quantity,
                 ShoppingCart = x.ShoppingCart,
                 ShoppingCart_Id = x.ShoppingCart_Id,
-                UpdatedDate = x.UpdatedDate
+                UpdatedDate = x.UpdatedDate,
+                TotalPrice = x.TotalPrice
             }).OrderBy(p => p.CreatedDate).ToList();
         }
 

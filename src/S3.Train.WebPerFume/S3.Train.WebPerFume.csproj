@@ -21,9 +21,12 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44393</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -314,6 +317,10 @@
     <Compile Include="Migrations\202003160316035_NullDisCountPrice.cs" />
     <Compile Include="Migrations\202003160316035_NullDisCountPrice.designer.cs">
       <DependentUpon>202003160316035_NullDisCountPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003170802487_AddColumnTotalPriceOnShoppingCartDetail.cs" />
+    <Compile Include="Migrations\202003170802487_AddColumnTotalPriceOnShoppingCartDetail.designer.cs">
+      <DependentUpon>202003170802487_AddColumnTotalPriceOnShoppingCartDetail.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1428,6 +1435,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003160316035_NullDisCountPrice.resx">
       <DependentUpon>202003160316035_NullDisCountPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003170802487_AddColumnTotalPriceOnShoppingCartDetail.resx">
+      <DependentUpon>202003170802487_AddColumnTotalPriceOnShoppingCartDetail.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
