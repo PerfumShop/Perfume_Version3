@@ -21,7 +21,7 @@ namespace S3.Train.WebPerFume.Services
         public ProductListModel GetProductListViewModel(int? currentPage, string searchFilter, string searchValue, string sortOrder)
         {
             ProductListModel result = new ProductListModel();
-            int pageSize = 6;
+            int pageSize = 9;
             int pageNumber = (currentPage ?? 1);
             IList<Product> products = GetProducts(currentPage, searchFilter, searchValue, sortOrder).ToList();
             result.productModels = products.Select(x => new ProductModel
