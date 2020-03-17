@@ -37,7 +37,8 @@ namespace S3.Train.WebPerFume.Controllers
         {
             var cart = GetOrSetShoppingCart();
             var model = GetShoppingCartModel(_shoppingCartService.GetShoppingCartByUserId(cart.UserId));
-            return View(model);
+            var model2 = GetShoppingCartDetailModels(model.ShoppingCartDetails);
+            return View(model2);
         }
 
         [HttpPost]
@@ -71,16 +72,30 @@ namespace S3.Train.WebPerFume.Controllers
                 _shoppingCartDetailService.Insert(cartDetail);
             }
 
-            // set total price shoppng cart
-            if (shoppingCart.ShoppingCartDetails != null)
-            {
-                shoppingCart.TotalPrice = TotalPrice(shoppingCart.ShoppingCartDetails);
-            }
-            _shoppingCartService.Update(shoppingCart);
-
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult UpdateCart(List<ShoppingCartDetailModel> model)
+        {
+            if (model != null)
+            {
+                foreach (var item in model)
+                {
+                    var pro = _shoppingCartDetailService.GetById(item.Id);
+                    pro.Quantity = item.Quantity;
+                    pro.UpdatedDate = DateTime.Now;
+                    _shoppingCartDetailService.Update(pro);
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Delete product in cart by shopping cart detail id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult DeleteProductOnCart(Guid id)
         {
             var model = _shoppingCartDetailService.GetById(id);
@@ -170,7 +185,7 @@ namespace S3.Train.WebPerFume.Controllers
             return totalPrice;
         }
 
-        private IList<ShoppingCartDetailModel> GetShoppingCartDetailModels(IList<ShoppingCartDetail> shoppingCartDetails)
+        private IList<ShoppingCartDetailModel> GetShoppingCartDetailModels(ICollection<ShoppingCartDetail> shoppingCartDetails)
         {
             return shoppingCartDetails.Select(x => new ShoppingCartDetailModel
             {
