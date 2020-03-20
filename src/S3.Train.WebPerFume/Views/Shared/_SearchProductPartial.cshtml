@@ -1,8 +1,6 @@
-﻿@using S3Train.Model.Search
-@model SearchViewModel
-
-@using (Html.BeginForm("SearchProduct", "Home", FormMethod.Post))
+﻿
+@using (Html.BeginForm("SearchProduct", "Home"))
 {
-     @Html.TextBoxFor(m => m.SearchText,new { placeholder = "What do you need?" })
+     <input type="text" placeholder="What do you need?" name="SearchText">
      <button type="submit"><i class="ti-search"></i></button>
 }

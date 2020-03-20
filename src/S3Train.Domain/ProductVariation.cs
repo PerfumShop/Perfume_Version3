@@ -19,5 +19,6 @@ namespace S3Train.Domain
         public virtual Product Product { get; set; }
         public virtual ICollection<ProductImage> ProductImage { get; set; }
         public virtual ICollection<ShoppingCartDetail> ShoppingCartDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

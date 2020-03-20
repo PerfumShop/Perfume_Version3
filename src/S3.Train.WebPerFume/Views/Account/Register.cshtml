@@ -35,13 +35,28 @@
                                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
                             <div class="group-input">
+                                <label for="username">Full Name *</label>
+                                @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", placeholder = "Full Name" })
+                                @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="group-input">
+                                <label for="username">Phone Number *</label>
+                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Phone Number" })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="group-input">
+                                <label for="username">Address *</label>
+                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="group-input">
                                 <label for="pass">Password *</label>
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Confirm PassWord" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "PassWord" })
                                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                             </div>
                             <div class="group-input">
                                 <label for="con-pass">Confirm Password *</label>
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "PassWord" })
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm PassWord" })
                                 @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                             </div>
                             <br />
@@ -49,7 +64,7 @@
                             <button type="submit" class="site-btn register-btn btn-block">REGISTER</button>
                         </form>
                         <div class="switch-login">
-                            <a href="./login.html" class="or-login">Or Login</a>
+                            <a href="@Url.Action("Login","Account")" class="or-login">Or Login</a>
                         </div>
                     </div>
                 </div>

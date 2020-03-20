@@ -22,16 +22,26 @@ namespace S3.Train.WebPerFume.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private readonly IUserService _userService;
+        private readonly IShoppingCartService _shoppingCartService;
+        private readonly IShoppingCartDetailService _shoppingCartDetailService;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IUserService userService )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IUserService userService,
+            IShoppingCartService shoppingCartService)
         {
             _userService = userService;
             UserManager = userManager;
             SignInManager = signInManager;
+            _shoppingCartService = shoppingCartService;
+        }
+
+        public AccountController(IShoppingCartService shoppingCartService, IShoppingCartDetailService shoppingCartDetailService)
+        {
+            _shoppingCartService = shoppingCartService;
+            _shoppingCartDetailService = shoppingCartDetailService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -64,6 +74,7 @@ namespace S3.Train.WebPerFume.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+
             return View();
         }
 
@@ -83,12 +94,26 @@ namespace S3.Train.WebPerFume.Controllers
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             ApplicationUser signedUser = UserManager.FindByEmail(model.Email);
             var result = await SignInManager.PasswordSignInAsync(signedUser.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+            var oldCookie = Request.Cookies["UserId"];
+            if (oldCookie != null)
+            {
+                UpdateIdCartDetail(oldCookie.Value, Guid.Parse(signedUser.Id));
+                var cookie = new HttpCookie("UserId")
+                {
+                    Value = signedUser.Id
+                };
+                
+                cookie.Expires.AddDays(3); // Cookie will be Expires after 3 day
+                Response.Cookies.Add(cookie);
+            }
+
             switch (result)
             {
                 case SignInStatus.Success:
                     {
                         if (UserManager.IsInRole(signedUser.Id,"Admin"))
-                            return View("~/Areas/Admin/Views/HomeAdmin/Index.cshtml");
+                            return RedirectToAction("Index","HomeAdmin",new { area = "Admin"});
                         else
                             return RedirectToAction("Index","Home");
                     }
@@ -100,6 +125,38 @@ namespace S3.Train.WebPerFume.Controllers
                 default:
                     ModelState.AddModelError("LoginViewModel", "Email or password not true.");
                     return View(model);
+            }
+        }
+
+        private void UpdateIdCartDetail(string oldID, Guid newId)
+        {
+            var oldCart = _shoppingCartService.GetShoppingCartByUserId(oldID); // search old cart
+            var newCart = _shoppingCartService.GetShoppingCartByUserId(newId.ToString()); // search new cart
+            var cartDetails = _shoppingCartDetailService.GetAllByCartId(oldCart.Id); // filter shoppingCartDetails by cart id
+
+            // if new cart == null should i create a new cart with userId = user was login
+            if(newCart == null)
+            {
+                var model = new ShoppingCart
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = newId.ToString(),
+                    OrderDate = DateTime.Now,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true
+                };
+                _shoppingCartService.Insert(model);
+                newCart = model;
+            }
+
+            // Bring all product in old cart to new cart
+            if(cartDetails != null)
+            {
+                foreach(var item in cartDetails)
+                {
+                    item.ShoppingCart_Id = newCart.Id;
+                    _shoppingCartDetailService.Update(item);
+                }
             }
         }
 
@@ -166,9 +223,12 @@ namespace S3.Train.WebPerFume.Controllers
                 var user = new ApplicationUser
                 {
                     Id = Guid.NewGuid().ToString(),
-                    UserName = model.Email,
+                    UserName = model.FullName,
                     Email = model.Email,
-                    Avatar = "defaultAvatar.jpg"
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber,
+                    Address = model.Address,
+                    Avatar = "defaultAvatar.jpg",
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -185,10 +245,10 @@ namespace S3.Train.WebPerFume.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    string html = "Please confirm your account by clicking <a class=\"btn btn-sucess\" href=\"" + callbackUrl + "\">Confirm</a>";
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", html);
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //string html = "Please confirm your account by clicking <a class=\"btn btn-sucess\" href=\"" + callbackUrl + "\">Confirm</a>";
+                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", html);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -425,6 +485,14 @@ namespace S3.Train.WebPerFume.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            // remove cookie
+            if(Request.Cookies["UserId"] != null)
+            {
+                var c = new HttpCookie("UserId");
+                c.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(c);
+            }
             return RedirectToAction("Index", "Home");
         }
 

@@ -43,7 +43,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 DeliveryName = order.DeliveryName,
                 DeliveryPhone = order.DeliveryPhone,
                 OrderDate = order.OrderDate,
-                ShoppingCart = _shoppingcartService.GetById(order.ShoppingCart_Id),
                 CreateDate = order.CreatedDate,
                 IsActive = order.IsActive
             };
@@ -97,7 +96,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 order.DeliveryAddress = model.DeliveryAddress;
                 order.DeliveryPhone = model.DeliveryPhone;
                 order.OrderDate = DateTime.Now;
-                order.ShoppingCart_Id = model.ShoppingCart_Id;
                 order.IsActive = false;
 
                 if (isNew)
@@ -154,7 +152,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 DeliveryName = x.DeliveryName,
                 DeliveryPhone = x.DeliveryPhone,
                 OrderDate = x.OrderDate,
-                ShoppingCart_Id = x.ShoppingCart_Id,
                 CreateDate = x.CreatedDate,
                 IsActive = x.IsActive
             }).OrderByDescending(p => p.OrderDate).ToList();

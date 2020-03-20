@@ -9,12 +9,14 @@ namespace S3Train.Domain
 {
     public class Order:EntityBase
     {
-        [ForeignKey("ShoppingCart")]
-        public Guid ShoppingCart_Id { get; set; }
         public string DeliveryName { get; set; }
         public string DeliveryAddress { get; set; }
         public string DeliveryPhone { get; set; }
+        public string Email { get; set; }
+        public string Note { get; set; }
+        public string Status { get; set; }
         public DateTime OrderDate { get; set; }
-        public virtual ShoppingCart ShoppingCart { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -48,14 +48,12 @@ namespace S3.Train.WebPerFume.Controllers
             var id = Guid.Parse(proVaId);
             var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(id, shoppingCart.Id);
             var productVa = _productVariationService.GetById(id);
-            var productPrice = GetProductPrice(productVa); // get price of product
 
             if (shoppingCartDetail != null)
             {
                 // update quantity and update day
                 shoppingCartDetail.Quantity = quantity;
                 shoppingCartDetail.UpdatedDate = DateTime.Now;
-                shoppingCartDetail.TotalPrice = productPrice * quantity;
                 _shoppingCartDetailService.Update(shoppingCartDetail);
             }
             else
@@ -68,7 +66,6 @@ namespace S3.Train.WebPerFume.Controllers
                     ProductVariation_Id = id,
                     Quantity = quantity,
                     CreatedDate = DateTime.Now,
-                    TotalPrice = productPrice * quantity,
                     IsActive = true,
                 };
                 _shoppingCartDetailService.Insert(cartDetail);
@@ -88,7 +85,6 @@ namespace S3.Train.WebPerFume.Controllers
                     var proVa = _productVariationService.GetById(pro.ProductVariation_Id);
                     pro.Quantity = item.Quantity;
                     pro.UpdatedDate = DateTime.Now;
-                    pro.TotalPrice = item.Quantity * GetProductPrice(proVa);
                     _shoppingCartDetailService.Update(pro);
                 }
             }
@@ -165,7 +161,6 @@ namespace S3.Train.WebPerFume.Controllers
                     UserId = userId,
                     OrderDate = DateTime.Now,
                     CreatedDate = DateTime.Now,
-                    TotalPrice = 0,
                     IsActive = true
                 };
                 _shoppingCartService.Insert(model);
@@ -199,7 +194,6 @@ namespace S3.Train.WebPerFume.Controllers
                 ShoppingCart = x.ShoppingCart,
                 ShoppingCart_Id = x.ShoppingCart_Id,
                 UpdatedDate = x.UpdatedDate,
-                TotalPrice = x.TotalPrice
             }).OrderBy(p => p.CreatedDate).ToList();
         }
 
@@ -211,9 +205,7 @@ namespace S3.Train.WebPerFume.Controllers
                 CreatedDate = shoppingCart.CreatedDate,
                 UserId = shoppingCart.UserId,
                 OrderDate = shoppingCart.OrderDate,
-                Orders = shoppingCart.Orders,
                 ShoppingCartDetails = _shoppingCartDetailService.GetAllByCartId(shoppingCart.Id),
-                TotalPrice = shoppingCart.TotalPrice,
                 UpdatedDate = shoppingCart.UpdatedDate
                 
             };

@@ -1,8 +1,16 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
+<section>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="align-middle"><i class="mdi mdi-account"></i> Hello @User.Identity.Name</h3>
+        </div>
+    </div>
+</section>
+<br />
 <section>
     <div class="card card-body">
         <div class="h4">
@@ -99,7 +107,7 @@
                     <div class="card-body">
                         <h4 class="card-title">
                             <a href="@Url.Action("Index","User")" class="nav-link text-white">
-                                <span class="menu-title">User</span>
+                                <span class="menu-title">Customer</span>
                                 <i class="mdi mdi-account menu-icon "></i>
                             </a>
                         </h4>
@@ -110,8 +118,8 @@
                 <div class="card bg-gradient-primary text-white">
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="@Url.Action("Index","AccountAdmin")" class="nav-link text-white">
-                                <span class="menu-title">Account Admin</span>
+                            <a href="@Url.Action("Index","Role")" class="nav-link text-white">
+                                <span class="menu-title">Role</span>
                                 <i class="mdi mdi-account-settings-variant menu-icon"></i>
                             </a>
                         </h4>

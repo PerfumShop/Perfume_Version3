@@ -3,7 +3,7 @@
 @model LoginViewModel
 @Html.AntiForgeryToken()
 <!-- Modal -->
-@using (Ajax.BeginForm("LogIn", "Account",new AjaxOptions{ UpdateTargetId = "validationSummary", InsertionMode = InsertionMode.Replace }))
+@using (Html.BeginForm("LogIn", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <div class="modal fade" id="elegantModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -41,14 +41,7 @@
                     <div class="text-center mb-3">
                         <button type="submit" class="btn blue-gradient btn-block btn-rounded z-depth-1a">Sign in</button>
                     </div>
-                    <p class="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2">
-                        or Sign in
-                        with:
-                    </p>
-
-                    <div class="row my-3 d-flex justify-content-center">
-
-                    </div>
+                    
                 </div>
                 <!--Footer-->
                 <div class="modal-footer mx-5 pt-3 mb-1">
@@ -66,16 +59,17 @@
 }
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
     {
         @Html.AntiForgeryToken()
-        <a href="javascript:document.getElementById('logoutForm').submit()" class="login-panel">Log off</a>
-        @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "login-panel" })
+        @*<a href="javascript:document.getElementById('logoutForm').submit()" class="login-panel">Log Out</a>*@
+        <i class="fa fa-user"></i>
+        @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class="text-black-50 h6" })
     }
 }
 else
 {
-    <a href="" class="login-panel" data-toggle="modal" data-target="#elegantModalForm">
+    <a href="" class="text-black-50"  data-toggle="modal" data-target="#elegantModalForm">
         <i class="fa fa-user"></i> Login
     </a>
 }

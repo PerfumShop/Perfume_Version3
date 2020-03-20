@@ -46,18 +46,8 @@
                     </div>
                 </div>
                 <div class="ht-right">
-                    @Html.Partial("~/Views/Account/LoginPartial.cshtml", new S3.Train.WebPerFume.Models.LoginViewModel())
-                    <div class="lan-selector">
-                        <select class="language_drop" name="countries" id="countries" style="width:300px;">
-                            <option value='yt' data-image="/Content/img/flag/flag-1.jpg" data-imagecss="flag yt"
-                                    data-title="English">
-                                English
-                            </option>
-                            <option value='yu' data-image="/Content/img/flag/flag-2.jpg" data-imagecss="flag yu"
-                                    data-title="Bangladesh">
-                                German
-                            </option>
-                        </select>
+                    <div class="login-panel">
+                        @Html.Partial("~/Views/Account/LoginPartial.cshtml", new S3.Train.WebPerFume.Models.LoginViewModel())
                     </div>
                     <div class="top-social">
                         <section id="socialLoginForm">
@@ -79,7 +69,7 @@
                         <div class="advanced-search">
                             <button type="button" class="category-btn">All Categories</button>
                             <div class="input-group">
-                                @Html.Partial("~/Views/Shared/_SearchProductPartial.cshtml", new S3Train.Model.Search.SearchViewModel())
+                                @Html.Partial("~/Views/Shared/_SearchProductPartial.cshtml")
                             </div>
                         </div>
                     </div>
@@ -182,12 +172,23 @@
                         <li>
                             <a href="#">Page</a>
                             <ul class="dropdown">
-
                                 <li>@Html.ActionLink("Shopping Cart", "Index", "Cart")</li>
-                                <li>@Html.ActionLink("Check-out", "Checkout", "Home")</li>
-
+                                <li>@Html.ActionLink("Check-out", "Index", "Checkout")</li>
                                 <li>@Html.ActionLink("Register", "Register", "Account")</li>
-                                <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <li>
+                                            <a href="javascript:document.getElementById('logoutForm').submit()" class="login-panel">Log Out</a>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                                }
                             </ul>
                         </li>
                     </ul>

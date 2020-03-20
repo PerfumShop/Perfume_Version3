@@ -12,7 +12,6 @@ namespace S3Train.Domain
         [ForeignKey("ShoppingCart")]
         public Guid ShoppingCart_Id { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
 
         [ForeignKey("ProductVariation")]
         public Guid ProductVariation_Id { get; set; }

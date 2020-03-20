@@ -1,6 +1,7 @@
 ﻿using S3.Train.WebPerFume.CommonFunction;
 using S3.Train.WebPerFume.Models;
 using S3Train.Contract;
+using S3Train.Core.Constant;
 using S3Train.Domain;
 using S3Train.Model.Search;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using X.PagedList;
 
 namespace S3.Train.WebPerFume.Controllers
 {
@@ -110,6 +112,10 @@ namespace S3.Train.WebPerFume.Controllers
             return View();
         }
 
+        public ActionResult Erorr()
+        {
+            return View();
+        }
 
         /// <summary>
         /// function search
@@ -117,14 +123,17 @@ namespace S3.Train.WebPerFume.Controllers
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [HttpPost]
-        public ActionResult SearchProduct(SearchViewModel model)
+        public ActionResult SearchProduct(string SearchText, int? pageIndex)
         {
-            if (!string.IsNullOrEmpty(model.SearchText))
+            if (!string.IsNullOrEmpty(SearchText))
             {
-                var result = ConvertDomainToModel.GetProducts(_productService.ManySearch(model));
-                ViewBag.SearchText = model.SearchText;
-                return View(result);
+                int pageSize = 20;
+                var page = pageIndex ?? 1;
+
+                var result = ConvertDomainToModel.GetProducts(_productService.ManySearch(SearchText));
+                
+                ViewBag.SearchText = SearchText;
+                return View(result.ToPagedList(page, pageSize));
             }
             else
             {
@@ -133,13 +142,5 @@ namespace S3.Train.WebPerFume.Controllers
             }
             
         }
-
-        public ActionResult Checkout()
-        { return View(); }
-
-        public ActionResult ProductDetail()
-        { return View(); }
-        public ActionResult Shoppingcart()
-        { return View(); }
     }
 }

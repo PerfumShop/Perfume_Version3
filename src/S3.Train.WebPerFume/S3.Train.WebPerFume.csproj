@@ -224,9 +224,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="X.PagedList, Version=7.9.0.0, Culture=neutral, PublicKeyToken=00b6c4f97602e5e8, processorArchitecture=MSIL">
-      <HintPath>..\packages\X.PagedList.7.9.0\lib\net461\X.PagedList.dll</HintPath>
-    </Reference>
     <Reference Include="X.PagedList.Mvc, Version=7.9.1.0, Culture=neutral, PublicKeyToken=c6e0b5b21f916f4f, processorArchitecture=MSIL">
       <HintPath>..\packages\X.PagedList.Mvc.7.9.1\lib\net461\X.PagedList.Mvc.dll</HintPath>
     </Reference>
@@ -322,6 +319,22 @@
     <Compile Include="Migrations\202003170802487_AddColumnTotalPriceOnShoppingCartDetail.designer.cs">
       <DependentUpon>202003170802487_AddColumnTotalPriceOnShoppingCartDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202003200306413_AddTableOrderDetail.cs" />
+    <Compile Include="Migrations\202003200306413_AddTableOrderDetail.designer.cs">
+      <DependentUpon>202003200306413_AddTableOrderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200331194_AddcolumnStatusInOrder.cs" />
+    <Compile Include="Migrations\202003200331194_AddcolumnStatusInOrder.designer.cs">
+      <DependentUpon>202003200331194_AddcolumnStatusInOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200343192_DeteleColumnPrice.cs" />
+    <Compile Include="Migrations\202003200343192_DeteleColumnPrice.designer.cs">
+      <DependentUpon>202003200343192_DeteleColumnPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003200431528_AddColumnAddressInTableUer.cs" />
+    <Compile Include="Migrations\202003200431528_AddColumnAddressInTableUer.designer.cs">
+      <DependentUpon>202003200431528_AddColumnAddressInTableUer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CartViewModel.cs" />
@@ -330,8 +343,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ShopViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CheckoutService.cs" />
-    <Compile Include="Services\ICheckoutService.cs" />
     <Compile Include="Services\IProductListViewService.cs" />
     <Compile Include="Services\IShopService.cs" />
     <Compile Include="Services\ProductListViewService.cs" />
@@ -932,13 +943,53 @@
     <Content Include="Content\pages\samples\error-404.html" />
     <Content Include="Content\pages\samples\error-500.html" />
     <Content Include="Content\pages\samples\login.html" />
-    <Content Include="Content\pages\samples\register.html" />
     <Content Include="Content\pages\tables\basic-table.html" />
     <Content Include="Content\pages\ui-features\buttons.html" />
     <Content Include="Content\pages\ui-features\typography.html" />
     <Content Include="Content\slicknav.min.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\styleAdmin.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\themify-icons.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\ElegantIcons.svg" />
@@ -1182,6 +1233,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.countdown.min.js" />
     <Content Include="Scripts\jquery.dd.min.js" />
@@ -1362,8 +1415,6 @@
     <Content Include="Views\Home\SearchProduct.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Home\ProductDetail.cshtml" />
-    <Content Include="Views\Home\Shoppingcart.cshtml" />
     <Content Include="Views\Partials\ProductList.cshtml" />
     <Content Include="Views\Shop\ProductDetail.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
@@ -1371,6 +1422,7 @@
     <Content Include="Views\Shared\_ModalQVProductPartial.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
     <Content Include="Views\Shared\OrderSuccess.cshtml" />
+    <Content Include="Views\Home\Erorr.cshtml" />
     <None Include="Web.LocalConnectStrings.config">
       <SubType>Designer</SubType>
     </None>
@@ -1438,6 +1490,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003170802487_AddColumnTotalPriceOnShoppingCartDetail.resx">
       <DependentUpon>202003170802487_AddColumnTotalPriceOnShoppingCartDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200306413_AddTableOrderDetail.resx">
+      <DependentUpon>202003200306413_AddTableOrderDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200331194_AddcolumnStatusInOrder.resx">
+      <DependentUpon>202003200331194_AddcolumnStatusInOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200343192_DeteleColumnPrice.resx">
+      <DependentUpon>202003200343192_DeteleColumnPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003200431528_AddColumnAddressInTableUer.resx">
+      <DependentUpon>202003200431528_AddColumnAddressInTableUer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

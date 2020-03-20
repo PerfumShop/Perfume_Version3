@@ -65,6 +65,7 @@
     <Compile Include="Enum.cs" />
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Order.cs" />
+    <Compile Include="OrderDetail.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductAdvertisement.cs" />
     <Compile Include="ProductImage.cs" />
