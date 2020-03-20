@@ -82,7 +82,7 @@ namespace S3.Train.WebPerFume.Controllers
             var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, vo));
 
             var product = _productService.GetProductById(id);
-            ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id).AsQueryable());
+            ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id));
             return View(model);
         }
 

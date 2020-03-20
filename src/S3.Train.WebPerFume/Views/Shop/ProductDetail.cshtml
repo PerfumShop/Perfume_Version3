@@ -9,10 +9,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text product-more">
-                    <a href="./home.html"><i class="fa fa-home"></i> Home</a>
-                    <a href="./shop.html">Shop</a>
-                    <span>Detail</span>
-                    <a href="./shop.html">@Model.Product.Name</a>
+                    <a href="@Url.Action("Index","Home")"><i class="fa fa-home"></i> Home</a>
+                    <a href="@Url.Action("Index","Shop")">Shop</a>
+                    <a href="@Url.Action("ProductDetail", "Shop", new { id = Model.Product_Id, volume = Model.Volume })">Detail</a>
+                    <span>@Model.Product.Name</span>
                 </div>
             </div>
         </div>
@@ -47,8 +47,8 @@
                 <div class="col-lg-6">
                     <div class="product-details">
                         <div class="pd-title">
-                            <span>oranges</span>
-                            <h3>Pure Pineapple</h3>
+                            <span>@Model.Product.Brand.Name</span>
+                            <h3>@Model.Product.Name</h3>
                             <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                         </div>
                         <div class="pd-rating">
@@ -61,11 +61,16 @@
                         </div>
                         <div class="pd-desc">
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur ing elit, sed do eiusmod tempor sum dolor
-                                sit amet, consectetur adipisicing elit, sed do mod tempor
-                                @Html.Raw(HttpUtility.HtmlDecode(Model.Product.Description));
+                                @Html.Raw(HttpUtility.HtmlDecode(Model.Product.Description))
                             </p>
-                            <h4>@Model.Price <span>@Model.DiscountPrice</span></h4>
+                            @if (Model.DiscountPrice.Value > 0)
+                             {
+                                <h4>$@Model.DiscountPrice <span>$@Model.Price</span></h4>
+                             }
+                             else
+                             {
+                                <h4>$@Model.Price</h4>
+                             }
                         </div>
 
                         <div class="pd-size-choose">
@@ -88,8 +93,13 @@
                             }
                         </div>
                         <ul class="pd-tags">
-                            <li><span>CATEGORIES</span>: @foreach (var ca in Model.Product.Categories) { @ca.Name }</li>
-                            <li><span>Brand</span>: @Model.Product.Brand.Name</li>
+                            <li><span>CATEGORIES</span>: 
+                            @foreach (var ca in Model.Product.Categories)
+                            {
+                                <a href="#" class="text-black-50">@ca.Name, </a>
+                            }
+                            </li>
+                            <li><span>Vendor</span>: <a href="#" class="text-black-50">@Model.Product.Vendor.Name</a></li>
                         </ul>
                         <div class="pd-share">
                             <div class="p-code">Sku : @Model.SKU</div>
@@ -124,11 +134,7 @@
                                     <div class="col-lg-6">
                                         <h5>Introduction</h5>
                                         <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                            aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                            @Html.Raw(HttpUtility.HtmlDecode(Model.Product.Description));
+                                            @Html.Raw(HttpUtility.HtmlDecode(Model.Product.Description))
                                         </p>
                                     </div>
 
@@ -167,12 +173,6 @@
                                         <td class="p-catagory">Vendor</td>
                                         <td>
                                             <div class="p-stock">@Model.Product.Vendor.Name</div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-catagory">Add To Cart</td>
-                                        <td>
-                                            <div class="cart-add">+ add to cart</div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -304,9 +304,16 @@
                             <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
                                 <h5>@item.Name</h5>
                             </a>
-                            <div class="product-price">
-                                @item.Price
-                                <span>@item.DiscountPrice</span>
+                            <div class="product-price">$
+                                @if (item.DiscountPrice.Value > 0)
+                                {
+                                    @item.DiscountPrice
+                                    <span>$@item.Price</span>
+                                }
+                                else
+                                {
+                                    @item.Price
+                                }
                             </div>
                         </div>
                     </div>

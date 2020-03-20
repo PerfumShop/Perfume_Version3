@@ -60,7 +60,7 @@ namespace S3.Train.WebPerFume.CommonFunction
         /// </summary>
         /// <param name="products"></param>
         /// <returns></returns>
-        public static IQueryable<ProductsModel> GetProducts(IQueryable<Product> products)
+        public static IList<ProductsModel> GetProducts(IList<Product> products)
         {
             return products.Select(x => new ProductsModel
             {
@@ -72,7 +72,7 @@ namespace S3.Train.WebPerFume.CommonFunction
                 DiscountPrice = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).DiscountPrice,
                 Categories = x.Categories,
                 ProductVariations = x.ProductVariations
-            }).AsQueryable();
+            }).ToList();
         }
 
     }

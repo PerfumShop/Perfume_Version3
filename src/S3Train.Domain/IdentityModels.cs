@@ -18,6 +18,7 @@ namespace S3Train.Domain
         }
         public string FullName { get; set; }
         public string Avatar { get; set; }
+        public string Address { get; set; }
     }
 
     public class ApplicationRole : IdentityRole<string, ApplicationUserRole>

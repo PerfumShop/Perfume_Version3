@@ -115,6 +115,7 @@
     <Compile Include="Contract\IBannerService.cs" />
     <Compile Include="Contract\IBrandService.cs" />
     <Compile Include="Contract\ICategoryService.cs" />
+    <Compile Include="Contract\IOrderDetailServicecs.cs" />
     <Compile Include="Contract\IOrderService.cs" />
     <Compile Include="Contract\IProductAdvertisement.cs" />
     <Compile Include="Contract\IProductImageService.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Service\BannerService.cs" />
     <Compile Include="Service\BrandService.cs" />
     <Compile Include="Service\CategoryService.cs" />
+    <Compile Include="Service\OrderDetailService.cs" />
     <Compile Include="Service\OrderService.cs" />
     <Compile Include="Service\ProductAdvertisementService.cs" />
     <Compile Include="Service\ProductImageService.cs" />

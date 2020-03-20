@@ -22,6 +22,7 @@ namespace S3Train.Domain
         public DbSet <ProductVariation> ProductVariations { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ProductAdvertisement> ProductAdvertisements { get; set; }
 
         public static ApplicationDbContext Create()
@@ -74,6 +75,7 @@ namespace S3Train.Domain
             modelBuilder.Entity<ProductVariation>().Property(p => p.DiscountPrice).IsRequired();
             modelBuilder.Entity<ProductVariation>().HasMany(p => p.ProductImage).WithRequired(s => s.ProductVariation);
             modelBuilder.Entity<ProductVariation>().HasMany(p => p.ShoppingCartDetails).WithRequired(s => s.ProductVariation);
+            modelBuilder.Entity<ProductVariation>().HasMany(p => p.OrderDetails).WithRequired(s => s.ProductVariation);
 
             modelBuilder.Entity<ProductImage>().ToTable("ProductImage");
             modelBuilder.Entity<ProductImage>().Property(x => x.ImagePath).HasMaxLength(100).IsRequired();
@@ -84,21 +86,24 @@ namespace S3Train.Domain
 
             modelBuilder.Entity<ShoppingCart>().ToTable("ShoppingCart");
             modelBuilder.Entity<ShoppingCart>().Property(x => x.OrderDate).IsRequired();
-            modelBuilder.Entity<ShoppingCart>().Property(x => x.TotalPrice).IsRequired();
             modelBuilder.Entity<ShoppingCart>().Property(x => x.UserId);
             modelBuilder.Entity<ShoppingCart>().HasMany(x => x.ShoppingCartDetails).WithRequired(s => s.ShoppingCart);
-            modelBuilder.Entity<ShoppingCart>().HasMany(p => p.Orders).WithRequired(s => s.ShoppingCart);
 
             modelBuilder.Entity<ShoppingCartDetail>().ToTable("ShoppingCartDetail");
             modelBuilder.Entity<ShoppingCartDetail>().Property(x => x.Quantity).IsRequired();
-            modelBuilder.Entity<ShoppingCartDetail>().Property(x => x.TotalPrice).IsRequired();
 
             modelBuilder.Entity<Order>().ToTable("Order");
             modelBuilder.Entity<Order>().Property(x => x.DeliveryAddress).HasMaxLength(60).IsRequired();
             modelBuilder.Entity<Order>().Property(x => x.DeliveryName).HasMaxLength(30).IsRequired();
             modelBuilder.Entity<Order>().Property(x => x.DeliveryPhone).HasMaxLength(12).IsRequired();
             modelBuilder.Entity<Order>().Property(x => x.OrderDate).IsRequired();
-            
+            modelBuilder.Entity<Order>().Property(x => x.Status).IsRequired();
+            modelBuilder.Entity<Order>().HasMany(p => p.OrderDetails).WithRequired(s => s.Order);
+
+            modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail");
+            modelBuilder.Entity<OrderDetail>().Property(x => x.Quantity).IsRequired();
+            modelBuilder.Entity<OrderDetail>().Property(x => x.TotalPrice).IsRequired();
+
             modelBuilder.Entity<ProductAdvertisement>().ToTable("ProductAdvertisement");
             modelBuilder.Entity<ProductAdvertisement>().Property(x => x.ImagePath).HasMaxLength(200).IsRequired();
             modelBuilder.Entity<ProductAdvertisement>().Property(x => x.EventUrl).HasMaxLength(50).IsRequired();

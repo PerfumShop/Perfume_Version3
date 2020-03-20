@@ -82,16 +82,16 @@ namespace S3Train.Service
             this.DbContext.SaveChanges();
         }
 
-        public IQueryable<Product> ManySearch(SearchViewModel model)
+        public IList<Product> ManySearch(string text)
         {
             var query = this.EntityDbSet.Include(c => c.Categories).Include(p => p.ProductVariations).AsQueryable();
 
-            if (!string.IsNullOrEmpty(model.SearchText))
+            if (!string.IsNullOrEmpty(text))
             {
-                query = query.Where(x => x.Name.Contains(model.SearchText) || x.Brand.Name.Contains(model.SearchText));
+                query = query.Where(x => x.Name.Contains(text) || x.Brand.Name.Contains(text));
             }
 
-            return query;
+            return query.ToList();
         }
         public List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy)
         {

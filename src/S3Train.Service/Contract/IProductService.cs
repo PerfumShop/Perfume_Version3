@@ -12,7 +12,7 @@ namespace S3Train.Contract
         IList<Product> GetProductsByBrandId(Guid brand_Id);
         IList<Product> GetProductsByVendorId(Guid vendor_Id);
         List<Product> GetProductsByCategoryId(Guid category_Id);
-        IQueryable<Product> ManySearch(SearchViewModel model);
+        IList<Product> ManySearch(string text);
         void InsertProductOnCategory(Guid category_Id, Guid product_Id);
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
         List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
