@@ -8,77 +8,84 @@
     int stt = 1;
 }
 
-<div class="card card-body display">
-    <h2 class="card-text">Orders</h2>
-    <hr />
-    <table id="myTable" class="table table-hover">
-        <thead>
-            <tr>
-                <th>
-                    #
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ShoppingCart_Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DeliveryName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.OrderDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
-                </th>
-                <th>Functions</th>
-            </tr>
-        </thead>
-        @foreach (var item in Model)
-        {
-            <tbody>
+<div class="card ">
+    <div class="card-body">
+        <h2 class="card-text">Orders</h2>
+        <hr />
+        <table id="myTable" class="table table-hover">
+            <thead>
                 <tr>
-                    <td>
-                        @stt
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ShoppingCart_Id)
-                    </td>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeliveryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DeliveryPhone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ToatalPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @stt
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveryName)
+                        </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DeliveryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OrderDate)
-                    </td>
-                    <td>
-                        @{
-                            if (item.IsActive)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DeliveryPhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OrderDate)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.SubPrice)
+                        </td>
+                        <td>
+                            $@Html.DisplayFor(modelItem => item.ToatalPrice)
+                        </td>
+                        <td>
+                            @if (item.Status == "Success Order")
                             {
-                                <label class="badge badge-success">Delivered</label>
+                                <label class="badge badge-gradient-success">@item.Status</label>
                             }
                             else
                             {
-                                <label class="badge badge-danger">delivery</label>
+                                <label class="badge badge-gradient-primary">@item.Status</label>
                             }
-                            stt = stt + 1;
-                        }
-                    </td>
-                    <td>
-                        @Html.ActionLink("Detail", "DetailProduct", "Order", new { id = item.Id }, new { @class = "btn btn-gradient-secondary btn-fw" })
-                        <br />
-                        @Html.Partial("_DeleteOrder", item)
-                    </td>
-                </tr>
-            </tbody>
-        }
+                            @if (item.Status == "Cancel")
+                            {
+                                <label class="badge badge-gradient-danger">@item.Status</label>
+                            }
 
-    </table>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detail", "DetailProduct", "Order", new { id = item.Id }, new { @class = "btn btn-gradient-info btn-fw" })
+                            <br />
+                            @Html.Partial("_DeleteOrder", item)
+                        </td>
+                    </tr>
+                </tbody>
+                stt += 1;
+            }
+        </table>
+    </div>
 </div>
-
-@section scripts
-{
-    @*<script>
-        $(document).ready(function () {
-            $('#myTable').DataTable();
-        });
-    </script>*@
-}

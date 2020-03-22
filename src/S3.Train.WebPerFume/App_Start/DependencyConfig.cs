@@ -65,6 +65,7 @@ namespace S3.Train.WebPerFume.App_Start
             builder.RegisterType<BrandService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CategoryService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<OrderService>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<OrderDetailService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ProductImageService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ProductService>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<ProductVariationService>().AsImplementedInterfaces().SingleInstance();

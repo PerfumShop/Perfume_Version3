@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutUser.cshtml";
+    decimal total = 0;
+    decimal subTotal = 0;
+    decimal price = 0;
 }
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -34,31 +37,22 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="col-lg-6">
                             @Html.LabelFor(m => m.customerModel.Name)
-                            @Html.TextBoxFor(m => m.customerModel.Name)
+                            @Html.TextBoxFor(m => m.customerModel.Name, new { placeholder = "Full Name" })
                             @Html.ValidationMessageFor(m => m.customerModel.Name, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-lg-6">
                             @Html.LabelFor(m => m.customerModel.Phone)
-                            @Html.TextBoxFor(m => m.customerModel.Phone, new { @type = "tel" })
+                            @Html.TextBoxFor(m => m.customerModel.Phone, new { @type = "tel", placeholder = "Phone Number" })
                             @Html.ValidationMessageFor(m => m.customerModel.Phone, "", new { @class = "text-danger" })
                         </div>
-                        
                         <div class="col-lg-12">
-                            @Html.LabelFor(m => m.customerModel.Country)
-                            @Html.TextBoxFor(m => m.customerModel.Country)
-                        </div>
-                        <div class="col-lg-12">
-                            @Html.LabelFor(m => m.customerModel.Street)
-                            @Html.TextBoxFor(m => m.customerModel.Street)
-                            @Html.ValidationMessageFor(m => m.customerModel.Street, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="col-lg-12">
-                            @Html.LabelFor(m => m.customerModel.Town)
-                            @Html.TextBoxFor(m => m.customerModel.Town)
+                            @Html.LabelFor(m => m.customerModel.Address, new { placeholder = "Address" })
+                            @Html.TextBoxFor(m => m.customerModel.Address)
+                            @Html.ValidationMessageFor(m => m.customerModel.Address, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-lg-12">
                             @Html.LabelFor(m => m.customerModel.Email)
-                            @Html.TextBoxFor(m => m.customerModel.Email)
+                            @Html.TextBoxFor(m => m.customerModel.Email, new { placeholder = "Email" })
                             @Html.ValidationMessageFor(m => m.customerModel.Email, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-lg-12">
@@ -81,12 +75,36 @@
                         <div class="order-total">
                             <ul class="order-table">
                                 <li>Product <span>Total</span></li>
-                                @*@foreach (var item in Model.shoppingCartDetailModels)
+                                @for (int i = 0; i < Model.shoppingCartDetailModels.Count(); i++)
                                 {
-                                    <li class="fw-normal">@item.Quantity <span>@item.TotalPrice</span></li>
-                                }*@
-                                <li class="fw-normal">Subtotal <span>$</span></li>
-                                <li class="total-price">Total <span>$</span></li>
+                                    @Html.HiddenFor(m => Model.shoppingCartDetailModels[i].Id)
+                                    @Html.HiddenFor(m => Model.shoppingCartDetailModels[i].ProductVariation_Id)
+                                    if (Model.shoppingCartDetailModels[i].ProductVariation.DiscountPrice.Value > 0)
+                                    {
+                                        price = Model.shoppingCartDetailModels[i].ProductVariation.DiscountPrice.Value * Model.shoppingCartDetailModels[i].Quantity;
+                                    }
+                                    else
+                                    {
+                                        price = Model.shoppingCartDetailModels[i].ProductVariation.Price * Model.shoppingCartDetailModels[i].Quantity;
+                                    }
+                                    subTotal += price;
+                                    <li class="fw-normal">
+                                        @Model.shoppingCartDetailModels[i].ProductVariation.Product.Name @Model.shoppingCartDetailModels[i].ProductVariation.Volume X @Model.shoppingCartDetailModels[i].Quantity 
+                                        <span>$@price</span>
+                                    </li>
+                                }
+                                <li class="fw-normal">Subtotal <span>$@subTotal</span></li>
+                                @{
+                                    if (subTotal > 20)
+                                    {
+                                        total = subTotal + 1;
+                                    }
+                                    else
+                                    {
+                                        total = subTotal;
+                                    }
+                                }
+                                <li class="total-price">Total <span>$@total</span></li>
                             </ul>
                             <div class="order-btn">
                                 <button type="submit" class="site-btn place-btn">Place Order</button>

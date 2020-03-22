@@ -1,7 +1,7 @@
 ﻿@using S3.Train.WebPerFume.Areas.Admin.Models
 @model OrderViewModel
 
-@using (Html.BeginForm("DeleteProduct", "Product", FormMethod.Post))
+@using (Html.BeginForm("DeleteOrder", "Order", FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
     <button type="button" class="btn btn-gradient-danger btn-fw" data-toggle="modal" data-target="#exampleModal@(Model.Id)">

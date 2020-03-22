@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Collections.Specialized;
 using S3Train.Domain;
+using S3.Train.WebPerFume.CommonFunction;
 
 namespace S3.Train.WebPerFume.Controllers
 {
@@ -37,7 +38,7 @@ namespace S3.Train.WebPerFume.Controllers
         {
             var cart = GetOrSetShoppingCart();
             var model = GetShoppingCartModel(_shoppingCartService.GetShoppingCartByUserId(cart.UserId));
-            var model2 = GetShoppingCartDetailModels(model.ShoppingCartDetails);
+            var model2 = ConvertDomainToModel.shoppingCartDetailModels(model.ShoppingCartDetails);
             return View(model2);
         }
 
@@ -167,34 +168,6 @@ namespace S3.Train.WebPerFume.Controllers
 
                 return model;
             }
-        }
-
-        /// <summary>
-        /// Product Price
-        /// </summary>
-        /// <param name="productVariation"></param>
-        /// <returns>price</returns>
-        private decimal GetProductPrice(ProductVariation productVariation)
-        {
-            if (productVariation.DiscountPrice > 0 && productVariation.DiscountPrice != null)
-                return Convert.ToDecimal(productVariation.DiscountPrice);
-            else
-                return productVariation.Price;
-        }
-
-        private IList<ShoppingCartDetailModel> GetShoppingCartDetailModels(ICollection<ShoppingCartDetail> shoppingCartDetails)
-        {
-            return shoppingCartDetails.Select(x => new ShoppingCartDetailModel
-            {
-                Id = x.Id,
-                CreatedDate = x.CreatedDate,
-                ProductVariation = x.ProductVariation,
-                ProductVariation_Id = x.ProductVariation_Id,
-                Quantity = x.Quantity,
-                ShoppingCart = x.ShoppingCart,
-                ShoppingCart_Id = x.ShoppingCart_Id,
-                UpdatedDate = x.UpdatedDate,
-            }).OrderBy(p => p.CreatedDate).ToList();
         }
 
         private ShoppingCartModel GetShoppingCartModel(ShoppingCart shoppingCart)
