@@ -98,6 +98,9 @@ namespace S3Train.Domain
             modelBuilder.Entity<Order>().Property(x => x.DeliveryPhone).HasMaxLength(12).IsRequired();
             modelBuilder.Entity<Order>().Property(x => x.OrderDate).IsRequired();
             modelBuilder.Entity<Order>().Property(x => x.Status).IsRequired();
+            modelBuilder.Entity<Order>().Property(x => x.ToatalPrice).IsRequired();
+            modelBuilder.Entity<Order>().Property(x => x.SubPrice).IsRequired();
+            modelBuilder.Entity<Order>().Property(x => x.DeliveryFee).IsRequired();
             modelBuilder.Entity<Order>().HasMany(p => p.OrderDetails).WithRequired(s => s.Order);
 
             modelBuilder.Entity<OrderDetail>().ToTable("OrderDetail");

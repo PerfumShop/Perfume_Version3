@@ -16,6 +16,9 @@ namespace S3Train.Domain
         public string Note { get; set; }
         public string Status { get; set; }
         public DateTime OrderDate { get; set; }
+        public decimal ToatalPrice { get; set; }
+        public decimal SubPrice { get; set; }
+        public decimal DeliveryFee { get; set; }
 
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }

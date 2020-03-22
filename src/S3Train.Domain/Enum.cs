@@ -18,4 +18,14 @@
        MenBanner,
        MainBanner
     }
+
+    public enum OrderStatus
+    {
+       Receive,
+       Confirm,
+       TakeProduct,
+       Delivery,
+       Success,
+       Cancel
+    }
 }

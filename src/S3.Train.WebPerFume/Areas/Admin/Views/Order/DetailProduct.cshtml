@@ -1,0 +1,117 @@
+﻿@using S3.Train.WebPerFume.Areas.Admin.Models
+@model OrderViewModel
+
+@{
+    ViewBag.Title = "DetailProduct";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    int stt = 1;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="h3 card-header">Detail Order</div>
+        <br />
+        <div class="container">
+            <div class="row row-cols-1 h-100">
+                <div class="col col-lg">
+                    <strong>Id:</strong> @Model.Id
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-100">
+                <div class="col col-lg">
+                    <strong>Customer Name:</strong> @Model.DeliveryName
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Phone Number:</strong> @Model.DeliveryPhone
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Delivery Address:</strong> @Model.DeliveryAddress
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Order Date:</strong> @Html.DisplayFor(m => m.OrderDate)
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Status:</strong> @Model.Status
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Sub Total Price:</strong> $@Model.SubPrice
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Delivery Fee:</strong> $@Model.DeliveryFee
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Toatal Price:</strong> $@Model.ToatalPrice
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1 h-50">
+                <div class="col col-lg">
+                    <strong>Note:</strong> @Html.Raw(HttpUtility.HtmlDecode(Model.Note))
+                </div>
+            </div>
+            <br />
+            <div class="row row-cols-1">
+                <div class="col col-lg-auto" >
+                    <strong>List Product</strong>
+                    <table class="table table-primary">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Quality</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@item.ProductVariation.Product.Name @item.ProductVariation.Volume</td>
+                                    <td>@item.Quantity</td>
+                                    <td>$@item.TotalPrice</td>
+                                </tr>
+                                stt += 1;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br />
+
+        </div>
+        <div class="row">
+            <div class="col-md-auto">
+                @Html.ActionLink("Back To List", "Index", "Order", new { @class = "btn btn btn-primary btn-fw" })
+            </div>
+            <div class="col-md-auto">
+                @Html.Partial("_DeleteOrder", Model)
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

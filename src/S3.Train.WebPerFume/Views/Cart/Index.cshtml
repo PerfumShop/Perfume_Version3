@@ -89,10 +89,11 @@
                             <div class="col-lg-4 offset-lg-4">
                                 <div class="proceed-checkout">
                                     <ul>
-                                        <li class="subtotal">Subtotal <span class="subtotal_mo">@string.Format("{0:C}", (total))</span></li>
-                                        <li class="cart-total">Total <span class="subtotal_mo">@string.Format("{0:C}", (total))</span></li>
+                                        <li class="subtotal">Subtotal <span class="subtotal_mo"></span></li>
+                                        <li class="subtotal">Delivery Fee <span class="fee"></span></li>
+                                        <li class="cart-total">Total <span class="total_mo"></span></li>
                                     </ul>
-                                    <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                    <a href="@Url.Action("Index","Checkout")" class="proceed-btn">PROCEED TO CHECK OUT</a>
                                 </div>
                             </div>
                         </div>
@@ -118,6 +119,7 @@ else
 {
     <script>
         $(document).ready(function () {
+            count_sub_total();
             $('.quantityPro').on("change", function () {
                 var sum = parseFloat($(this).val())
                     * parseFloat($(this).closest('tr').find('.price').not(this).text().slice(1));
@@ -135,8 +137,18 @@ else
                 $(".totalPricePro").each(function () {
                     total += parseFloat($(this).text().slice(1));
                 });
+                var total2 = total;
+                var fee = 0;
+                if (total2 < 100) {
+                    total2 = total2 + 1;
+                    fee = 1;
+                }
                 var st = "$ " + total.toFixed(2);
+                var st2 = "$ " + total2.toFixed(2);
+                var st3 = "$ " + fee.toFixed(2);
                 $(".subtotal_mo").text(st);
+                $(".fee").text(st3);
+                $(".total_mo").text(st2);
             }
         });
     </script>

@@ -21,12 +21,9 @@
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort>44393</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>
-    </IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>
-    </IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>
-    </IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -270,6 +267,7 @@
     <Compile Include="Areas\Admin\Models\VendorViewModel.cs" />
     <Compile Include="CommonFunction\ConvertDomainToModel.cs" />
     <Compile Include="CommonFunction\DropDownListDomain.cs" />
+    <Compile Include="CommonFunction\GetPrice.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -334,6 +332,10 @@
     <Compile Include="Migrations\202003200431528_AddColumnAddressInTableUer.cs" />
     <Compile Include="Migrations\202003200431528_AddColumnAddressInTableUer.designer.cs">
       <DependentUpon>202003200431528_AddColumnAddressInTableUer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202003210306277_AddMoreColumnInTableOrder.cs" />
+    <Compile Include="Migrations\202003210306277_AddMoreColumnInTableOrder.designer.cs">
+      <DependentUpon>202003210306277_AddMoreColumnInTableOrder.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1199,9 +1201,7 @@
     <Content Include="Areas\Admin\Views\Vendor\DetailVendor.cshtml" />
     <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Order\DetailOrder.cshtml" />
     <Content Include="Areas\Admin\Views\Order\_DeleteOrder.cshtml" />
-    <Content Include="Areas\Admin\Views\Order\AddOrderParital.cshtml" />
     <Content Include="Areas\Admin\Views\ProductAdvertisement\Index.cshtml" />
     <Content Include="Areas\Admin\Views\ProductAdvertisement\AddOrEditProductAdvertisement.cshtml" />
     <Content Include="Areas\Admin\Views\ProductAdvertisement\_DeleteProductAdvertisement.cshtml" />
@@ -1222,6 +1222,7 @@
     <Content Include="Areas\Admin\Views\User\Update.cshtml" />
     <Content Include="Areas\Admin\Views\Product\DetailProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\DisplayProVaTablePartial.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\DetailProduct.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -1502,6 +1503,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202003200431528_AddColumnAddressInTableUer.resx">
       <DependentUpon>202003200431528_AddColumnAddressInTableUer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202003210306277_AddMoreColumnInTableOrder.resx">
+      <DependentUpon>202003210306277_AddMoreColumnInTableOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

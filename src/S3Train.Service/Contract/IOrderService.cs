@@ -9,5 +9,6 @@ namespace S3Train.Contract
 {
     public interface IOrderService : IGenenicServiceBase<Order>
     {
+        Order GetOrderById(Guid id);
     }
 }

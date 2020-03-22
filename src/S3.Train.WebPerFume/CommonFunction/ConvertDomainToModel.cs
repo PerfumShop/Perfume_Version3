@@ -75,5 +75,20 @@ namespace S3.Train.WebPerFume.CommonFunction
             }).ToList();
         }
 
+        public static IList<ShoppingCartDetailModel> shoppingCartDetailModels(ICollection<ShoppingCartDetail> shoppingCartDetails)
+        {
+            return shoppingCartDetails.Select(x => new ShoppingCartDetailModel
+            {
+                Id = x.Id,
+                CreatedDate = x.CreatedDate,
+                ProductVariation = x.ProductVariation,
+                ProductVariation_Id = x.ProductVariation_Id,
+                Quantity = x.Quantity,
+                ShoppingCart = x.ShoppingCart,
+                ShoppingCart_Id = x.ShoppingCart_Id,
+                UpdatedDate = x.UpdatedDate,
+            }).OrderBy(p => p.CreatedDate).ToList();
+        }
+
     }
 }
