@@ -8,7 +8,8 @@ namespace S3.Train.WebPerFume.Models
 {
     public class HomeViewModel
     {
-        public IList<ProductsModel> productsModels  { get; set; }
+        public IList<ProductsModel> productsHot { get; set; }
+        public IList<ProductsModel> productcsNew { get; set; }
         public BannerModel BannerMain { get; set; }
         public BannerModel BannerMen { get; set; }
         public BannerModel BannerWomen { get; set; }

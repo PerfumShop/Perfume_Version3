@@ -33,6 +33,13 @@ namespace S3Train.Service
             return query.ToList();
         }
 
+        public IList<Product> GetProductsByCategotyName(string name)
+        {
+            var category = DbContext.Categories.FirstOrDefault(c => c.Name == name);
+            var checkPro = category.Products.ToList();
+            return checkPro;
+        }
+
         /// <summary>
         /// Insert Product in category
         /// </summary>

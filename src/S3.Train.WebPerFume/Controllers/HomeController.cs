@@ -54,7 +54,10 @@ namespace S3.Train.WebPerFume.Controllers
             //model.productsModels = GetProducts(_productVariationService.SelectAll());
 
             model.BannerSlider = GetAllSliderBanner();
-
+            var productsHot = _productService.GetProductsByCategotyName("Hot");
+            model.productsHot = ConvertDomainToModel.GetProducts(productsHot);
+            var productsNew = _productService.GetProductsByCategotyName("New Products");
+            model.productcsNew = ConvertDomainToModel.GetProducts(productsNew);
             return View(model);
         }
 
