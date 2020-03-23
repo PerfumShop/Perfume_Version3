@@ -64,6 +64,10 @@ namespace S3.Train.WebPerFume.Controllers
                     var cart = _shoppingCartService.GetShoppingCartByUserId(cookie);
                     var user = await _userService.GetUserByIdAsync(cookie);
                     var products = ConvertDomainToModel.shoppingCartDetailModels(_shoppingCartDetailService.GetAllByCartId(cart.Id));
+                   
+                    // check products in cart
+                    if (cart.ShoppingCartDetails.Count() == 0)
+                        return RedirectToAction("Index", "Cart");
 
                     var checkOutModel = new CheckoutViewModel()
                     {
@@ -124,7 +128,7 @@ namespace S3.Train.WebPerFume.Controllers
                     Email = model.customerModel.Email,
                     CreatedDate = DateTime.Now,
                     IsActive = true,
-                    Status = SetOrderStatus(OrderStatus.Receive),
+                    Status = SetOrderStatus.SetStatus(OrderStatus.Receive),
                     OrderDate = DateTime.Now,
                     Note = model.customerModel.Note,
                     SubPrice = subTotal,
@@ -139,7 +143,7 @@ namespace S3.Train.WebPerFume.Controllers
                 UpdateQuanlityProductVariation(model.shoppingCartDetailModels);
                 // Delete ShoppingCart
                 _shoppingCartService.Delete(cart);
-
+                
                 // Send email
                 await UserManager.SendEmailAsync(User.Identity.GetUserId(), "Confirm Order From PerfumeShop","Thank You");
                 return RedirectToAction("Success","Checkout");
@@ -196,6 +200,10 @@ namespace S3.Train.WebPerFume.Controllers
             return View("OrderSuccess");
         }
 
+        /// <summary>
+        /// Update quality for product variation when checkout
+        /// </summary>
+        /// <param name="models"></param>
         private void UpdateQuanlityProductVariation(IList<ShoppingCartDetailModel> models)
         {
             if(models != null)
@@ -209,37 +217,6 @@ namespace S3.Train.WebPerFume.Controllers
                     _productVariationService.Update(proVa);
                 }
             }
-        }
-
-        // set Order status for oder
-        private string SetOrderStatus(OrderStatus orderStatus)
-        {
-            string status = "";
-            switch (orderStatus)
-            {
-                case OrderStatus.Receive:
-                    status = "Receive Order";
-                    break;
-                case OrderStatus.Confirm:
-                    status = "Confirm Order";
-                    break;
-                case OrderStatus.TakeProduct:
-                    status = "Take Product";
-                    break;
-                case OrderStatus.Delivery:
-                    status = "Delivery Order";
-                    break;
-                case OrderStatus.Success:
-                    status = "Success Order";
-                    break;
-                case OrderStatus.Cancel:
-                    status = "Cancel";
-                    break;
-                default:
-                    status = "No Status Order";
-                    break;
-            }
-            return status;
         }
     }
 }

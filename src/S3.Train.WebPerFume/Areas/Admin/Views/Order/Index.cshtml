@@ -69,16 +69,18 @@
                             }
                             else
                             {
-                                <label class="badge badge-gradient-primary">@item.Status</label>
+                                if (item.Status == "Cancel")
+                                {
+                                    <label class="badge badge-gradient-danger">@item.Status</label>
+                                }
+                                else
+                                {
+                                    <label class="badge badge-gradient-primary">@item.Status</label>
+                                }
                             }
-                            @if (item.Status == "Cancel")
-                            {
-                                <label class="badge badge-gradient-danger">@item.Status</label>
-                            }
-
                         </td>
                         <td>
-                            @Html.ActionLink("Detail", "DetailProduct", "Order", new { id = item.Id }, new { @class = "btn btn-gradient-info btn-fw" })
+                            @Html.ActionLink("Detail", "DetailOrder", "Order", new { id = item.Id }, new { @class = "btn btn-gradient-info btn-fw" })
                             <br />
                             @Html.Partial("_DeleteOrder", item)
                         </td>
