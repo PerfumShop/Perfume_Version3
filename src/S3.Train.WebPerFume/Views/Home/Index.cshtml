@@ -19,7 +19,8 @@
                             <p>
                                 Let the scent save beautifuls memory.
                             </p>
-                            <a href="#" class="primary-btn">Shop Now</a>
+                            <a href="@Url.Action("Index", "Shop")" class="primary-btn">Shop Now</a>
+                          
                         </div>
                     </div>
                     <div class="off-card">
@@ -84,100 +85,42 @@
                     </ul>
                 </div>
                 <div class="product-slider owl-carousel">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-girls/girl-chloe.PNG" alt="">
-                            <div class="sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-
-                            <ul>
-
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-
-                                <span>$35.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-girls/girl-lavie.PNG" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                               
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">;+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">
-                                $13.00
+                    @foreach (var item in @Model.productsHot)
+                    {
+                        <div class="col-sm-auto">
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" style="height:300px ; width:407px"></a>
+                                        <div class="sale pp-sale">Hot</div>
+                                        <div class="icon">
+                                        </div>
+                                        <ul>
+                                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                            <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                        </ul>
+                                </div>
+                                <div class="pi-text">
+                                    <div class="catagory-name">@item.Brand.Name</div>
+                                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
+                                        <h5>@item.Name</h5>
+                                    </a>
+                                    <div class="product-price">$ 
+                                        @if (item.DiscountPrice.Value > 0)
+                                        {
+                                            @item.DiscountPrice
+                                            <span>$@item.Price</span>
+                                        }
+                                        else
+                                        {
+                                            @item.Price
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-girls/girl-acqua.PNG" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-girls/girl-carven.PNG" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
+                    }
+                    
                 </div>
             </div>
         </div>
@@ -235,97 +178,47 @@
                         <li>Accessories</li>
                     </ul>
                 </div>
+
                 <div class="product-slider owl-carousel">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-men/man-cleer.jpg" alt="">
-                            <div class="sale">Sale</div>
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Coat</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $14.00
-                                <span>$35.00</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-men/man-van.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Shoes</div>
-                            <a href="#">
-                                <h5>Guangzhou sweater</h5>
-                            </a>
-                            <div class="product-price">
-                                $13.00
+                    @foreach (var item in @Model.productcsNew)
+                    {
+                        <div class="col-sm-auto">
+                            <div class="product-item">
+                                <div class="pi-pic">
+                                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" style="height:300px ; width:407px">
+                                    </a>
+                                    <div class="sale">Sale</div>
+                                    <div class="icon">
+                                    </div>
+                                    <ul>
+                                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                                        <li class="quick-view"><a href="#">+ Quick View</a></li>
+                                    </ul>
+                                </div>
+                                <div class="pi-text">
+                                    <div class="catagory-name">@item.Brand.Name</div>
+                                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
+                                        <h5>@item.Name</h5>
+                                    </a>
+                                    <div class="product-price">
+                                        $
+                                        @if (item.DiscountPrice.Value > 0)
+                                        {
+                                            @item.DiscountPrice
+                                            <span>$@item.Price</span>
+                                        }
+                                        else
+                                        {
+                                            @item.Price
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-men/man-nuance.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view" data-toggle="modal" data-target="#exampleModalCenter">+ Quick View</></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Pure Pineapple</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="~/Content/img/product-men/man-nightfall.jpg" alt="">
-                            <div class="icon">
-                                <i class="icon_heart_alt"></i>
-                            </div>
-                            <ul>
-                                <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                <li class="quick-view"><a href="#">+ Quick View</a></li>
-                                <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="pi-text">
-                            <div class="catagory-name">Towel</div>
-                            <a href="#">
-                                <h5>Converse Shoes</h5>
-                            </a>
-                            <div class="product-price">
-                                $34.00
-                            </div>
-                        </div>
-                    </div>
+                    }
+                 
+
                 </div>
             </div>
             <div class="col-lg-3 offset-lg-1">
@@ -384,9 +277,5 @@
     </div>
 
 </section>
-<!--modal-->
-<!-- Button trigger modal -->
-@*<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Launch demo modal
-</button>*@
+
 

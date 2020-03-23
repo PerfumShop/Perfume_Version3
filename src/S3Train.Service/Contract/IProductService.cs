@@ -17,5 +17,6 @@ namespace S3Train.Contract
         void DeleteProductOnCategory(Guid category_Id, Guid product_Id);
         List<Product> GetAllProduct(Func<IQueryable<Product>, IOrderedQueryable<Product>> orderBy);
         Product GetProductById(Guid id);
+        IList<Product> GetProductsByCategotyName(string name);
     }
 }
