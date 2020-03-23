@@ -6,7 +6,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
     int stt = 1;
 }
-
+@Html.AntiForgeryToken()
+@Html.HiddenFor(m => m.Id)
 <div class="card">
     <div class="card-body">
         <div class="h3 card-header">Detail Order</div>
@@ -42,12 +43,33 @@
                 </div>
             </div>
             <br />
-            <div class="row row-cols-1 h-50">
-                <div class="col col-lg">
-                    <strong>Status:</strong> @Model.Status
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <strong class="col-sm-auto">Status:</strong>
+                        <div class="col-sm-auto">
+                            @if (Model.Status == "Success Order")
+                            {
+                                <label class="badge badge-gradient-success">@Model.Status</label>
+                            }
+                            else
+                            {
+                                if (Model.Status == "Cancel")
+                                {
+                                    <label class="badge badge-gradient-danger">@Model.Status</label>
+                                }
+                                else
+                                {
+                                    <label class="badge badge-gradient-primary">@Model.Status</label>
+                                }
+                            }
+                        </div>
+                        <div class="col-sm-auto">
+                            @Html.DropDownList("Status", (IEnumerable<SelectListItem>)ViewBag.OrderStatus, new { @class = "form-control", })
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br />
             <div class="row row-cols-1 h-50">
                 <div class="col col-lg">
                     <strong>Sub Total Price:</strong> $@Model.SubPrice
@@ -73,7 +95,7 @@
             </div>
             <br />
             <div class="row row-cols-1">
-                <div class="col col-lg-auto" >
+                <div class="col col-lg-auto">
                     <strong>List Product</strong>
                     <table class="table table-primary">
                         <thead>
@@ -115,3 +137,30 @@
 
 </div>
 
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#Status').on("change", function () {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                $.ajax({
+                    url: "/Order/ChangeStatusOrder/",
+                    method: "POST",
+                    data: {
+                        id: $("#Id").val(),
+                        status: $("#Status").val(),
+                        __RequestVerificationToken: token
+                    },
+                    success: function () {
+                        alert("Change Status Order To " + $("#Status option:selected").text() + ".");
+                        location.reload(true);
+                    },
+                    error: function () {
+                        alert("Change Status Order Fail");
+                    }
+                });
+            });
+        });
+    </script>
+}
