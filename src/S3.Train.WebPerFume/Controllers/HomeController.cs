@@ -23,6 +23,7 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IBrandService _brandService;
 
+        #region Ctor
         public HomeController()
         {
 
@@ -40,27 +41,35 @@ namespace S3.Train.WebPerFume.Controllers
             _categoryService = categoryService;
             _brandService = brandService;
         }
+        #endregion
 
+        #region Index
         public ActionResult Index()
         {
-            var model = new HomeViewModel();
+            try
+            {
+                var model = new HomeViewModel();
 
-            model.BannerMain = GetBanner(_bannerService.GetMainBanner());
-            model.BannerMen = GetBanner(_bannerService.GetMenBanner());
-            model.BannerWomen = GetBanner(_bannerService.GetWomenBanner());
-            model.SquareMen = GetProAd(_productAdvertisement.GetMenSquareBanner());
-            model.Squarewomen = GetProAd(_productAdvertisement.GetWomenSquareBanner());
-            model.SquareUnisex = GetProAd(_productAdvertisement.GetUnisexSquareBanner());
-            //model.productsModels = GetProducts(_productVariationService.SelectAll());
+                model.BannerMain = GetBanner(_bannerService.GetMainBanner());
+                model.BannerMen = GetBanner(_bannerService.GetMenBanner());
+                model.BannerWomen = GetBanner(_bannerService.GetWomenBanner());
+                model.SquareMen = GetProAd(_productAdvertisement.GetMenSquareBanner());
+                model.Squarewomen = GetProAd(_productAdvertisement.GetWomenSquareBanner());
+                model.SquareUnisex = GetProAd(_productAdvertisement.GetUnisexSquareBanner());
+                //model.productsModels = GetProducts(_productVariationService.SelectAll());
 
-            model.BannerSlider = GetAllSliderBanner();
-            var productsHot = _productService.GetProductsByCategotyName("Hot");
-            model.productsHot = ConvertDomainToModel.GetProducts(productsHot);
-            var productsNew = _productService.GetProductsByCategotyName("New Products");
-            model.productcsNew = ConvertDomainToModel.GetProducts(productsNew);
-            return View(model);
+                model.BannerSlider = GetAllSliderBanner();
+                var productsHot = _productService.GetProductsByCategotyName("Hot");
+                model.productsHot = ConvertDomainToModel.GetProducts(productsHot);
+                var productsNew = _productService.GetProductsByCategotyName("New Products");
+                model.productcsNew = ConvertDomainToModel.GetProducts(productsNew);
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
+        #endregion
 
+        #region Convert domain to model
         private IList<ProductAd> GetAllSliderBanner()
         {
             IList<ProductAdvertisement> AllSliderBanner = _productAdvertisement.GetAllBannerByType(ProductAdvertisementType.SliderBanner);
@@ -101,6 +110,9 @@ namespace S3.Train.WebPerFume.Controllers
 
             return pr;
         }
+
+        #endregion
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -128,22 +140,25 @@ namespace S3.Train.WebPerFume.Controllers
         /// <returns></returns>
         public ActionResult SearchProduct(string SearchText, int? pageIndex)
         {
-            if (!string.IsNullOrEmpty(SearchText))
+            try
             {
-                int pageSize = 20;
-                var page = pageIndex ?? 1;
+                if (!string.IsNullOrEmpty(SearchText))
+                {
+                    int pageSize = 20;
+                    var page = pageIndex ?? 1;
 
-                var result = ConvertDomainToModel.GetProducts(_productService.ManySearch(SearchText));
-                
-                ViewBag.SearchText = SearchText;
-                return View(result.ToPagedList(page, pageSize));
+                    var result = ConvertDomainToModel.GetProducts(_productService.ManySearch(SearchText));
+
+                    ViewBag.SearchText = SearchText;
+                    return View(result.ToPagedList(page, pageSize));
+                }
+                else
+                {
+                    ViewBag.Error = "Not Empty";
+                    return RedirectToAction("index");
+                }
             }
-            else
-            {
-                ViewBag.Error = "Not Empty";
-                return RedirectToAction("index");
-            }
-            
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
     }
 }

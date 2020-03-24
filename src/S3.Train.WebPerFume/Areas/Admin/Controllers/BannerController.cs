@@ -16,8 +16,8 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
     {
         // GET: Admin/Banner
         private readonly IBannerService _bannerService;
-    
 
+        #region Ctor
         public BannerController() { }
 
         public BannerController(IBannerService bannerService)
@@ -25,34 +25,45 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _bannerService = bannerService;
           
         }
+        #endregion
 
-      
+        #region Index
         public ActionResult Index()
         {
-            var model = GetBanners(_bannerService.SelectAll());
-            return View(model);
+            try
+            {
+                var model = GetBanners(_bannerService.SelectAll());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500","HomdeAdmin"); }
         }
+        #endregion
 
+        #region Create or update Banner
         [HttpGet]
         public ActionResult AddOrEditBanner(Guid? id)
         {
-            BannerViewModel model = new BannerViewModel();
-
-            model.DropDownBannerType = DropDownListDomain.DropDownList_BannerType();
-
-            if (id.HasValue)
+            try
             {
-                var banner = _bannerService.GetById(id.Value);
-                model.Id = banner.Id;
-                model.Image = banner.Image;
-                model.Link = banner.Link;
-                
-                model.CreateDate = banner.CreatedDate;
-                model.IsActive = banner.IsActive;
-                return View(model);
+                BannerViewModel model = new BannerViewModel();
+
+                model.DropDownBannerType = DropDownListDomain.DropDownList_BannerType();
+
+                if (id.HasValue)
+                {
+                    var banner = _bannerService.GetById(id.Value);
+                    model.Id = banner.Id;
+                    model.Image = banner.Image;
+                    model.Link = banner.Link;
+
+                    model.CreateDate = banner.CreatedDate;
+                    model.IsActive = banner.IsActive;
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -76,7 +87,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 {
                     UpdatedDate = DateTime.Now
                 } : _bannerService.GetById(id.Value);
-                banner.Image = UpFile(image, localFile);
+                banner.Image = _bannerService.UpFile(image, localFile);
                 banner.Link = model.Link;
                 banner.IsActive = true;
                 banner.AdType = model.bannerType;
@@ -95,54 +106,50 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 {
                     _bannerService.Update(banner);
                 }
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("Index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
-
-        [HttpGet]
-        public PartialViewResult DeleteBanner(Guid id)
-        {
-            var banner = _bannerService.GetById(id);
-            var model = new BannerViewModel
-            {
-                Image = $"{banner.Image}"
-            };
-            return PartialView("~/Areas/Admin/Views/Banner/_DeleteBanner.cshtml", model);
-        }
-
+        #region Delete Banner      
         [HttpPost]
         public ActionResult DeleteBanner(BannerViewModel model)
         {
-            var banner = _bannerService.GetById(model.Id);
-            _bannerService.Delete(banner);
-            return RedirectToAction("Index");
+            try
+            {
+                var banner = _bannerService.GetById(model.Id);
+                _bannerService.Delete(banner);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
+        #region Change Status Banner
         public ActionResult ChangeStatus(Guid banner_Id, bool status)
         {
-            var banner = _bannerService.GetById(banner_Id);
-
-            var listBannerSameType = _bannerService.GetAllBannerSameType(banner.AdType);
-
-            if (status)
+            try
             {
-                foreach (var item in listBannerSameType)
+                var banner = _bannerService.GetById(banner_Id); 
+
+                var listBannerSameType = _bannerService.GetAllBannerSameType(banner.AdType);
+
+                if (status && listBannerSameType.Count() >= 1)
                 {
-                    if (item.Id != banner_Id)
-                        _bannerService.ChangeStatus(item, false);
+                    foreach (var item in listBannerSameType)
+                    {
+                        if (item.Id != banner_Id)
+                            _bannerService.ChangeStatus(item, false);
+                    }
+                    _bannerService.ChangeStatus(banner, status);
                 }
+
+                return RedirectToAction("index");
             }
-
-            _bannerService.ChangeStatus(banner, status);
-
-            return RedirectToAction("index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
         private IList<BannerViewModel> GetBanners(IList<Banner> banners)
         {
@@ -155,29 +162,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 CreateDate = x.CreatedDate,
                 IsActive = x.IsActive
             }).OrderByDescending(p=>p.CreateDate).ToList();
-        }
-
-
-        /// <summary>
-        /// Upload file and save in folder
-        /// </summary>
-        /// <param name="a">choose file</param>
-        /// <param name="url">local save file </param>
-        /// <returns>file name</returns>
-        public string UpFile(HttpPostedFileBase a, string url)
-        {
-            string fileName = "";
-            if (a != null && a.ContentLength > 0)
-            {
-                fileName = Path.GetFileName(a.FileName).ToString();
-                string path = Path.Combine(Server.MapPath(url), fileName);
-                a.SaveAs(path);
-                return fileName;
-            }
-            else
-            {
-                return fileName;
-            }
         }
     }
 }

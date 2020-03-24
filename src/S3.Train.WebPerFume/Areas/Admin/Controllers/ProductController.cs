@@ -21,7 +21,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IProductVariationService _productVariationService;
         private readonly IProductImageService _productImageService;
 
-
+        #region Ctor
         public ProductController() { }
 
         public ProductController(IProductService productService, IBrandService brandService,
@@ -33,72 +33,88 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _productVariationService = productVariationService;
             _productImageService = productImageService;
         }
+        #endregion
 
+        #region Index, paging and detail
         // GET: Admin/Product
         public ActionResult Index(int? pageIndex, int? pageSize)
         {
-            pageIndex = (pageIndex ?? 1);
-            pageSize = pageSize ?? GlobalConfigs.DEFAULT_PAGESIZE;
-
-            var model = new ProductIndexViewModel()
+            try
             {
-                PageIndex = pageIndex.Value,
-                PageSize = pageSize.Value
-            };
+                pageIndex = (pageIndex ?? 1);
+                pageSize = pageSize ?? GlobalConfigs.DEFAULT_PAGESIZE;
 
-            var products = _productService.Gets(pageIndex, pageSize.Value, null, p => p.OrderBy(c => c.Name));
+                var model = new ProductIndexViewModel()
+                {
+                    PageIndex = pageIndex.Value,
+                    PageSize = pageSize.Value
+                };
 
-            model.Paged = products;
-            model.Items = GetProducts(products.ToList());
+                var products = _productService.Gets(pageIndex, pageSize.Value, null, p => p.OrderBy(c => c.Name));
 
-            return View(model);
+                model.Paged = products;
+                model.Items = GetProducts(products.ToList());
+
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         
         public ActionResult DetailProduct(Guid id)
         {
-            var product = _productService.GetById(id);
-            var model = new ProductViewModel
+            try
             {
-                Id = product.Id,
-                Name = product.Name,
-                Brand = _brandService.GetById(product.Brand_Id),
-                Vendor = _vendorService.GetById(product.Vendor_Id),
-                ProVa = GetProductVariations(
-                    _productVariationService.GetProductVariations(product.Id)).ToList(),
-                Description = product.Description,
-                ImagePath = product.ImagePath,
-                CreatedDate = product.CreatedDate,
-                UpdateDate = product.UpdatedDate,
-                IsActive = product.IsActive
-            };
-            return View(model);
+                var product = _productService.GetById(id);
+                var model = new ProductViewModel
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Brand = _brandService.GetById(product.Brand_Id),
+                    Vendor = _vendorService.GetById(product.Vendor_Id),
+                    ProVa = GetProductVariations(
+                        _productVariationService.GetProductVariations(product.Id)).ToList(),
+                    Description = product.Description,
+                    ImagePath = product.ImagePath,
+                    CreatedDate = product.CreatedDate,
+                    UpdateDate = product.UpdatedDate,
+                    IsActive = product.IsActive
+                };
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
+        #region Create new or update product
         [HttpGet]
         public ActionResult AddOrEditProduct(Guid? id)
         {
-            ProductViewModel model = new ProductViewModel();
-
-            model.DropDownBrand = DropDownListDomain.DropDownList_Brand(_brandService.SelectAll());
-            model.DropDownVendor = DropDownListDomain.DropDownList_Vendor(_vendorService.SelectAll());
-            model.Volumes = DropDownListDomain.GetVolumeCheckBoxes();
-
-            if (id.HasValue)
+            try
             {
-                var product = _productService.GetById(id.Value);
-                model.Id = product.Id;
-                model.Name = product.Name;
-                model.Brand_Id = product.Brand_Id;
-                model.Vendor_Id = product.Vendor_Id;
-                model.Description = product.Description;
-                model.ImagePath = product.ImagePath;
-                model.CreateDate = product.CreatedDate;
-                model.IsActive = true;
-                return View(model);
+                ProductViewModel model = new ProductViewModel();
+
+                model.DropDownBrand = DropDownListDomain.DropDownList_Brand(_brandService.SelectAll());
+                model.DropDownVendor = DropDownListDomain.DropDownList_Vendor(_vendorService.SelectAll());
+                model.Volumes = DropDownListDomain.GetVolumeCheckBoxes();
+
+                if (id.HasValue)
+                {
+                    var product = _productService.GetById(id.Value);
+                    model.Id = product.Id;
+                    model.Name = product.Name;
+                    model.Brand_Id = product.Brand_Id;
+                    model.Vendor_Id = product.Vendor_Id;
+                    model.Description = product.Description;
+                    model.ImagePath = product.ImagePath;
+                    model.CreateDate = product.CreatedDate;
+                    model.IsActive = true;
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -147,33 +163,23 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 {
                     _productService.Update(product);
                 }
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("Index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
-
-        [HttpGet]
-        public PartialViewResult DeleteProduct(Guid id)
-        {
-            var product = _productService.GetById(id);
-            var model = new ProductViewModel
-            {
-                Name = $"{product.Name}"
-            };
-            return PartialView("~/Areas/Admin/Views/Product/_DeleteProduct.cshtml", model);
-        }
-
+        #region Delete or convert domain to model
         [HttpPost]
         public ActionResult DeleteProduct(ProductViewModel model)
         {
-            var product = _productService.GetById(model.Id);
-            _productService.Delete(product);
-            return RedirectToAction("Index");
+            try
+            {
+                var product = _productService.GetById(model.Id);
+                _productService.Delete(product);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
 
@@ -221,8 +227,9 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 IsActive = x.IsActive
             }).ToList();
         }
+        #endregion
 
-
+        #region Add product variation and change status
         /// <summary>
         /// Add Product Variation With product Id and volume
         /// </summary>
@@ -230,27 +237,35 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <param name="volume">Volume of product variation</param>
         public void AddProductVariation(Guid product_Id, string volume)
         {
-            var item = new ProductVariation
+            try
             {
-                Id = Guid.NewGuid(),
-                Product_Id = product_Id,
-                Volume = volume,
-                Price = 0,
-                SKU = "Empty",
-                StockQuantity = 0,
-                CreatedDate = DateTime.Now,
-                IsActive = true,
-                DiscountPrice = 0
-            };
+                var item = new ProductVariation
+                {
+                    Id = Guid.NewGuid(),
+                    Product_Id = product_Id,
+                    Volume = volume,
+                    Price = 0,
+                    SKU = "Empty",
+                    StockQuantity = 0,
+                    CreatedDate = DateTime.Now,
+                    IsActive = true,
+                    DiscountPrice = 0
+                };
 
-            _productVariationService.Insert(item);
+                _productVariationService.Insert(item);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
         public ActionResult ChangeStatusProduct(Guid product_Id, bool status)
         {
-            var product = _productService.GetById(product_Id);
-            _productService.ChangeStatus(product, status);
-            return RedirectToAction("DetailProduct", new { id = product_Id });
+            try
+            {
+                var product = _productService.GetById(product_Id);
+                _productService.ChangeStatus(product, status);
+                return RedirectToAction("DetailProduct", new { id = product_Id });
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
-
+        #endregion
     }
 }

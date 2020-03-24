@@ -16,6 +16,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IVendorService _vendorService;
 
+        #region Ctor
         public VendorController()
         {
 
@@ -26,14 +27,19 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _productService = productService;
             _vendorService = vendorService;
         }
+        #endregion
 
+        #region Index and Detail Vendor
         // GET: Admin/Brand
         public ActionResult Index()
         {
-            var model = GetVendors(_vendorService.SelectAll());
-            return View(model);
+            try
+            {
+                var model = GetVendors(_vendorService.SelectAll());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
-
 
         /// <summary>
         /// Detail Brand
@@ -42,42 +48,52 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns>Detail View</returns>
         public ActionResult DetailVendor(Guid id)
         {
-            var vendor = _vendorService.GetById(id);
-            var model = new VendorViewModel
+            try
             {
-                Id = vendor.Id,
-                Name = vendor.Name,
-                Address = vendor.Address,
-                CreateDate = vendor.CreatedDate,
-                IsActive = vendor.IsActive,
-                Email = vendor.Email,
-                PhoneNumber= vendor.PhoneNumber,
-                Products = ConvertDomainToModel.GetProduct_SummaryInfo(_productService.GetProductsByVendorId(vendor.Id)),
-                UpdateDate = vendor.UpdatedDate,
-            };
-            return View(model);
+                var vendor = _vendorService.GetById(id);
+                var model = new VendorViewModel
+                {
+                    Id = vendor.Id,
+                    Name = vendor.Name,
+                    Address = vendor.Address,
+                    CreateDate = vendor.CreatedDate,
+                    IsActive = vendor.IsActive,
+                    Email = vendor.Email,
+                    PhoneNumber = vendor.PhoneNumber,
+                    Products = ConvertDomainToModel.GetProduct_SummaryInfo(_productService.GetProductsByVendorId(vendor.Id)),
+                    UpdateDate = vendor.UpdatedDate,
+                };
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
+        #region Create new or update vendor
         [HttpGet]
         public ActionResult AddOrEditVendor(Guid? id)
         {
-            VendorViewModel model = new VendorViewModel();
-
-            if (id.HasValue)
+            try
             {
-                var vendor = _vendorService.GetById(id.Value);
-                model.Id = vendor.Id;
-                model.Name = vendor.Name;
-                model.Address = vendor.Address;
-                model.Email = vendor.Email;
-                model.PhoneNumber = vendor.PhoneNumber;
-                model.UpdateDate = vendor.UpdatedDate;
-                model.CreateDate = vendor.CreatedDate;
-                model.IsActive = vendor.IsActive;
-                return View(model);
+                VendorViewModel model = new VendorViewModel();
+
+                if (id.HasValue)
+                {
+                    var vendor = _vendorService.GetById(id.Value);
+                    model.Id = vendor.Id;
+                    model.Name = vendor.Name;
+                    model.Address = vendor.Address;
+                    model.Email = vendor.Email;
+                    model.PhoneNumber = vendor.PhoneNumber;
+                    model.UpdateDate = vendor.UpdatedDate;
+                    model.CreateDate = vendor.CreatedDate;
+                    model.IsActive = vendor.IsActive;
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -117,33 +133,23 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 {
                     _vendorService.Update(vendor);
                 }
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("Index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
-
-        [HttpGet]
-        public PartialViewResult DeleteVendor(Guid id)
-        {
-            var vendor = _vendorService.GetById(id);
-            var model = new ProductViewModel
-            {
-                Name = $"{vendor.Name}"
-            };
-            return PartialView("~/Areas/Admin/Views/vendor/_DeleteVendorPartial.cshtml", model);
-        }
-
+        #region Delete and conver domain to model
         [HttpPost]
         public ActionResult DeleteVendor(VendorViewModel model)
         {
-            var vendor = _vendorService.GetById(model.Id);
-            _vendorService.Delete(vendor);
-            return RedirectToAction("Index");
+            try
+            {
+                var vendor = _vendorService.GetById(model.Id);
+                _vendorService.Delete(vendor);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         private IList<VendorViewModel> GetVendors(IList<Vendor> vendors)
@@ -160,6 +166,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 IsActive = x.IsActive
             }).ToList();
         }
-
+        #endregion
     }
 }

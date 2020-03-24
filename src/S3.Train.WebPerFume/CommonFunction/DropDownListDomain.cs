@@ -19,10 +19,10 @@ namespace S3.Train.WebPerFume.CommonFunction
             var list = new List<VolumeCheckBoxModel>
             {
                 new VolumeCheckBoxModel{id = 1, Volume = "25ml"},
-                new VolumeCheckBoxModel{id = 1, Volume = "50ml"},
-                new VolumeCheckBoxModel{id = 1, Volume = "100ml"},
-                new VolumeCheckBoxModel{id = 1, Volume = "150ml"},
-                new VolumeCheckBoxModel{id = 1, Volume = "200ml"}
+                new VolumeCheckBoxModel{id = 2, Volume = "50ml"},
+                new VolumeCheckBoxModel{id = 3, Volume = "100ml"},
+                new VolumeCheckBoxModel{id = 4, Volume = "150ml"},
+                new VolumeCheckBoxModel{id = 5, Volume = "200ml"}
             };
 
             return list;

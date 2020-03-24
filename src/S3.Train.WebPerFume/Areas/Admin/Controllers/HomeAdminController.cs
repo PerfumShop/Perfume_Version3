@@ -13,6 +13,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
 
+        #region Ctor
         public HomeAdminController()
         {
 
@@ -22,26 +23,38 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         {
             _shoppingCartService = shoppingCartService;
         }
+        #endregion
 
+        #region Index DeleteCart And Error500
         // GET: Admin/Home
         public ActionResult Index()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch { return RedirectToAction("Erorr500"); }
         }
 
+        // Delete carts null and have create date than 30 days
         public ActionResult DeleteCartNullOrThan30Days()
         {
-            var carts = _shoppingCartService.GetShoppingCartNullOrThan30Days();
-            foreach (var item in carts)
+            try
             {
-                _shoppingCartService.Delete(item);
+                var carts = _shoppingCartService.GetShoppingCartNullOrThan30Days();
+                foreach (var item in carts)
+                {
+                    _shoppingCartService.Delete(item);
+                }
+                return RedirectToAction("index");
             }
-            return RedirectToAction("index");
+            catch { return RedirectToAction("Erorr500"); }
         }
 
         public ActionResult Erorr500()
         {
             return View();
         }
+        #endregion
     }
 }
