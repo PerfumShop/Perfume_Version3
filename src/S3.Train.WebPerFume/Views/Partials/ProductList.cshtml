@@ -9,7 +9,7 @@
                 <div class="product-item">
                     <div class="pi-pic">
                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
-                            <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded">
+                            <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:350px ; width:407px">
                         </a>
                         <div class="icon">
                             <i class="icon_heart_alt"></i>
@@ -21,13 +21,12 @@
                         </ul>
                     </div>
                     <div class="pi-text">
-                        <div class="catagory-name">@item.Brand.Name</div>
+
                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
                             <h5>@item.Name</h5>
                         </a>
                         <div class="product-price">
-                            @item.Price
-                            <span>@item.DiscountPrice$</span>
+
                         </div>
                     </div>
                 </div>

@@ -83,9 +83,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 if (isNew)
                 {
                     // chage status = false for all Product Advertisement Type same type 
-                    foreach (var proVa in _bannerService.GetAllBannerSameType(model.bannerType))
+                    var a = _bannerService.GetAllBannerSameType(model.bannerType);
+                    if (a.Count() > 0)
                     {
-                        _bannerService.ChangeStatus(proVa, false);
+                        foreach (var proVa in a)
+                        {
+                            _bannerService.ChangeStatus(proVa, false);
+                        } 
                     }
                     banner.CreatedDate = DateTime.Now;
                     banner.Id = Guid.NewGuid();
