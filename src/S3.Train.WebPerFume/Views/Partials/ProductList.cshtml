@@ -22,7 +22,7 @@
                         </ul>
                     </div>
                     <div class="pi-text">
-                        <div class="catagory-name">@item.Brand.Name</div>
+
                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
                             <h5>@item.Name</h5>
                         </a>
@@ -36,6 +36,8 @@
                             {
                                 @item.Price
                             }
+                        <div class="product-price">
+
                         </div>
                     </div>
                 </div>
