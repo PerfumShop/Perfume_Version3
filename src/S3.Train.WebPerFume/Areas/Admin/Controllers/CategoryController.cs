@@ -16,6 +16,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
 
+        #region Ctor
         public CategoryController()
         {
 
@@ -26,12 +27,18 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _productService = productService;
             _categoryService = categoryService;
         }
+        #endregion
 
+        #region Index And Detail
         // GET: Admin/Category
         public ActionResult Index()
         {
-            var model = GetCategorys(_categoryService.SelectAll());
-            return View(model);
+            try
+            {
+                var model = GetCategorys(_categoryService.SelectAll());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
 
@@ -42,44 +49,53 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns>Detail View</returns>
         public ActionResult DetailCategory(Guid id)
         {
-            var category = _categoryService.GetById(id);
-            var model = new CategoryViewModel
+            try
             {
-                Id = category.Id,
-                Name = category.Name,
-                ParentId = category.ParentId,
-                CreatedDate = category.CreatedDate,
-                IsActive = category.IsActive,
-                Summary = category.Summary,
-                ProductCategoriesModels = GetProducts(_productService.GetProductsByCategoryId(category.Id)),
-                UpdatedDate = category.UpdatedDate,
-            };
-            return View(model);
+                var category = _categoryService.GetById(id);
+                var model = new CategoryViewModel
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    ParentId = category.ParentId,
+                    CreatedDate = category.CreatedDate,
+                    IsActive = category.IsActive,
+                    Summary = category.Summary,
+                    ProductCategoriesModels = GetProducts(_productService.GetProductsByCategoryId(category.Id)),
+                    UpdatedDate = category.UpdatedDate,
+                };
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
         #region Add or update category
         [HttpGet]
         public ActionResult AddOrEditCategory(Guid? id)
         {
-            CategoryViewModel model = new CategoryViewModel();
-
-            model.DropDownCategory = DropDownListDomain.DropDownList_Categoty(_categoryService.SelectAll().OrderBy(p => p.Name).ToList());
-            model.DropDownProduct = DropDownListDomain.DropDownList_Product(_productService.SelectAll().OrderBy(p => p.Name).ToList());
-
-            if (id.HasValue)
+            try
             {
-                var category = _categoryService.GetById(id.Value);
-                model.Id = category.Id;
-                model.Name = category.Name;
-                model.ParentId = category.ParentId;
-                model.Summary = category.Summary;
-                model.UpdatedDate = category.UpdatedDate;
-                model.CreatedDate = category.CreatedDate;
-                model.IsActive = category.IsActive;
-                return View(model);
+                CategoryViewModel model = new CategoryViewModel();
+
+                model.DropDownCategory = DropDownListDomain.DropDownList_Categoty(_categoryService.SelectAll().OrderBy(p => p.Name).ToList());
+                model.DropDownProduct = DropDownListDomain.DropDownList_Product(_productService.SelectAll().OrderBy(p => p.Name).ToList());
+
+                if (id.HasValue)
+                {
+                    var category = _categoryService.GetById(id.Value);
+                    model.Id = category.Id;
+                    model.Name = category.Name;
+                    model.ParentId = category.ParentId;
+                    model.Summary = category.Summary;
+                    model.UpdatedDate = category.UpdatedDate;
+                    model.CreatedDate = category.CreatedDate;
+                    model.IsActive = category.IsActive;
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -127,36 +143,27 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     // insert product in category
                     InsertProductCategoryByListProId(listProductId, category.Id);
                 }
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("Index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
         #endregion
 
         #region Delete Category
-        [HttpGet]
-        public PartialViewResult DeleteCategory(Guid id)
-        {
-            var category = _categoryService.GetById(id);
-            var model = new ProductViewModel
-            {
-                Name = $"{category.Name}"
-            };
-            return PartialView("~/Areas/Admin/Views/category/_DeleteCategoryPartial.cshtml", model);
-        }
-
         [HttpPost]
         public ActionResult DeleteCategory(CategoryViewModel model)
         {
-            var category = _categoryService.GetById(model.Id);
-            _categoryService.Delete(category);
-            return RedirectToAction("Index");
+            try
+            {
+                var category = _categoryService.GetById(model.Id);
+                _categoryService.Delete(category);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
         #endregion
 
+        #region Delete a Product on category
         /// <summary>
         /// Delete a Product on category
         /// </summary>
@@ -165,11 +172,16 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns>View(Index)</returns>
         public ActionResult DeleteProductOnCategory(Guid product_Id, Guid category_Id)
         {
-            _productService.DeleteProductOnCategory(category_Id, product_Id);
-            return RedirectToAction("Index");
+            try
+            {
+                _productService.DeleteProductOnCategory(category_Id, product_Id);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
+        #region Change status Category and Convert domain to model
         /// <summary>
         /// change status category
         /// </summary>
@@ -178,9 +190,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult ChangeStatusCategory(Guid category_Id, bool status)
         {
-            var category = _categoryService.GetById(category_Id);
-            _categoryService.ChangeStatus(category,status);
-            return RedirectToAction("DetailCategory", new { id = category_Id});
+            try
+            {
+                var category = _categoryService.GetById(category_Id);
+                _categoryService.ChangeStatus(category, status);
+                return RedirectToAction("DetailCategory", new { id = category_Id });
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         private IList<CategoryViewModel> GetCategorys(IList<Category> categories)
@@ -218,6 +234,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 }
             }
         }
+        #endregion
 
     }
 }

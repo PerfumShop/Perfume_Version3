@@ -65,13 +65,13 @@
                         @{
                             if (item.IsActive)
                             {
-                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = !item.IsActive})">
+                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = false})">
                                     <label class="badge badge-success">On</label>
                                 </a>
                             }
                             else
                             {
-                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = !item.IsActive})">
+                                <a href="@Url.Action("ChangeStatus","ProductAdvertisement", new { proVa_id= item.Id, status = true})">
                                     <label class="badge badge-danger">Off</label>
                                 </a>
                             }

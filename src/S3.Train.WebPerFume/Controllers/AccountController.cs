@@ -208,7 +208,11 @@ namespace S3.Train.WebPerFume.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            try
+            {
+                return View();
+            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
 
         //
@@ -218,45 +222,49 @@ namespace S3.Train.WebPerFume.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = new ApplicationUser
+                if (ModelState.IsValid)
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = model.FullName,
-                    Email = model.Email,
-                    FullName = model.FullName,
-                    PhoneNumber = model.PhoneNumber,
-                    Address = model.Address,
-                    Avatar = "defaultAvatar.jpg",
-                };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    // temp code tạo role và gắn role cho user khi  đăng ký
-                    var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
-                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+                    var user = new ApplicationUser
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserName = model.FullName,
+                        Email = model.Email,
+                        FullName = model.FullName,
+                        PhoneNumber = model.PhoneNumber,
+                        Address = model.Address,
+                        Avatar = "defaultAvatar.jpg",
+                    };
+                    var result = await UserManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        // temp code tạo role và gắn role cho user khi  đăng ký
+                        var roleStore = new RoleStore<IdentityRole>(new ApplicationDbContext());
+                        var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-                    // await roleStore.CreateAsync(new IdentityRole("Customer"));
-                    await UserManager.AddToRoleAsync(user.Id, "Customer");
+                        // await roleStore.CreateAsync(new IdentityRole("Customer"));
+                        await UserManager.AddToRoleAsync(user.Id, "Customer");
 
-                    // login
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                        // login
+                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    //string html = "Please confirm your account by clicking <a class=\"btn btn-sucess\" href=\"" + callbackUrl + "\">Confirm</a>";
-                    //await UserManager.SendEmailAsync(user.Id, "Confirm your account", html);
+                        // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                        // Send an email with this link
+                        //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                        //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                        //string html = "Please confirm your account by clicking <a class=\"btn btn-sucess\" href=\"" + callbackUrl + "\">Confirm</a>";
+                        //await UserManager.SendEmailAsync(user.Id, "Confirm your account", html);
 
-                    return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
+                    }
+                    AddErrors(result);
                 }
-                AddErrors(result);
-            }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+                // If we got this far, something failed, redisplay form
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
 
         //

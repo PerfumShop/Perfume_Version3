@@ -13,22 +13,9 @@ namespace S3Train.Service
         public ProductAdvertisementService(ApplicationDbContext dbContext) : base(dbContext)
         {
         }
-        public ProductAdvertisement GetWomenSquareBanner()
+        public ProductAdvertisement GetProductAdvertisementByType(ProductAdvertisementType type)
         {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == ProductAdvertisementType.WomenSquareBanner && b.IsActive);
-        }
-        public ProductAdvertisement GetMenSquareBanner()
-        {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == ProductAdvertisementType.MenSquareBanner && b.IsActive);
-        }
-        public ProductAdvertisement GetUnisexSquareBanner()
-        {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == ProductAdvertisementType.UnisexSquareBanner && b.IsActive);
-        }
-
-        public ProductAdvertisement GetSliderBanner()
-        {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == ProductAdvertisementType.SliderBanner && b.IsActive);
+            return this.EntityDbSet.FirstOrDefault(b => b.AdType == type && b.IsActive);
         }
 
         public IList<ProductAdvertisement> GetAllBannerByType(ProductAdvertisementType productAdvertisementType)
@@ -36,13 +23,13 @@ namespace S3Train.Service
             switch (productAdvertisementType)
             {
                 case ProductAdvertisementType.SliderBanner:
-                    return GetAllSliderBanner();
+                    return GetAllByType(productAdvertisementType);
                 case ProductAdvertisementType.WomenSquareBanner:
-                    return GetAllWomenSquareBanner();
+                    return GetAllByType(productAdvertisementType);
                 case ProductAdvertisementType.MenSquareBanner:
-                    return GetAllMenSquareBanner();
+                    return GetAllByType(productAdvertisementType);
                 case ProductAdvertisementType.UnisexSquareBanner:
-                    return GetAllUnisexSquareBanner();
+                    return GetAllByType(productAdvertisementType);
                 case ProductAdvertisementType.MidVertRectangleBanner:
                     break;
                 case ProductAdvertisementType.LgVertRectangleBanner:
@@ -56,21 +43,10 @@ namespace S3Train.Service
             }
             return null;
         }
-        private IList<ProductAdvertisement> GetAllWomenSquareBanner()
+
+        private IList<ProductAdvertisement> GetAllByType(ProductAdvertisementType type)
         {
-            return this.EntityDbSet.Where(b => b.AdType == ProductAdvertisementType.WomenSquareBanner && b.IsActive).ToList();
-        }
-        private IList<ProductAdvertisement> GetAllMenSquareBanner()
-        {
-            return this.EntityDbSet.Where(b => b.AdType == ProductAdvertisementType.MenSquareBanner && b.IsActive).ToList();
-        }
-        private IList<ProductAdvertisement> GetAllUnisexSquareBanner()
-        {
-            return this.EntityDbSet.Where(b => b.AdType == ProductAdvertisementType.UnisexSquareBanner && b.IsActive).ToList();
-        }
-        private IList<ProductAdvertisement> GetAllSliderBanner()
-        {
-            return this.EntityDbSet.Where(b => b.AdType == ProductAdvertisementType.SliderBanner && b.IsActive).ToList();
+            return this.EntityDbSet.Where(b => b.AdType == type && b.IsActive).ToList();
         }
     }
 }

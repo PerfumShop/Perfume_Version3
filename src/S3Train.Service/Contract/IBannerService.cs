@@ -10,8 +10,6 @@ namespace S3Train.Contract
     public interface IBannerService : IGenenicServiceBase<Banner>
     {
         List<Banner> GetAllBannerSameType(BannerType bannerType);
-        Banner GetMainBanner();
-        Banner GetMenBanner();
-        Banner GetWomenBanner();
+        Banner GetBannerByType(BannerType type);
     }
 }

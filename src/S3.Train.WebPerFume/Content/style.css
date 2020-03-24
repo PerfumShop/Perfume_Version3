@@ -1284,6 +1284,12 @@ ol {
 	background: #e7ab3c;
 }
 
+.product-item .pi-pic .sale.pp-hot {
+	background: #ff4d4d;
+    left: 0;
+	top: 50px;
+}
+
 .product-item .pi-pic .icon {
 	font-size: 20px;
 	color: #252525;

@@ -29,11 +29,9 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         public Guid Brand_Id { get; set; }
 
         [Display(Name = "Name")]
-        [UIHint("FormControlTextBox")]
         [Required]
         public string Name { get; set; }
 
-        [UIHint("FormControlTextBox")]
         [Required]
         [AllowHtml]
         public string Description { get; set; }
@@ -53,9 +51,16 @@ namespace S3.Train.WebPerFume.Areas.Admin.Models
         [Display(Name = "Active")]
         public bool IsActive { get; set; }
 
+        [Required]
         public List<SelectListItem> DropDownBrand { get; set; }
 
+        [Required]
         public List<SelectListItem> DropDownVendor { get; set; }
+
+        [Required]
+        public List<Guid> SelecteCategories { get; set; }
+
+        public List<SelectListItem> DropDowncategories { get; set; }
 
         public virtual Vendor Vendor { get; set; }
         public virtual Brand Brand { get; set; }

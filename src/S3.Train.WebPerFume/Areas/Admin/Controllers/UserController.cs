@@ -16,6 +16,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
 
+        #region Ctor
         public UserController()
         {
 
@@ -25,75 +26,103 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _userService = userService;
             _roleService = roleService;
         }
+        #endregion
 
+        #region Index
         // GET: Admin/User
         public async Task<ActionResult> Index()
         {
-            var model = await _userService.GetUserAsync(1, 10);
-            return View(model);
+            try
+            {
+                var model = await _userService.GetUserAsync(1, 10);
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
+        #region Create, edit, detail and delete user
         public ActionResult Create()
         {
-            ViewBag.Roles = DropDownRole();
-            return View();
+            try
+            {
+                ViewBag.Roles = DropDownRole();
+                return View();
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         [HttpPost]
         public async Task<ActionResult> Create(UserViewModel model)
         {
-            var user = new ApplicationUser()
+            try
             {
-                Id = Guid.NewGuid().ToString(),
-                Email = model.Email,
-                UserName = model.UserName,
-                FullName = model.FullName,
-                PhoneNumber = model.PhoneNumber,
-                Avatar = model.Avatar
-            };
-            await _userService.CreateAsync(user, model.PassWord);
-            await _userService.UserAddToRolesAsync(user.Id, model.Role);
-            return RedirectToAction("Index");
+                var user = new ApplicationUser()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Email = model.Email,
+                    UserName = model.UserName,
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber,
+                    Avatar = model.Avatar
+                };
+                await _userService.CreateAsync(user, model.PassWord);
+                await _userService.UserAddToRolesAsync(user.Id, model.Role);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         public async Task<ActionResult> Update(string id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            ViewBag.Roles = DropDownRole();
-            var model = new UserViewModel()
+            try
             {
-                Id = user.Id,
-                Email = user.Email,
-                FullName = user.FullName,
-                PhoneNumber = user.PhoneNumber,
-                Avatar = user.Avatar,
-                UserName = user.UserName
-            };
-            return View(model);
+                var user = await _userService.GetUserByIdAsync(id);
+                ViewBag.Roles = DropDownRole();
+                var model = new UserViewModel()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    FullName = user.FullName,
+                    PhoneNumber = user.PhoneNumber,
+                    Avatar = user.Avatar,
+                    UserName = user.UserName
+                };
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         [HttpPost]
         public async Task<ActionResult> Update(UserViewModel model)
         {
-            var user = await _userService.GetUserByIdAsync(model.Id);
+            try
+            {
+                var user = await _userService.GetUserByIdAsync(model.Id);
 
-            if (user == null)
-                return View(model);
+                if (user == null)
+                    return View(model);
 
-            user.Email = model.Email;
-            user.FullName = model.FullName;
-            user.PhoneNumber = model.PhoneNumber;
-            user.Avatar = model.Avatar;
-            user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.FullName = model.FullName;
+                user.PhoneNumber = model.PhoneNumber;
+                user.Avatar = model.Avatar;
+                user.UserName = model.UserName;
 
-            await _userService.UpdateAsync(user);
-            return RedirectToAction("Index");
+                await _userService.UpdateAsync(user);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         public async Task<ActionResult> Delete(string id)
         {
-            await _userService.DeleteAsync(id);
-            return RedirectToAction("Index");
+            try
+            {
+                await _userService.DeleteAsync(id);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         private List<SelectListItem> DropDownRole()
@@ -104,5 +133,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
             return list;
         }
+        #endregion
     }
 }

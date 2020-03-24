@@ -11,6 +11,7 @@
                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
                             <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:350px ; width:407px">
                         </a>
+                        @Html.Partial("~/Views/Shared/_IconCategoryPartial.cshtml", item.Categories)
                         <div class="icon">
                             <i class="icon_heart_alt"></i>
                         </div>
@@ -25,6 +26,16 @@
                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
                             <h5>@item.Name</h5>
                         </a>
+                        <div class="product-price">$
+                            @if (item.DiscountPrice.Value > 0)
+                            {
+                                @item.DiscountPrice
+                                <span>$@item.Price</span>
+                            }
+                            else
+                            {
+                                @item.Price
+                            }
                         <div class="product-price">
 
                         </div>

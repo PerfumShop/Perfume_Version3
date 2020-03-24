@@ -2,15 +2,15 @@
 @model ProductVaDetailViewModel
 @{
     ViewBag.Title = "ProductDetail";
-    Layout = "~/Views/Shared/_LayoutUser.cshtml"; 
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
 }
 <div class="breacrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text product-more">
-                    <a href="@Url.Action("Index","Home")"><i class="fa fa-home"></i> Home</a>
-                    <a href="@Url.Action("Index","Shop")">Shop</a>
+                    <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i> Home</a>
+                    <a href="@Url.Action("Index", "Shop")">Shop</a>
                     <a href="@Url.Action("ProductDetail", "Shop", new { id = Model.Product_Id, volume = Model.Volume })">Detail</a>
                     <span>@Model.Product.Name</span>
                 </div>
@@ -23,6 +23,8 @@
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-lg-6">
+                    <div class="product-pic-zoom">
+                        <img class="product-big-img" src="~/Content/img/product-men/@Model.Product.ImagePath" alt="">
                     <div class="product-pic-zoom" style="position: relative; overflow: hidden;">
                         <img class="product-big-img" src="~/Content/img/product-men/@Model.Product.ImagePath" alt="@Model.Product.Name" >
                         <div class="zoom-icon">
@@ -31,16 +33,17 @@
                     </div>
                     <div class="product-thumbs">
                         <div class="product-thumbs-track ps-slider owl-carousel">
-                            <div class="pt active" data-imgbigurl="">
-                                <img src="~/Content/img/product-men/@Model.Product.ImagePath" alt="@Model.Product.Name">
+                            <div class="pt active" data-imgbigurl="~/Content/img/product-men/@Model.Product.ImagePath">
+                                <img src="~/Content/img/product-men/@Model.Product.ImagePath" alt="">
                             </div>
-                            @foreach (var img in Model.ProductImage)
-                            {
-                                <div class="pt" data-imgbigurl="~/Content/img/product-men/@img.ImagePath">
-                                    <img src="~/Content/img/product-men/@img.ImagePath" alt="@Model.Product.Name @Model.Volume">
-                                </div>
+                            @{
+                                foreach (var item in Model.ProductImage)
+                                {
+                                    <div class="pt" data-imgbigurl="~/Content/img/product-men/@item.ImagePath">
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="" />
+                                    </div>
+                                }
                             }
-
                         </div>
                     </div>
                 </div>
@@ -48,7 +51,7 @@
                     <div class="product-details">
                         <div class="pd-title">
                             <span>@Model.Product.Brand.Name</span>
-                            <h3>@Model.Product.Name</h3>
+                            <h3 id="productName">@Model.Product.Name</h3>
                             <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
                         </div>
                         <div class="pd-rating">
@@ -64,18 +67,18 @@
                                 @Html.Raw(HttpUtility.HtmlDecode(Model.Product.Description))
                             </p>
                             @if (Model.DiscountPrice.Value > 0)
-                             {
+                            {
                                 <h4>$@Model.DiscountPrice <span>$@Model.Price</span></h4>
-                             }
-                             else
-                             {
+                            }
+                            else
+                            {
                                 <h4>$@Model.Price</h4>
-                             }
+                            }
                         </div>
 
                         <div class="pd-size-choose">
                             @*List Volume*@
-                            @foreach (var volume in Model.Product.ProductVariations.OrderBy(p=>p.Price))
+                            @foreach (var volume in Model.Product.ProductVariations.OrderBy(p => p.Price))
                             {
                                 <div class="sc-item w-auto">
                                     <a href="@Url.Action("ProductDetail", "Shop", new { id = volume.Product_Id, volume = volume.Volume })" class="btn mdi-radio text-black">@volume.Volume</a>
@@ -87,17 +90,18 @@
                             {
                                 <input type="hidden" name="proVaId" value="@Model.Id" />
                                 <div class="pro-qty">
-                                    <input type="number" name="quantity" value="1" step="1" min="1" max="@Model.StockQuantity"/>
+                                    <input type="number" name="quantity" value="1" step="1" min="1" max="@Model.StockQuantity" />
                                 </div>
-                                <input type="submit" class="btn btn-rounded primary-btn pd-cart" value="Add To Cart" />
+                                <input type="submit" id="btn_AddToCart" class="btn btn-rounded primary-btn pd-cart" value="Add To Cart" />
                             }
                         </div>
                         <ul class="pd-tags">
-                            <li><span>CATEGORIES</span>: 
-                            @foreach (var ca in Model.Product.Categories)
-                            {
-                                <a href="#" class="text-black-50">@ca.Name, </a>
-                            }
+                            <li>
+                                <span>CATEGORIES</span>:
+                                @foreach (var ca in Model.Product.Categories)
+                                {
+                                    <a href="#" class="text-black-50">@ca.Name, </a>
+                                }
                             </li>
                             <li><span>Vendor</span>: <a href="#" class="text-black-50">@Model.Product.Vendor.Name</a></li>
                         </ul>
@@ -285,11 +289,10 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="product-item">
                         <div class="pi-pic">
-                            <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })"
-                               class="btn mdi-radio text-black">
-                                <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name">
+                            <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
+                                <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:350px ; width:407px">
                             </a>
-                            <div class="sale">Sale</div>
+                            @Html.Partial("~/Views/Shared/_IconCategoryPartial.cshtml", item.Categories)
                             <div class="icon">
                                 <i class="icon_heart_alt"></i>
                             </div>
@@ -301,10 +304,11 @@
                         </div>
                         <div class="pi-text">
                             <div class="catagory-name">@item.Brand.Name</div>
-                            <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
+                            <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
                                 <h5>@item.Name</h5>
                             </a>
-                            <div class="product-price">$
+                            <div class="product-price">
+                                $
                                 @if (item.DiscountPrice.Value > 0)
                                 {
                                     @item.DiscountPrice
@@ -318,8 +322,18 @@
                         </div>
                     </div>
                 </div>
-             }
+            }
         </div>
     </div>
 </div>
 <!-- Related Products Section End -->
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#btn_AddToCart').on("click", function () {
+                alert("You was to add " + $("#productName").text() + " on cart.");
+            });
+        });
+    </script>
+}

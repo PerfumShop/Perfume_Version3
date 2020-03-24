@@ -1,0 +1,17 @@
+﻿@using S3Train.Domain
+@model ICollection<Category>
+
+@{
+    foreach (var ca in Model)
+    {
+        if (ca.Name == "Sale")
+        {
+            <div class="sale">Sale</div>
+        }
+
+        if (ca.Name == "Hot")
+        {
+            <div class="sale pp-hot">Hot</div>
+        }
+    }
+}
