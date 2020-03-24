@@ -20,5 +20,12 @@ namespace S3Train.Service
 
             return result;
         }
+
+        public IList<ShoppingCart> GetShoppingCartNullOrThan30Days()
+        {
+            var query = this.EntityDbSet.Include(p => p.ShoppingCartDetails);
+            var result = query.Where(p => p.ShoppingCartDetails.Count() == 0 || DbFunctions.DiffDays(p.CreatedDate,DateTime.Now) < 10 );
+            return result.ToList();
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace S3Train.Contract
     public interface IShoppingCartService : IGenenicServiceBase<ShoppingCart>
     {
         ShoppingCart GetShoppingCartByUserId(string userId);
+        IList<ShoppingCart> GetShoppingCartNullOrThan30Days();
     }
 }

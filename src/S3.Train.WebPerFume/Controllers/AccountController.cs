@@ -98,7 +98,7 @@ namespace S3.Train.WebPerFume.Controllers
             var oldCookie = Request.Cookies["UserId"];
             if (oldCookie != null)
             {
-                UpdateIdCartDetail(oldCookie.Value, Guid.Parse(signedUser.Id));
+                UpdateIdCartDetail(oldCookie.Value, Guid.Parse(signedUser.Id)); // bring all product from cart to user cart
                 var cookie = new HttpCookie("UserId")
                 {
                     Value = signedUser.Id

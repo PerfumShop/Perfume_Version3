@@ -5,6 +5,8 @@
     decimal total = 0;
     decimal subTotal = 0;
     decimal price = 0;
+    decimal fee = 0;
+}
 }
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -46,14 +48,18 @@
                             @Html.ValidationMessageFor(m => m.customerModel.Phone, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-lg-12">
-                            @Html.LabelFor(m => m.customerModel.Address, new { placeholder = "Address" })
-                            @Html.TextBoxFor(m => m.customerModel.Address)
+                            @Html.LabelFor(m => m.customerModel.Address)
+                            @Html.TextBoxFor(m => m.customerModel.Address, new { placeholder = "Address" })
                             @Html.ValidationMessageFor(m => m.customerModel.Address, "", new { @class = "text-danger" })
                         </div>
                         <div class="col-lg-12">
                             @Html.LabelFor(m => m.customerModel.Email)
                             @Html.TextBoxFor(m => m.customerModel.Email, new { placeholder = "Email" })
                             @Html.ValidationMessageFor(m => m.customerModel.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="col-lg-12">
+                            @Html.LabelFor(m => m.customerModel.Note)
+                            @Html.TextAreaFor(m => m.customerModel.Note, new { @class = "form-control", placeholder = "Note"})
                         </div>
                         <div class="col-lg-12">
                             <div class="create-item">
@@ -89,21 +95,25 @@
                                     }
                                     subTotal += price;
                                     <li class="fw-normal">
-                                        @Model.shoppingCartDetailModels[i].ProductVariation.Product.Name @Model.shoppingCartDetailModels[i].ProductVariation.Volume X @Model.shoppingCartDetailModels[i].Quantity 
+                                        @Model.shoppingCartDetailModels[i].ProductVariation.Product.Name @Model.shoppingCartDetailModels[i].ProductVariation.Volume X @Model.shoppingCartDetailModels[i].Quantity
                                         <span>$@price</span>
                                     </li>
                                 }
+
                                 <li class="fw-normal">Subtotal <span>$@subTotal</span></li>
                                 @{
-                                    if (subTotal > 20)
+                                    if (subTotal < 50)
                                     {
                                         total = subTotal + 1;
+                                        fee = 1;
                                     }
                                     else
                                     {
                                         total = subTotal;
+                                        fee = 0;
                                     }
                                 }
+                                <li class="fw-normal">Delivery Fee <span>@String.Format("{0:c}", fee)</span></li>
                                 <li class="total-price">Total <span>$@total</span></li>
                             </ul>
                             <div class="order-btn">

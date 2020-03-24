@@ -29,10 +29,12 @@ namespace S3.Train.WebPerFume.Services
                 Id = x.Id,
                 Name = x.Name,
                 ImagePath = x.ImagePath,
-                //some product have no product variations
-                Price = 10,//_productVariationService.GetOneProductVariations(x.Id).Price,/
-                DiscountPrice = 10,//_productVariationService.GetOneProductVariations(x.Id).DiscountPrice
-                //ProductVariations = x.ProductVariations,
+                ProductVariations = x.ProductVariations,
+                Vendor = x.Vendor,
+                Categories = x.Categories,
+                Brand = x.Brand,
+                Price = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).Price,
+                DiscountPrice = x.ProductVariations.FirstOrDefault(p => p.Product_Id == x.Id).DiscountPrice,
             }).ToPagedList(pageNumber, pageSize);
             return result;
         }
