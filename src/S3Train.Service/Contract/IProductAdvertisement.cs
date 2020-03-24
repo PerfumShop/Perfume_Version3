@@ -10,10 +10,7 @@ namespace S3Train.Contract
     public interface IProductAdvertisement : IGenenicServiceBase<ProductAdvertisement>
     {
 
-        ProductAdvertisement GetWomenSquareBanner();
-        ProductAdvertisement GetMenSquareBanner();
-        ProductAdvertisement GetUnisexSquareBanner();
-        ProductAdvertisement GetSliderBanner();
+        ProductAdvertisement GetProductAdvertisementByType(ProductAdvertisementType type);
 
         IList<ProductAdvertisement> GetAllBannerByType(ProductAdvertisementType productAdvertisementType);
     }

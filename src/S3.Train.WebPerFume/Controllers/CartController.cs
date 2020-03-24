@@ -67,7 +67,7 @@ namespace S3.Train.WebPerFume.Controllers
                 if (shoppingCartDetail != null)
                 {
                     // update quantity and update day
-                    shoppingCartDetail.Quantity = quantity;
+                    shoppingCartDetail.Quantity = shoppingCartDetail.Quantity + quantity;
                     shoppingCartDetail.UpdatedDate = DateTime.Now;
                     _shoppingCartDetailService.Update(shoppingCartDetail);
                 }
@@ -86,7 +86,7 @@ namespace S3.Train.WebPerFume.Controllers
                     _shoppingCartDetailService.Insert(cartDetail);
                 }
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Shop");
             }
             catch
             {

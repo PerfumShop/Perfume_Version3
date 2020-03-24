@@ -64,7 +64,6 @@ namespace S3Train.Service
                 }
             }
 
-
             this.DbContext.SaveChanges();
         }
 

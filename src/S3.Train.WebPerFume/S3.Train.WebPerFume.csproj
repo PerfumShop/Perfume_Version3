@@ -1430,6 +1430,7 @@
     <Content Include="Views\Shared\OrderSuccess.cshtml" />
     <Content Include="Views\Home\Erorr.cshtml" />
     <Content Include="Views\Shared\Quickview_Product.cshtml" />
+    <Content Include="Views\Shared\_IconCategoryPartial.cshtml" />
     <None Include="Web.LocalConnectStrings.config">
       <SubType>Designer</SubType>
     </None>

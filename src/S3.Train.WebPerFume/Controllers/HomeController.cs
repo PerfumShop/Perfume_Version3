@@ -50,13 +50,12 @@ namespace S3.Train.WebPerFume.Controllers
             {
                 var model = new HomeViewModel();
 
-                model.BannerMain = GetBanner(_bannerService.GetMainBanner());
-                model.BannerMen = GetBanner(_bannerService.GetMenBanner());
-                model.BannerWomen = GetBanner(_bannerService.GetWomenBanner());
-                model.SquareMen = GetProAd(_productAdvertisement.GetMenSquareBanner());
-                model.Squarewomen = GetProAd(_productAdvertisement.GetWomenSquareBanner());
-                model.SquareUnisex = GetProAd(_productAdvertisement.GetUnisexSquareBanner());
-                //model.productsModels = GetProducts(_productVariationService.SelectAll());
+                model.BannerMain = GetBanner(_bannerService.GetBannerByType(BannerType.MainBanner));
+                model.BannerMen = GetBanner(_bannerService.GetBannerByType(BannerType.MenBanner));
+                model.BannerWomen = GetBanner(_bannerService.GetBannerByType(BannerType.WomenBanner));
+                model.SquareMen = GetProAd(_productAdvertisement.GetProductAdvertisementByType(ProductAdvertisementType.MenSquareBanner));
+                model.Squarewomen = GetProAd(_productAdvertisement.GetProductAdvertisementByType(ProductAdvertisementType.WomenSquareBanner));
+                model.SquareUnisex = GetProAd(_productAdvertisement.GetProductAdvertisementByType(ProductAdvertisementType.UnisexSquareBanner));
 
                 model.BannerSlider = GetAllSliderBanner();
                 var productsHot = _productService.GetProductsByCategotyName("Hot");
