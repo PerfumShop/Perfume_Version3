@@ -28,5 +28,20 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult DeleteCartNullOrThan30Days()
+        {
+            var carts = _shoppingCartService.GetShoppingCartNullOrThan30Days();
+            foreach (var item in carts)
+            {
+                _shoppingCartService.Delete(item);
+            }
+            return RedirectToAction("index");
+        }
+
+        public ActionResult Erorr500()
+        {
+            return View();
+        }
     }
 }

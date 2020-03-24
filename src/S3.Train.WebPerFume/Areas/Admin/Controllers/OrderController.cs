@@ -1,4 +1,5 @@
 ﻿using S3.Train.WebPerFume.Areas.Admin.Models;
+using S3.Train.WebPerFume.CommonFunction;
 using S3Train.Contract;
 using S3Train.Domain;
 using System;
@@ -29,7 +30,12 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return View(model);
         }
 
-        public ActionResult DetailProduct(Guid id)
+        /// <summary>
+        /// get detail Order and display on DetailOrder view
+        /// </summary>
+        /// <param name="id">Order Id</param>
+        /// <returns></returns>
+        public ActionResult DetailOrder(Guid id)
         {
             var order = _orderService.GetOrderById(id);
             var model = new OrderViewModel
@@ -49,7 +55,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 ToatalPrice = order.ToatalPrice,
                 OrderDetails = order.OrderDetails
             };
-
+            ViewBag.OrderStatus = DropDownListDomain.DropDownList_OrderStatus();
             return View(model);
         }
 
@@ -72,12 +78,30 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeStatusOrder(Guid id, string status)
+        {
+            try
+            {
+                var order = _orderService.GetById(id);
+                var sa = SetOrderStatus.SetStatusTypeInt(Convert.ToInt32(status));
+                order.Status = SetOrderStatus.SetStatus(sa);
+
+                _orderService.Update(order);
+                return Json(new { id = id, status = status}, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
         /// <summary>
         /// Convert List Product to List ProductViewModel All Properties
         /// </summary>
-        /// <param name="orders"></param>
-        /// <returns></returns>
+        /// <param name="orders">Orders</param>
+        /// <returns>IList Order type OderViewModel</returns>
         public IList<OrderViewModel> GetOrders(IList<Order> orders)
         {
             return orders.Select(x => new OrderViewModel

@@ -1,9 +1,6 @@
 ﻿using S3Train.Domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace S3Train.Model.Product
 {
@@ -13,7 +10,10 @@ namespace S3Train.Model.Product
         public string Name { get; set; }
         public string ImagePath { get; set; }
         public decimal Price { get; set; }
-        public decimal DiscountPrice { get; set; }
-        
+        public decimal? DiscountPrice { get; set; }
+        public virtual Vendor Vendor { get; set; }
+        public virtual Domain.Brand Brand { get; set; }
+        public virtual ICollection<ProductVariation> ProductVariations { get; set; }
+        public virtual ICollection<Domain.Category> Categories { get; set; }
     }
 }

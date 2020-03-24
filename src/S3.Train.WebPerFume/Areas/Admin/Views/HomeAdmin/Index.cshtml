@@ -6,7 +6,14 @@
 <section>
     <div class="card">
         <div class="card-body">
-            <h3 class="align-middle"><i class="mdi mdi-account"></i> Hello @User.Identity.Name</h3>
+            <div class="d-flex">
+                <h3 class="align-middle mr-auto p-2"><i class="mdi mdi-account"></i> Hello @User.Identity.Name</h3>
+                <div class="p-2">
+                    <a href="@Url.Action("DeleteCartNullOrThan30Days","HomeAdmin")" class="btn btn-danger btn-fw">
+                        Delete All Cart Null Or Than 30 Day
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -14,8 +21,9 @@
 <section>
     <div class="card card-body">
         <div class="h4">
-            <span class="page-title-icon text-black mr-2"</span>
-            Dashboard
+            <span class="page-title-icon text-black mr-2">
+                Dashboard
+            </span>
         </div>
         <div class="row">
             <div class="col-md-4 stretch-card grid-margin">
