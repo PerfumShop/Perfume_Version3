@@ -23,13 +23,7 @@
                         PhoneNumber
                     </th>
                     <th>
-                        UserName
-                    </th>
-                    <th>
                         FullName
-                    </th>
-                    <th>
-                        Role
                     </th>
                     <th>Action</th>
                 </tr>
@@ -39,7 +33,7 @@
                 <tbody>
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Avatar)
+                            <img src="~/Content/img/product-men/man-van.jpg" class="rounded"/>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
@@ -48,13 +42,7 @@
                             @Html.DisplayFor(modelItem => item.PhoneNumber)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.FullName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Role)
                         </td>
                         <td>
                             @Html.ActionLink("Update", "Update", "User",new { id = item.Id}, new { @class = "btn btn-gradient-info btn-fw" })
