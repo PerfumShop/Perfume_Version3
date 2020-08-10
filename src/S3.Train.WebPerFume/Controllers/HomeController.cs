@@ -120,6 +120,15 @@ namespace S3.Train.WebPerFume.Controllers
             return View();
         }
 
+        public ActionResult name12()
+        {
+            var a = _productService.GetAll(m=>m.OrderBy(x=>x.Name));
+            var b = _productService.Gets2(m=>m.Name.Contains("ch"));
+            var c = _productService.Gets2(m=>m.Name.Contains("c"), m => m.OrderBy(x=>x.Name));
+            var cou = c.Count();
+            return Content(b.Count().ToString());
+        }
+
         /// <summary>
         /// function search
         /// </summary>

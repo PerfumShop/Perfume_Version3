@@ -162,7 +162,11 @@
                             <a href="#">Collection</a>
                             <ul class="dropdown">
                                 <li><a href="#">Men's</a></li>
-                                <li><a href="#">Women's</a></li>
+                                <li>
+                                    <a href="@Url.Action("Index","Shop", new { currentPage = 1, searchValue = "Woman", searchFilter = "category", sortOder = ViewBag.CurrentSort })">
+                                        Women's
+                                    </a>
+                                </li>
                                 <li><a href="#">Brands</a></li>
 
                             </ul>

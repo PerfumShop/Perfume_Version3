@@ -76,7 +76,14 @@
                            InsertionMode =  InsertionMode.Replace,
                            UpdateTargetId = "productlist"
                        })
-                        @Ajax.ActionLink("200ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "100ml",searchFilter = "volume", sortOder = ViewBag.CurrentSort },
+                        @Ajax.ActionLink("150ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "150ml", searchFilter = "volume", sortOder = ViewBag.CurrentSort },
+                      new AjaxOptions
+                      {
+                          HttpMethod = "GET",
+                          InsertionMode =  InsertionMode.Replace,
+                          UpdateTargetId = "productlist"
+                      })
+                        @Ajax.ActionLink("200ml", "ProductList", "Shop", new { currentPage = 1, searchValue = "200ml",searchFilter = "volume", sortOder = ViewBag.CurrentSort },
                          new AjaxOptions
                          {
                              HttpMethod = "GET",
