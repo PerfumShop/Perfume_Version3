@@ -21,6 +21,7 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IShopService _shopService;
         private readonly IProductListViewService _productListViewService;
 
+        #region Ctor
         public ShopController(IProductService productService, IProductVariationService productVariationService, 
             IShopService shopService, IProductListViewService productListViewService)
         {
@@ -29,41 +30,50 @@ namespace S3.Train.WebPerFume.Controllers
             _shopService = shopService;
             _productListViewService = productListViewService;
         }
+        #endregion
 
         // GET: Shop
         public ActionResult Index(string sortOrder,int? currentPage, string currentFilter, string currentFilterValue, string searchValue, string searchFilter)
         {
-            ViewBag.CurrentSort = sortOrder;
-            if (searchFilter != null)
+            try
             {
-                currentPage = 1;
+                ViewBag.CurrentSort = sortOrder;
+                if (searchFilter != null)
+                {
+                    currentPage = 1;
+                }
+                else
+                {
+                    searchFilter = currentFilter;
+                    searchValue = currentFilterValue;
+                }
+                ViewBag.CurrentFilter = searchFilter;
+                ViewBag.CurrentFilterValue = searchValue;
+                var model = _shopService.GetShopViewModel(currentPage, searchFilter, searchValue, sortOrder);
+                return View(model);
             }
-            else
-            {
-                searchFilter = currentFilter;
-                searchValue = currentFilterValue;
-            }
-            ViewBag.CurrentFilter = searchFilter;
-            ViewBag.CurrentFilterValue = searchValue;
-            var model = _shopService.GetShopViewModel(currentPage, searchFilter, searchValue, sortOrder);
-            return View(model);
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
         public ActionResult ProductList(string sortOrder, int? currentPage,string currentFilter, string currentFilterValue, string searchValue, string searchFilter)
         {
-            ViewBag.CurrentSort = sortOrder;
-            if (searchFilter != null)
+            try
             {
-                currentPage = 1;
+                ViewBag.CurrentSort = sortOrder;
+                if (searchFilter != null)
+                {
+                    currentPage = 1;
+                }
+                else
+                {
+                    searchFilter = currentFilter;
+                    searchValue = currentFilterValue;
+                }
+                ViewBag.CurrentFilter = searchFilter;
+                ViewBag.CurrentFilterValue = searchValue;
+                var model = _productListViewService.GetProductListViewModel(currentPage, searchFilter, searchValue, sortOrder);
+                return PartialView("/Views/Partials/ProductList.cshtml", model);
             }
-            else
-            {
-                searchFilter = currentFilter;
-                searchValue = currentFilterValue;
-            }
-            ViewBag.CurrentFilter = searchFilter;
-            ViewBag.CurrentFilterValue = searchValue;
-            var model = _productListViewService.GetProductListViewModel(currentPage, searchFilter, searchValue, sortOrder);
-            return PartialView("/Views/Partials/ProductList.cshtml",model);
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
         /// <summary>
         /// Product Detail
@@ -72,18 +82,22 @@ namespace S3.Train.WebPerFume.Controllers
         /// <returns>View with model info product</returns>
         public ActionResult ProductDetail(Guid id, string volume)
         {
-            string vo;
-            // get volume
-            if(volume==null)
-                vo = _productVariationService.GetVolumeFisrtById(id);
-            else
-                vo = volume;
+            try
+            {
+                string vo;
+                // get volume
+                if (volume == null)
+                    vo = _productVariationService.GetVolumeFisrtById(id);
+                else
+                    vo = volume;
 
-            var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, vo));
+                var model = GetProductVaDetailViewModel(_productVariationService.GetProductVariationByIdAndVolume_version2(id, vo));
 
-            var product = _productService.GetProductById(id);
-            ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id));
-            return View(model);
+                var product = _productService.GetProductById(id);
+                ViewBag.ProductRelate = ConvertDomainToModel.GetProducts(_productService.GetProductsByBrandId(product.Brand_Id));
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
 
         private ProductVaDetailViewModel GetProductVaDetailViewModel(ProductVariation productVariation)

@@ -848,6 +848,7 @@
     <Content Include="Content\img\banner\3.jpeg" />
     <Content Include="Content\img\banner\5.jpeg" />
     <Content Include="Content\img\banner\6.jpeg" />
+    <Content Include="Content\img\banner\a.jpg" />
     <Content Include="Content\img\banner\dior.jpeg" />
     <Content Include="Content\img\banner\pexels-photo-2814832.jpeg" />
     <Content Include="Content\img\banner\woman-girl.jpg" />
@@ -1226,6 +1227,8 @@
     <Content Include="Areas\Admin\Views\Order\DetailOrder.cshtml" />
     <Content Include="Areas\Admin\Views\HomeAdmin\Erorr500.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -1427,6 +1430,7 @@
     <Content Include="Views\Shared\OrderSuccess.cshtml" />
     <Content Include="Views\Home\Erorr.cshtml" />
     <Content Include="Views\Shared\Quickview_Product.cshtml" />
+    <Content Include="Views\Shared\_IconCategoryPartial.cshtml" />
     <None Include="Web.LocalConnectStrings.config">
       <SubType>Designer</SubType>
     </None>

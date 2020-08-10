@@ -15,6 +15,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IOrderService _orderService;
         private readonly IShoppingCartService _shoppingcartService;
 
+        #region Ctor
         public OrderController() { }
 
         public OrderController(IOrderService orderService, IShoppingCartService shoppingcartService)
@@ -22,12 +23,18 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _orderService = orderService;
             _shoppingcartService = shoppingcartService;
         }
+        #endregion
 
+        #region Index And Detail
         // GET: Admin/Order
         public ActionResult Index()
         {
-            var model = GetOrders(_orderService.SelectAll());
-            return View(model);
+            try
+            {
+                var model = GetOrders(_orderService.SelectAll());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -37,45 +44,44 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult DetailOrder(Guid id)
         {
-            var order = _orderService.GetOrderById(id);
-            var model = new OrderViewModel
+            try
             {
-                Id = order.Id,
-                DeliveryAddress = order.DeliveryAddress,
-                DeliveryName = order.DeliveryName,
-                DeliveryPhone = order.DeliveryPhone,
-                OrderDate = order.OrderDate,
-                CreateDate = order.CreatedDate,
-                IsActive = order.IsActive,
-                DeliveryFee = order.DeliveryFee,
-                Email = order.Email,
-                Note = order.Note,
-                Status = order.Status,
-                SubPrice = order.SubPrice,
-                ToatalPrice = order.ToatalPrice,
-                OrderDetails = order.OrderDetails
-            };
-            ViewBag.OrderStatus = DropDownListDomain.DropDownList_OrderStatus();
-            return View(model);
+                var order = _orderService.GetOrderById(id);
+                var model = new OrderViewModel
+                {
+                    Id = order.Id,
+                    DeliveryAddress = order.DeliveryAddress,
+                    DeliveryName = order.DeliveryName,
+                    DeliveryPhone = order.DeliveryPhone,
+                    OrderDate = order.OrderDate,
+                    CreateDate = order.CreatedDate,
+                    IsActive = order.IsActive,
+                    DeliveryFee = order.DeliveryFee,
+                    Email = order.Email,
+                    Note = order.Note,
+                    Status = order.Status,
+                    SubPrice = order.SubPrice,
+                    ToatalPrice = order.ToatalPrice,
+                    OrderDetails = order.OrderDetails
+                };
+                ViewBag.OrderStatus = DropDownListDomain.DropDownList_OrderStatus();
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-        [HttpGet]
-        public PartialViewResult DeleteOrder(Guid id)
-        {
-            var order = _orderService.GetById(id);
-            var model = new OrderViewModel
-            {
-                DeliveryName = $"{order.DeliveryName}"
-            };
-            return PartialView("~/Areas/Admin/Views/Order/_DeleteOrder.cshtml", model);
-        }
-
+        #region Delete, change status order and convert domain to model
         [HttpPost]
         public ActionResult DeleteOrder(ProductViewModel model)
         {
-            var order = _orderService.GetById(model.Id);
-            _orderService.Delete(order);
-            return RedirectToAction("Index");
+            try
+            {
+                var order = _orderService.GetById(model.Id);
+                _orderService.Delete(order);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         [HttpPost]
@@ -91,10 +97,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 _orderService.Update(order);
                 return Json(new { id = id, status = status}, JsonRequestBehavior.AllowGet);
             }
-            catch
-            {
-                return RedirectToAction("Error", "Home");
-            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -121,5 +124,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 Status = x.Status
             }).OrderByDescending(p => p.OrderDate).ToList();
         }
+        #endregion
     }
 }

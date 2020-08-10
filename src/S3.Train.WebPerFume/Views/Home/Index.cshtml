@@ -38,8 +38,7 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="single-banner">
-
-                    <img src="~/Content/img/banner/@Model.SquareMen.ImagePath" alt="">
+                    <img src="~/Content/img/banner/@Model.SquareMen.ImagePath" class="rounded" alt="">
                     <div class="inner-text">
                         <h4>Men’s</h4>
                     </div>
@@ -47,7 +46,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="single-banner">
-                    <img src="~/Content/img/banner/@Model.Squarewomen.ImagePath" alt="">
+                    <img src="~/Content/img/banner/@Model.Squarewomen.ImagePath" class="rounded" alt="">
                     <div class="inner-text">
                         <h4>Women’s</h4>
                     </div>
@@ -55,7 +54,7 @@
             </div>
             <div class="col-lg-4">
                 <div class="single-banner">
-                    <img src="~/Content/img/banner/@Model.SquareUnisex.ImagePath" alt="">
+                    <img src="~/Content/img/banner/@Model.SquareUnisex.ImagePath" class="rounded" alt="">
                     <div class="inner-text">
                         <h4>Unisex</h4>
                     </div>
@@ -78,10 +77,10 @@
             <div class="col-lg-8 offset-lg-1">
                 <div class="filter-control">
                     <ul>
-                        <li class="active">Clothings</li>
-                        <li>HandBag</li>
-                        <li>Shoes</li>
-                        <li>Accessories</li>
+                        <li class="active">Hot</li>
+                        <li>Sale</li>
+                        <li>New Item</li>
+                        <li>Promotion Item</li>
                     </ul>
                 </div>
                 <div class="product-slider owl-carousel">
@@ -91,7 +90,7 @@
                             <div class="product-item">
                                 <div class="pi-pic">
                                     <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
-                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" style="height:300px ; width:407px"></a>
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:350px ; width:407px"></a>
                                         <div class="sale pp-sale">Hot</div>
                                         <div class="icon">
                                         </div>
@@ -160,7 +159,7 @@
                     <p>Secs</p>
                 </div>
             </div>
-            <a href="#" class="primary-btn">Shop Now</a>
+            <a href="@Url.Action("Index", "Shop")" class="primary-btn">Shop Now</a>
         </div>
     </div>
 </section>
@@ -172,10 +171,10 @@
             <div class="col-lg-8">
                 <div class="filter-control">
                     <ul>
-                        <li class="active">Clothings</li>
-                        <li class="">HandBag</li>
-                        <li>Shoes</li>
-                        <li>Accessories</li>
+                        <li class="">Hot</li>
+                        <li class="active">Sale</li>
+                        <li>New Product</li>
+                        <li>Promotion Item</li>
                     </ul>
                 </div>
 
@@ -186,7 +185,7 @@
                             <div class="product-item">
                                 <div class="pi-pic">
                                     <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
-                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" style="height:300px ; width:407px">
+                                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:300px ; width:407px">
                                     </a>
                                     <div class="sale">Sale</div>
                                     <div class="icon">

@@ -5,33 +5,45 @@
     <div class="row">
         @foreach (var item in Model.productModels)
         {
-            <div class="col-lg-4 col-sm-6">
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
-                            <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded">
-                        </a>
-                        <div class="icon">
-                            <i class="icon_heart_alt"></i>
-                        </div>
-                        <ul>
-                            <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                            <li class="quick-view"><a href="#">+ Quick View</a></li>
-                            <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
-                        </ul>
+        <div class="col-lg-4 col-sm-6">
+            <div class="product-item">
+                <div class="pi-pic">
+                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id})">
+                        <img src="~/Content/img/product-men/@item.ImagePath" alt="@item.Name" class="rounded" style="height:350px ; width:407px">
+                    </a>
+                    @Html.Partial("~/Views/Shared/_IconCategoryPartial.cshtml", item.Categories)
+                    <div class="icon">
+                        <i class="icon_heart_alt"></i>
                     </div>
-                    <div class="pi-text">
-                        <div class="catagory-name">@item.Brand.Name</div>
-                        <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
-                            <h5>@item.Name</h5>
-                        </a>
-                        <div class="product-price">
+                    <ul>
+                        <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
+                        <li class="quick-view"><a href="#">+ Quick View</a></li>
+                        <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
+                    </ul>
+                </div>
+                <div class="pi-text">
+
+                    <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id })">
+                        <h5>@item.Name</h5>
+                    </a>
+                    <div class="product-price">
+                        $
+                        @if (item.DiscountPrice.Value > 0)
+                        {
+                            @item.DiscountPrice
+                            <span>$@item.Price</span>
+                        }
+                        else
+                        {
                             @item.Price
-                            <span>@item.DiscountPrice$</span>
+                        }
+                        <div class="product-price">
+
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         }
     </div>
     <div class="pageging">

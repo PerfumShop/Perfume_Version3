@@ -16,6 +16,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IBrandService _brandService;
 
+        #region Ctor
         public BrandController()
         {
 
@@ -28,14 +29,19 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _productService = productService;
             _brandService = brandService;
         }
+        #endregion
 
+        #region Index and Detail Brand
         // GET: Admin/Brand
         public ActionResult Index()
         {
-            var model = GetBrands(_brandService.SelectAll());
-            return View(model);
+            try
+            {
+                var model = GetBrands(_brandService.SelectAll());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500","HomdeAdmin"); }
         }
-
 
         /// <summary>
         /// Detail Brand
@@ -44,40 +50,50 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns>Detail View</returns>
         public ActionResult DetailBrand(Guid id)
         {
-            var brand = _brandService.GetById(id);
-            var model = new BrandViewModel
+            try
             {
-                Id = brand.Id,
-                Name = brand.Name,
-                Logo = brand.Logo,
-                CreateDate = brand.CreatedDate,
-                IsActive = brand.IsActive,
-                Summary = brand.Summary,
-                Products = ConvertDomainToModel.GetProduct_SummaryInfo(_productService.GetProductsByBrandId(brand.Id)),
-                UpdateDate = brand.UpdatedDate,
-            };
-            return View(model);
+                var brand = _brandService.GetById(id);
+                var model = new BrandViewModel
+                {
+                    Id = brand.Id,
+                    Name = brand.Name,
+                    Logo = brand.Logo,
+                    CreateDate = brand.CreatedDate,
+                    IsActive = brand.IsActive,
+                    Summary = brand.Summary,
+                    Products = ConvertDomainToModel.GetProduct_SummaryInfo(_productService.GetProductsByBrandId(brand.Id)),
+                    UpdateDate = brand.UpdatedDate,
+                };
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
+        #region Create new or update Brand
         [HttpGet]
         public ActionResult AddOrEditBrand(Guid? id)
         {
-            BrandViewModel model = new BrandViewModel();
-
-            if (id.HasValue)
+            try
             {
-                var brand = _brandService.GetById(id.Value);
-                model.Id = brand.Id;
-                model.Name = brand.Name;
-                model.Logo = brand.Logo;
-                model.Summary = brand.Summary;
-                model.UpdateDate = brand.UpdatedDate;
-                model.CreateDate = brand.CreatedDate;
-                model.IsActive = brand.IsActive;
-                return View(model);
+                BrandViewModel model = new BrandViewModel();
+
+                if (id.HasValue)
+                {
+                    var brand = _brandService.GetById(id.Value);
+                    model.Id = brand.Id;
+                    model.Name = brand.Name;
+                    model.Logo = brand.Logo;
+                    model.Summary = brand.Summary;
+                    model.UpdateDate = brand.UpdatedDate;
+                    model.CreateDate = brand.CreatedDate;
+                    model.IsActive = brand.IsActive;
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -117,36 +133,27 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 {
                     _brandService.Update(brand);
                 }
+                return RedirectToAction("Index");
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("Index");
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
-
-        [HttpGet]
-        public PartialViewResult DeleteBrand(Guid id)
-        {
-            var brand = _brandService.GetById(id);
-            var model = new ProductViewModel
-            {
-                Name = $"{brand.Name}"
-            };
-            return PartialView("~/Areas/Admin/Views/brand/_DeleteBrandPartial.cshtml", model);
-        }
-
+        #region Delete Brand
         [HttpPost]
         public ActionResult DeleteBrand(BrandViewModel model)
         {
-            var brand = _brandService.GetById(model.Id);
-            _brandService.Delete(brand);
-            return RedirectToAction("Index");
+            try
+            {
+                var brand = _brandService.GetById(model.Id);
+                _brandService.Delete(brand);
+                return RedirectToAction("Index");
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
+        #region Change status Brand and Convert domain to model
         /// <summary>
         /// change status brand
         /// </summary>
@@ -155,9 +162,13 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult ChangeStatusBrand(Guid brand_Id, bool status)
         {
-            var brand = _brandService.GetById(brand_Id);
-            _brandService.ChangeStatus(brand, status);
-            return RedirectToAction("DetailBrand", new { id = brand_Id });
+            try
+            {
+                var brand = _brandService.GetById(brand_Id);
+                _brandService.ChangeStatus(brand, status);
+                return RedirectToAction("DetailBrand", new { id = brand_Id });
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         private IList<BrandViewModel> GetBrands(IList<Brand> brands)
@@ -174,5 +185,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 IsActive = x.IsActive
             }).ToList();
         }
+        #endregion
     }
 }

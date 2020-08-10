@@ -25,6 +25,7 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IProductVariationService _productVariationService;
         private ApplicationUserManager _userManager;
 
+        #region Ctor
         public CheckoutController()
         {
             
@@ -52,6 +53,8 @@ namespace S3.Train.WebPerFume.Controllers
                 _userManager = value;
             }
         }
+        #endregion
+
 
         // GET: Checkout
         public async Task<ActionResult> Index()
@@ -81,10 +84,7 @@ namespace S3.Train.WebPerFume.Controllers
                     return RedirectToAction("Index", "Cart");
                 }
             }
-            catch
-            {
-                return RedirectToAction("Erorr","Home");
-            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
 
         private CustomerModel GetCustomerModel(ApplicationUser user)
@@ -148,11 +148,7 @@ namespace S3.Train.WebPerFume.Controllers
                 await UserManager.SendEmailAsync(User.Identity.GetUserId(), "Confirm Order From PerfumeShop","Thank You");
                 return RedirectToAction("Success","Checkout");
             }
-            catch
-            {
-                //error
-                return RedirectToAction("Error","Home");
-            }
+            catch { return RedirectToAction("Erorr", "Home"); }
         }
 
         /// <summary>

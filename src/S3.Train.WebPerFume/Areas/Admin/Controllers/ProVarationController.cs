@@ -17,6 +17,7 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         private readonly IProductVariationService _productVariationService;
         private readonly IProductImageService _productImageService;
 
+        #region Ctor
         public ProVarationController()
         {
 
@@ -29,45 +30,60 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             _productVariationService = productVariationService;
             _productImageService = productImageService;
         }
+        #endregion
 
+        #region Index and detail
         // GET: Admin/ProVaration
         public ActionResult Index()
         {
-            var model = GetProducts(_productService.SelectAll().OrderBy(p=>p.Name).ToList());
-            return View(model);
+            try
+            {
+                var model = GetProducts(_productService.SelectAll().OrderBy(p => p.Name).ToList());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         public ActionResult Detail(Guid id)
         {
-            var model = GetProducts(_productService.SelectAll().OrderBy(p => p.Name).ToList());
-            return View(model);
+            try
+            {
+                var model = GetProducts(_productService.SelectAll().OrderBy(p => p.Name).ToList());
+                return View(model);
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
         #region Add or update Product Variation
         [HttpGet]
         public ActionResult AddOrEditProductVariation(Guid? id)
         {
-            var model = new ProVarationViewModel();
-
-            model.DropDownProduct = DropDownListDomain.DropDownList_Product(_productService.SelectAll());
-            model.DropDownVolume = DropDownListDomain.DropDownList_Volume();
-
-            if (id.HasValue)
+            try
             {
-                var productVariation = _productVariationService.GetById(id.Value);
-
-                model = ConvertDomainToModel.ConvertModelFromDomainToProVa(productVariation);
+                var model = new ProVarationViewModel();
 
                 model.DropDownProduct = DropDownListDomain.DropDownList_Product(_productService.SelectAll());
                 model.DropDownVolume = DropDownListDomain.DropDownList_Volume();
 
-                model.Image = _productImageService.GetProductImage(model.Id) == null ? null :
-                                        ConvertDomainToModel.GetProductImage(_productImageService.GetProductImage(model.Id));
+                if (id.HasValue)
+                {
+                    var productVariation = _productVariationService.GetById(id.Value);
 
-                return View(model);
+                    model = ConvertDomainToModel.ConvertModelFromDomainToProVa(productVariation);
+
+                    model.DropDownProduct = DropDownListDomain.DropDownList_Product(_productService.SelectAll());
+                    model.DropDownVolume = DropDownListDomain.DropDownList_Volume();
+
+                    model.Image = _productImageService.GetProductImage(model.Id) == null ? null :
+                                            ConvertDomainToModel.GetProductImage(_productImageService.GetProductImage(model.Id));
+
+                    return View(model);
+                }
+                else
+                    return View(model);
             }
-            else
-                return View(model);
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
 
         /// <summary>
@@ -120,42 +136,23 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     // add many image for product variation
                     AddImageOnProductImageTable(imageList, productVariation.Id);
                 }
+                return RedirectToAction("DetailProduct", "Product", new { id = model.Product_Id });
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return RedirectToAction("DetailProduct", "Product", new { id = model.Product_Id });
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
         #endregion
 
-        #region Delete Product Variation
-        ///// <summary>
-        ///// Delete Product Variation
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //[HttpGet]
-        //public PartialViewResult DeleteProductVariation(Guid id)
-        //{
-        //    var productVariation = _productVariationService.GetById(id);
-        //    var model = new ProVarationViewModel
-        //    {
-        //        Id = productVariation.Id,
-        //        Product_Id = productVariation.Product_Id,
-        //        SKU = productVariation.SKU
-        //    };
-        //    return PartialView("~/Areas/Admin/Views/ProVaration/DeleteProductVariationPartial.cshtml", model);
-        //}
-
-        
+        #region Delete Product Variation and change status
         public ActionResult DeleteProductVariation(Guid id)
         {
-            var product = _productVariationService.GetById(id);
-            _productVariationService.Delete(product);
-            return RedirectToAction("DetailProduct", "Product", new { id = product.Product_Id });
+            try
+            {
+                var product = _productVariationService.GetById(id);
+                _productVariationService.Delete(product);
+                return RedirectToAction("DetailProduct", "Product", new { id = product.Product_Id });
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
-        #endregion
 
         /// <summary>
         /// Change status
@@ -165,12 +162,17 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
         /// <returns></returns>
         public ActionResult ChangeStatus(Guid id, bool status)
         {
-            var productVariation = _productVariationService.GetById(id);
-            _productVariationService.ChangeStatus(productVariation, status);
-            return RedirectToAction("DetailProduct", "Product",new { id = productVariation.Product_Id });
+            try
+            {
+                var productVariation = _productVariationService.GetById(id);
+                _productVariationService.ChangeStatus(productVariation, status);
+                return RedirectToAction("DetailProduct", "Product", new { id = productVariation.Product_Id });
+            }
+            catch { return RedirectToAction("Erorr500", "HomdeAdmin"); }
         }
+        #endregion
 
-
+        #region Convert domain to model
         /// <summary>
         /// get product variation have image with image id
         /// </summary>
@@ -194,7 +196,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
             }).ToList();
         }
 
-
         /// <summary>
         /// Get product have product variation inside
         /// </summary>
@@ -211,7 +212,9 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                     _productVariationService.GetProductVariations(x.Id)).ToList(),
             }).ToList();
         }
+        #endregion
 
+        #region Add or delete product image 
         /// <summary>
         /// Add many image in product image table
         /// </summary>
@@ -242,6 +245,6 @@ namespace S3.Train.WebPerFume.Areas.Admin.Controllers
                 _productImageService.Delete(proImage);
             }
         }
-
+        #endregion
     }
 }

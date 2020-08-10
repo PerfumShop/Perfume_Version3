@@ -19,19 +19,9 @@ namespace S3Train.Service
             return this.EntityDbSet.Where(b => b.AdType == bannerType && b.IsActive).ToList();
         }
 
-        public Banner GetMainBanner()
+        public Banner GetBannerByType(BannerType type)
         {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == BannerType.MainBanner && b.IsActive);
-        }
-
-        public Banner GetMenBanner()
-        {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == BannerType.MenBanner && b.IsActive);
-        }
-
-        public Banner GetWomenBanner()
-        {
-            return this.EntityDbSet.FirstOrDefault(b => b.AdType == BannerType.WomenBanner && b.IsActive);
+            return this.EntityDbSet.FirstOrDefault(b => b.AdType == type && b.IsActive);
         }
     }
 }

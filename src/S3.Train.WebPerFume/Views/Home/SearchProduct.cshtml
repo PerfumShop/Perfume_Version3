@@ -55,9 +55,16 @@
                                         <a href="@Url.Action("ProductDetail", "Shop", new { id = item.Id, volume = item.ProductVariations.FirstOrDefault(m => m.Product_Id == item.Id).Volume })">
                                             <h5>@item.Name</h5>
                                         </a>
-                                        <div class="product-price">
-                                            $@item.Price
-                                            <span>$@item.DiscountPrice</span>
+                                        <div class="product-price">$
+                                            @if (item.DiscountPrice.Value > 0)
+                                            {
+                                                @item.DiscountPrice
+                                                <span>$@item.Price</span>
+                                            }
+                                            else
+                                            {
+                                                @item.Price
+                                            }
                                         </div>
                                     </div>
                                 </div>

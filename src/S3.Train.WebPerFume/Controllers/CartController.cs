@@ -19,6 +19,7 @@ namespace S3.Train.WebPerFume.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IShoppingCartDetailService _shoppingCartDetailService;
 
+        #region Ctor
         public CartController()
         {
 
@@ -32,66 +33,95 @@ namespace S3.Train.WebPerFume.Controllers
             _shoppingCartService = shoppingCartService;
             _shoppingCartDetailService = shoppingCartDetailService;
         }
+        #endregion
 
+        #region Index 
         // GET: Cart
         public ActionResult Index()
         {
-            var cart = GetOrSetShoppingCart();
-            var model = GetShoppingCartModel(_shoppingCartService.GetShoppingCartByUserId(cart.UserId));
-            var model2 = ConvertDomainToModel.shoppingCartDetailModels(model.ShoppingCartDetails);
-            return View(model2);
+            try
+            {
+                var cart = GetOrSetShoppingCart();
+                var model = GetShoppingCartModel(_shoppingCartService.GetShoppingCartByUserId(cart.UserId));
+                var model2 = ConvertDomainToModel.shoppingCartDetailModels(model.ShoppingCartDetails);
+                return View(model2);
+            }
+            catch
+            {
+                return RedirectToAction("Erorr", "Home");
+            }
         }
+        #endregion
 
+        #region Add product to cart
         [HttpPost]
         public ActionResult AddProductToCart(string proVaId, int quantity)
         {
-            var shoppingCart = GetOrSetShoppingCart();
-            var id = Guid.Parse(proVaId);
-            var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(id, shoppingCart.Id);
-            var productVa = _productVariationService.GetById(id);
+            try
+            {
+                var shoppingCart = GetOrSetShoppingCart();
+                var id = Guid.Parse(proVaId);
+                var shoppingCartDetail = _shoppingCartDetailService.GetByProductIdAndCartShoppingCartId(id, shoppingCart.Id);
+                var productVa = _productVariationService.GetById(id);
 
-            if (shoppingCartDetail != null)
-            {
-                // update quantity and update day
-                shoppingCartDetail.Quantity = quantity;
-                shoppingCartDetail.UpdatedDate = DateTime.Now;
-                _shoppingCartDetailService.Update(shoppingCartDetail);
-            }
-            else
-            {
-                // Add new shopping cart detail
-                var cartDetail = new ShoppingCartDetail
+                if (shoppingCartDetail != null)
                 {
-                    Id = Guid.NewGuid(),
-                    ShoppingCart_Id = shoppingCart.Id,
-                    ProductVariation_Id = id,
-                    Quantity = quantity,
-                    CreatedDate = DateTime.Now,
-                    IsActive = true,
-                };
-                _shoppingCartDetailService.Insert(cartDetail);
+                    // update quantity and update day
+                    shoppingCartDetail.Quantity = shoppingCartDetail.Quantity + quantity;
+                    shoppingCartDetail.UpdatedDate = DateTime.Now;
+                    _shoppingCartDetailService.Update(shoppingCartDetail);
+                }
+                else
+                {
+                    // Add new shopping cart detail
+                    var cartDetail = new ShoppingCartDetail
+                    {
+                        Id = Guid.NewGuid(),
+                        ShoppingCart_Id = shoppingCart.Id,
+                        ProductVariation_Id = id,
+                        Quantity = quantity,
+                        CreatedDate = DateTime.Now,
+                        IsActive = true,
+                    };
+                    _shoppingCartDetailService.Insert(cartDetail);
+                }
+
+                return RedirectToAction("Index","Shop");
             }
-
-            return RedirectToAction("Index");
+            catch
+            {
+                return RedirectToAction("Erorr", "Home");
+            }
         }
+        #endregion
 
+        #region Update All product in cart
         [HttpPost]
         public ActionResult UpdateCart(List<ShoppingCartDetailModel> model)
         {
-            if (model != null)
+            try
             {
-                foreach (var item in model)
+                if (model != null)
                 {
-                    var pro = _shoppingCartDetailService.GetById(item.Id);
-                    var proVa = _productVariationService.GetById(pro.ProductVariation_Id);
-                    pro.Quantity = item.Quantity;
-                    pro.UpdatedDate = DateTime.Now;
-                    _shoppingCartDetailService.Update(pro);
+                    foreach (var item in model)
+                    {
+                        var pro = _shoppingCartDetailService.GetById(item.Id);
+                        var proVa = _productVariationService.GetById(pro.ProductVariation_Id);
+                        pro.Quantity = item.Quantity;
+                        pro.UpdatedDate = DateTime.Now;
+                        _shoppingCartDetailService.Update(pro);
+                    }
                 }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            catch
+            {
+                return RedirectToAction("Erorr", "Home");
+            }
         }
+        #endregion
 
+        #region Delete product in cart
         /// <summary>
         /// Delete product in cart by shopping cart detail id
         /// </summary>
@@ -99,12 +129,22 @@ namespace S3.Train.WebPerFume.Controllers
         /// <returns></returns>
         public ActionResult DeleteProductOnCart(Guid id)
         {
-            var model = _shoppingCartDetailService.GetById(id);
-            if (model != null)
-                _shoppingCartDetailService.Delete(model);
+            try
+            {
+                var model = _shoppingCartDetailService.GetById(id);
+                if (model != null)
+                    _shoppingCartDetailService.Delete(model);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Erorr", "Home");
+            }
         }
+        #endregion
+
+        #region check User auth / cookie
         /// <summary>
         /// Checked User Auth
         /// </summary>
@@ -141,7 +181,9 @@ namespace S3.Train.WebPerFume.Controllers
                 return userId.Value;
             }
         }
+        #endregion
 
+        #region get or set shopping cart
         /// <summary>
         /// Get Or Set ShoppingCart
         /// </summary>
@@ -169,7 +211,9 @@ namespace S3.Train.WebPerFume.Controllers
                 return model;
             }
         }
+        #endregion
 
+        #region Convert domain to model
         private ShoppingCartModel GetShoppingCartModel(ShoppingCart shoppingCart)
         {
             var model = new ShoppingCartModel
@@ -184,5 +228,6 @@ namespace S3.Train.WebPerFume.Controllers
             };
             return model;
         }
+        #endregion
     }
 }

@@ -9,7 +9,7 @@
 
 <div class="card card-body">
     @{
-        if (Model.Id== null)
+        if (string.IsNullOrEmpty(Model.Link))
         {
             <h2 class="card-title">Create New Banner</h2>
         }
