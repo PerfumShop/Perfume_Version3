@@ -291,5 +291,30 @@ namespace S3Train
                 }
             }
         }
+
+        public IEnumerable<T> Gets2(Expression<Func<T, bool>> predicate)
+        {
+            return EntityDbSet.Where(predicate).ToList();
+        }
+
+        public IEnumerable<T> Gets2(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+        {
+            return orderBy(EntityDbSet.Where(predicate)).ToList();
+        }
+
+        public T GetById(string id)
+        {
+            return EntityDbSet.Find(id);
+        }
+
+        public T Get(Expression<Func<T, bool>> predicate)
+        {
+            return EntityDbSet.FirstOrDefault(predicate);
+        }
+
+        public T Get(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy)
+        {
+            return orderBy(EntityDbSet.Where(predicate)).FirstOrDefault();
+        }
     }
 }
